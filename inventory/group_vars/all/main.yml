@@ -3,12 +3,12 @@ ansible_become: true
 ansible_python_interpreter: "/usr/bin/python3"
 
 systemd_journald_retention_sec: "7d"
-systemd_journald_system_max_use: "1G"
+systemd_journald_system_max_use: "512M"
 
 msmtp_host: "email-smtp.eu-north-1.amazonaws.com"
 
 needrestart_overrides:
-  ^systemd-(udevd|networkd|resolved): 0
+  ^systemd-(udevd|networkd|resolved|logind|journald): 0
   ^(docker|containerd): 0
   ^postgresql: 0
   ^(mysql|mariadb): 0
@@ -20,6 +20,7 @@ needrestart_overrides:
   ^unbound: 0
   ^stubby: 0
   ^firewalld: 0
+  ^polkit: 0
 
 sysctl_vars:
   - name: "net.core.rmem_max"

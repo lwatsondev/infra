@@ -15,9 +15,6 @@ all:
     pve-router:
       ansible_user: "root"
       ansible_host: "pve-router.hedgehog-skate.ts.net"
-    pve-netmon:
-      ansible_user: "root"
-      ansible_host: "pve-netmon.hedgehog-skate.ts.net"
     pve-caddy:
       ansible_user: "root"
       ansible_host: "caddy.internal.home.lwatson.dev"
@@ -69,7 +66,6 @@ all:
         monitor:
         pve:
         pve-router:
-        pve-netmon:
         pve-caddy:
         pve-vaultwarden:
         pve-postgresql:
@@ -79,14 +75,12 @@ all:
     lxc:
       hosts:
         pve-router:
-        pve-netmon:
         pve-caddy:
         pve-postgresql:
         pve-mqtt:
     pveguests:
       hosts:
         pve-router:
-        pve-netmon:
         pve-caddy:
         pve-postgresql:
         pve-mqtt:
