@@ -33,28 +33,33 @@ all:
     pve-frigate:
       ansible_user: "root"
       ansible_host: "frigate.internal.home.lwatson.dev"
+    do-ams3-01:
+      ansible_user: "root"
+      ansible_host: "do-ams3-01.ts.lwatson.dev"
 
   children:
     workstations:
       hosts:
         serenity:
-        # nova:
+        nova:
     servers:
       hosts:
         luna:
         monitor:
         pve:
+        do-ams3-01:
     vms:
       hosts:
         monitor:
         pve-frigate:
         pve-vaultwarden:
         pve-zigbee2mqtt:
+        do-ams3-01:
     zfs:
       hosts:
         luna:
         serenity:
-        # nova:
+        nova:
         pve:
     gentoo:
       hosts:
@@ -72,6 +77,7 @@ all:
         pve-mqtt:
         pve-zigbee2mqtt:
         pve-frigate:
+        do-ams3-01:
     lxc:
       hosts:
         pve-router:

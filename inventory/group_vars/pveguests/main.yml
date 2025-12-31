@@ -1,4 +1,2 @@
 ---
 systemd_resolved_enabled: false
-
-msmtp_from_addr: "pve-{{ ansible_hostname }}@{{ msmtp_from_domain }}"
