@@ -1,7 +1,7 @@
 ---
 - name: "msmtp:dependencies:install"
   ansible.builtin.package:
-    name: "{{ __msmtp_system_packages[ansible_distribution] }}"
+    name: "{{ __msmtp_system_packages[ansible_facts['distribution']] }}"
 
 - name: "msmtp:config_dir:create"
   ansible.builtin.file:

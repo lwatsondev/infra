@@ -1,7 +1,7 @@
 ---
 - name: "zram:dependencies:install"
   ansible.builtin.package:
-    name: "{{ __zram_system_packages[ansible_distribution] }}"
+    name: "{{ __zram_system_packages[ansible_facts['distribution']] }}"
 
 - name: "zram:config:create_dir"
   ansible.builtin.file:
