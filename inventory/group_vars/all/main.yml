@@ -1,6 +1,7 @@
 ---
 ansible_become: true
 ansible_python_interpreter: "/usr/bin/python3"
+ansible_user: "root"
 
 systemd_journald_retention_sec: "7d"
 systemd_journald_system_max_use: "512M"
@@ -21,6 +22,8 @@ needrestart_overrides:
   ^stubby: 0
   ^firewalld: 0
   ^polkit: 0
+  ^dbus: 0
+  ^networking: 0
 
 sysctl_vars:
   - name: "net.core.rmem_max"

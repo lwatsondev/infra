@@ -4,38 +4,30 @@ all:
     serenity:
       ansible_connection: "local"
     luna:
-      ansible_host: "luna.lwatson.dev"
+      ansible_host: "luna.hedgehog-skate.ts.net"
     nova:
       ansible_host: "nova.hedgehog-skate.ts.net"
-    monitor:
-      ansible_host: "monitor.lwatson.dev"
+      ansible_user: "lwatson"
+    uptime-kuma:
+      ansible_host: "uptime-kuma.hedgehog-skate.ts.net"
     pve:
-      ansible_user: "root"
       ansible_host: "pve.internal.home.lwatson.dev"
     pve-router:
-      ansible_user: "root"
       ansible_host: "pve-router.hedgehog-skate.ts.net"
     pve-caddy:
-      ansible_user: "root"
       ansible_host: "caddy.internal.home.lwatson.dev"
     pve-vaultwarden:
-      ansible_user: "root"
       ansible_host: "vaultwarden.internal.home.lwatson.dev"
     pve-postgresql:
-      ansible_user: "root"
       ansible_host: "postgresql.internal.home.lwatson.dev"
     pve-mqtt:
-      ansible_user: "root"
       ansible_host: "mqtt.internal.home.lwatson.dev"
     pve-zigbee2mqtt:
-      ansible_user: "root"
       ansible_host: "zigbee2mqtt.internal.home.lwatson.dev"
     pve-frigate:
-      ansible_user: "root"
       ansible_host: "frigate.internal.home.lwatson.dev"
     do-ams3-01:
-      ansible_user: "root"
-      ansible_host: "do-ams3-01.ts.lwatson.dev"
+      ansible_host: "do-ams3-01.hedgehog-skate.ts.net"
 
   children:
     workstations:
@@ -45,16 +37,16 @@ all:
     servers:
       hosts:
         luna:
-        monitor:
         pve:
         do-ams3-01:
+        uptime-kuma:
     vms:
       hosts:
-        monitor:
         pve-frigate:
         pve-vaultwarden:
         pve-zigbee2mqtt:
         do-ams3-01:
+        uptime-kuma:
     zfs:
       hosts:
         luna:
@@ -68,7 +60,6 @@ all:
         nova:
     debian:
       hosts:
-        monitor:
         pve:
         pve-router:
         pve-caddy:
@@ -78,6 +69,7 @@ all:
         pve-zigbee2mqtt:
         pve-frigate:
         do-ams3-01:
+        uptime-kuma:
     lxc:
       hosts:
         pve-router:
