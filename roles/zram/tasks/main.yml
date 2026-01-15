@@ -2,18 +2,24 @@
 - name: "zram:dependencies:install"
   ansible.builtin.package:
     name: "{{ __zram_system_packages[ansible_facts['distribution']] }}"
+  when:
+    - "ansible_facts['virtualization_type'] != 'lxc'"
 
 - name: "zram:config:create_dir"
   ansible.builtin.file:
     path: "/etc/systemd/zram-generator.conf.d"
     state: "directory"
     mode: "0755"
+  when:
+    - "ansible_facts['virtualization_type'] != 'lxc'"
 
 - name: "zram:configure"
   ansible.builtin.template:
     src: "00-ansible.conf.j2"
     dest: "/etc/systemd/zram-generator.conf.d/00-ansible.conf"
     mode: "0644"
+  when:
+    - "ansible_facts['virtualization_type'] != 'lxc'"
 
 - name: "zram:start"
   ansible.builtin.systemd:
@@ -21,3 +27,5 @@
     state: "started"
     daemon_reload: true
   loop: "{{ zram_devices | dict2items }}"
+  when:
+    - "ansible_facts['virtualization_type'] != 'lxc'"

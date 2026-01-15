@@ -4,6 +4,8 @@
     path: "{{ __sysctl_file | dirname }}"
     state: "directory"
     mode: "0755"
+  when:
+    - "ansible_facts['virtualization_type'] != 'lxc'"
 
 - name: "sysctl:configure"
   ansible.posix.sysctl:
@@ -13,3 +15,5 @@
     sysctl_file: "{{ __sysctl_file }}"
     sysctl_set: true
   loop: "{{ __sysctl_base_vars | community.general.lists_mergeby(sysctl_vars, 'name') }}"
+  when:
+    - "ansible_facts['virtualization_type'] != 'lxc'"

@@ -25,6 +25,26 @@
     mode: "0644"
   notify: "systemd:systemd|daemon-reexec"
 
+- name: "systemd:cron:install"
+  ansible.builtin.package:
+    name: "systemd-cron"
+  notify: "systemd:cron|restart"
+
+- name: "systemd:oomd:install"
+  ansible.builtin.package:
+    name: "systemd-oomd"
+  when:
+    - "ansible_facts['distribution'] == 'Debian'"
+    - "ansible_facts['virtualization_type'] != 'lxc'"
+  notify: "systemd:oomd|restart"
+
+- name: "systemd:resolved:install"
+  ansible.builtin.package:
+    name: "systemd-resolved"
+  when:
+    - "systemd_resolved_enabled"
+    - "ansible_facts['distribution'] == 'Debian'"
+
 - name: "systemd:resolved:config_dir:create"
   ansible.builtin.file:
     path: "/etc/systemd/resolved.conf.d"

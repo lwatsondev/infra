@@ -11,4 +11,17 @@
 - name: "systemd:resolved|restart"
   ansible.builtin.service:
     name: "systemd-resolved"
+    enabled: true
+    state: "restarted"
+
+- name: "systemd:cron|restart"
+  ansible.builtin.service:
+    name: "cron.target"
+    enabled: true
+    state: "restarted"
+
+- name: "systemd:oomd|restart"
+  ansible.builtin.service:
+    name: "systemd-oomd"
+    enabled: true
     state: "restarted"
