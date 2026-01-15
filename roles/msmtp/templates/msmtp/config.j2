@@ -14,7 +14,7 @@ host {{ msmtp_host }}
 port {{ msmtp_port }}
 from {{ msmtp_from_addr }}
 
-{% if msmtp_user is defined or msmtp_password is defined %}
+{% if msmtp_user | length > 0 and msmtp_password | length > 0 %}
 auth on
 user {{ msmtp_user }}
 password {{ msmtp_password }}

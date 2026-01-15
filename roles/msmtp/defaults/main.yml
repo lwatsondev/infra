@@ -1,11 +1,10 @@
 ---
-msmtp_config_file: "/root/.config/msmtp/config"
-msmtp_set_default: true
-# msmtp_from_addr: ""
-# msmtp_user: ""
-# msmtp_password: ""
-# msmtp_host: ""
+msmtp_account_name: "main"
 msmtp_port: 587
 msmtp_tls: true
 msmtp_starttls: true
-msmtp_account_name: "main"
+
+msmtp_host: ""
+msmtp_user: ""
+msmtp_password: ""
+msmtp_from_addr: ""

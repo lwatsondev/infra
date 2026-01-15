@@ -1,4 +1,8 @@
 ---
-# systemd_journald_system_max_use: 1G  # noqa: var-naming[no-role-prefix]
-# systemd_journald_retention_sec: 7d  # noqa: var-naming[no-role-prefix]
+systemd_journald_system_max_use: "1G"
+systemd_journald_retention_sec: "7d"
 systemd_resolved_enabled: true
+systemd_cron_enabled: true
+systemd_oomd_enabled: true
+systemd_resolved_dnssec: "allow-downgrade"
+systemd_resolved_dns_over_tls: "opportunistic"

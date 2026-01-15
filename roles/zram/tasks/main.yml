@@ -12,6 +12,7 @@
     mode: "0755"
   when:
     - "ansible_facts['virtualization_type'] != 'lxc'"
+    - "zram_devices | length > 0"
 
 - name: "zram:configure"
   ansible.builtin.template:
@@ -20,6 +21,7 @@
     mode: "0644"
   when:
     - "ansible_facts['virtualization_type'] != 'lxc'"
+    - "zram_devices | length > 0"
 
 - name: "zram:start"
   ansible.builtin.systemd:
@@ -29,3 +31,4 @@
   loop: "{{ zram_devices | dict2items }}"
   when:
     - "ansible_facts['virtualization_type'] != 'lxc'"
+    - "zram_devices | length > 0"

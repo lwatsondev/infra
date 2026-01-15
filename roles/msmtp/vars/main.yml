@@ -1,4 +1,5 @@
 ---
+__msmtp_config_file: "/root/.config/msmtp/config"
 __msmtp_system_packages:
   Gentoo:
     - "mail-mta/msmtp"

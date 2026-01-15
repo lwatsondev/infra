@@ -29,6 +29,8 @@
   ansible.builtin.package:
     name: "systemd-cron"
   notify: "systemd:cron|restart"
+  when:
+    - "systemd_cron_enabled"
 
 - name: "systemd:oomd:install"
   ansible.builtin.package:
@@ -36,6 +38,7 @@
   when:
     - "ansible_facts['distribution'] == 'Debian'"
     - "ansible_facts['virtualization_type'] != 'lxc'"
+    - "systemd_oomd_enabled"
   notify: "systemd:oomd|restart"
 
 - name: "systemd:resolved:install"
@@ -58,4 +61,15 @@
     dest: "/etc/systemd/resolved.conf.d/00-ansible.conf"
     mode: "0644"
   notify: "systemd:resolved|restart"
+  when: "systemd_resolved_enabled"
+
+- name: "systemd:resolved:link_resolv"
+  ansible.builtin.file:
+    src: "../run/systemd/resolve/stub-resolv.conf"
+    dest: "/etc/resolv.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+    state: "link"
+    force: true
   when: "systemd_resolved_enabled"

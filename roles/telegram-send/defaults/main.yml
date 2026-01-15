@@ -1,4 +1,4 @@
 ---
-# tgsend_bot_token: ""
-# tgsend_chat_id: ""
+tgsend_bot_token: ""
+tgsend_chat_id: ""
 tgsend_test_config: false

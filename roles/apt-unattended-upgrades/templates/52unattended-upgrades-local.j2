@@ -6,15 +6,15 @@ Unattended-Upgrade::Origins-Pattern {
     "origin=Debian,codename=${distro_codename},label=Debian";
     "origin=Debian,codename=${distro_codename},label=Debian-Security";
     "origin=Debian,codename=${distro_codename}-security,label=Debian-Security";
-{% for origin in apt_unattended_upgrades_origins|default([]) %}
+{% for origin in apt_unattended_upgrades_origins %}
     "{{ origin }}";
 {% endfor %}
 };
 
-{% if apt_unattended_upgrades_mail_to|default("") != "" %}
+{% if apt_unattended_upgrades_mail_to | length > 0 %}
 Unattended-Upgrade::Mail "{{ apt_unattended_upgrades_mail_to }}";
 {% endif %}
 
-{% if apt_unattended_upgrades_mail_sender|default("") != "" %}
+{% if apt_unattended_upgrades_mail_sender | length > 0 %}
 Unattended-Upgrade::Sender "Unattended-Upgrades <{{ apt_unattended_upgrades_mail_sender }}>";
 {% endif %}

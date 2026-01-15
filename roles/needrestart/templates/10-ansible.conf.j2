@@ -2,15 +2,15 @@
 # {{ ansible_managed }}
 #
 
-{% if needrestart_overrides|length > 0 %}
+{% if needrestart_overrides | length > 0 %}
 $nrconf{override_rc} = {
-    {% for match, value in needrestart_overrides|items %}
+    {% for match, value in needrestart_overrides | items %}
         qr({{ match }}) => {{ value }},
     {% endfor %}
 };
 {% endif %}
 
-{% if needrestart_blacklist|length > 0 %}
+{% if needrestart_blacklist | length > 0 %}
 $nrconf{blacklist_rc} = [
     {% for match in needrestart_blacklist %}
         qr({{ match }}),

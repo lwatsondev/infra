@@ -5,12 +5,12 @@
 
 - name: "msmtp:config_dir:create"
   ansible.builtin.file:
-    path: "{{ msmtp_config_file | dirname }}"
+    path: "{{ __msmtp_config_file | dirname }}"
     recurse: true
     state: "directory"
 
 - name: "msmtp:configure"
   ansible.builtin.template:
     src: "msmtp/config.j2"
-    dest: "{{ msmtp_config_file }}"
+    dest: "{{ __msmtp_config_file }}"
     mode: "0640"

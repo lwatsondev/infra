@@ -3,9 +3,5 @@
 #
 
 [Resolve]
-{% if systemd_resolved_dnssec|default(true) %}
-DNSSEC=allow-downgrade
-{% endif %}
-{% if systemd_resolved_dnsovertls|default(true) %}
-DNSOverTLS=opportunistic
-{% endif %}
+DNSSEC={{ systemd_resolved_dnssec }}
+DNSOverTLS={{ systemd_resolved_dns_over_tls }}

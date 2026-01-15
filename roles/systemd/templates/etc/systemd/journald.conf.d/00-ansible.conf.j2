@@ -4,11 +4,5 @@
 
 [Journal]
 Storage=persistent
-
-{% if systemd_journald_retention_sec is defined %}
 MaxRetentionSec={{ systemd_journald_retention_sec }}
-{% endif -%}
-
-{% if systemd_journald_system_max_use is defined %}
 SystemMaxUse={{ systemd_journald_system_max_use }}
-{% endif -%}

@@ -3,15 +3,9 @@
 # {{ ansible_managed }}
 #
 
-{% if zram_devices is defined -%}
-    {% for name, settings in zram_devices|dictsort -%}
-        [{{ name }}]
-        {% for key, value in settings|dictsort -%}
-            {{ key }} = {{ value }}
-        {% endfor -%}
+{% for name, settings in zram_devices|dictsort -%}
+    [{{ name }}]
+    {% for key, value in settings|dictsort -%}
+        {{ key }} = {{ value }}
     {% endfor -%}
-{% else -%}
-    [zram0]
-    zram-size = ram / 2
-    compression-algorithm = lzo-rle
-{% endif -%}
+{% endfor -%}
