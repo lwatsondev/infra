@@ -85,3 +85,12 @@ all:
         pve-zigbee2mqtt:
         pve-frigate:
         pve-vaultwarden:
+    docker:
+      hosts:
+        luna:
+        serenity:
+        nova:
+        uptime-kuma:
+        pve-vaultwarden:
+        pve-zigbee2mqtt:
+        pve-frigate:

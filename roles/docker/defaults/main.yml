@@ -1,0 +1,9 @@
+---
+docker_restart_on_config_change: false
+docker_daemon_config:
+  log-driver: "journald"
+  storage-driver: "overlay2"
+  log-opts:
+    tag: "{{ '{{.Name}}' }}"
+  features:
+    buildkit: true

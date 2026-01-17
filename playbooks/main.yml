@@ -10,6 +10,11 @@
   roles:
     - "sysctl"
 
+- name: "Apply docker daemon configuration"
+  hosts: "docker"
+  roles:
+    - "docker"
+
 - name: "Set up zram"
   hosts: "all,!lxc"
   roles:

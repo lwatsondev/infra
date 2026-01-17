@@ -1,0 +1,13 @@
+---
+- name: "docker:config_dir:create"
+  ansible.builtin.file:
+    path: "/etc/docker"
+    state: "directory"
+    mode: "0755"
+
+- name: "docker:configure"
+  ansible.builtin.template:
+    src: "daemon.json.j2"
+    dest: "/etc/docker/daemon.json"
+    mode: "0644"
+  notify: "docker:restart"
