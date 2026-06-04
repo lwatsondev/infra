@@ -1,7 +1,7 @@
 ---
 - name: "zram:dependencies:install"
   ansible.builtin.package:
-    name: "{{ __zram_system_packages[ansible_facts['distribution']] }}"
+    name: "{{ __zram_system_packages[ansible_facts['pkg_mgr']] }}"
   when:
     - "ansible_facts['virtualization_type'] != 'lxc'"
 
