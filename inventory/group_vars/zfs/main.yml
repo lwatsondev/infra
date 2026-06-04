@@ -2,3 +2,12 @@
 zfs_zed_email_addr: "none"
 zfs_zed_email_prog: "/usr/local/sbin/uvx telegram-send"
 zfs_zed_email_opts: "-g --pre --stdin --disable-web-page-preview --silent"
+
+zfs_scrub_schedule: "weekly"
+zfs_trim_schedule: "weekly"
+
+zfs_zed_extra_options:
+  ZED_GATUS_BASE_URL: "{{ zfs_zed_gatus_base_url }}"
+  ZED_GATUS_ENDPOINT_KEY: "{{ zfs_zed_gatus_endpoint_key }}"
+  ZED_GATUS_AUTH_TOKEN: "{{ zfs_zed_gatus_auth_token }}"
+  ZED_UPTIME_KUMA_PUSH_URL: "{{ zfs_zed_uptime_kuma_base_url }}/{{ zfs_zed_uptime_kuma_push_token }}"

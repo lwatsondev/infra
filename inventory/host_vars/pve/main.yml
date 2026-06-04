@@ -1,3 +1,8 @@
 ---
 systemd_resolved_enabled: false
-zfs_install_timers: false
+
+zfs_scrub_pools:
+  - "rpool"
+
+zfs_trim_pools:
+  - "rpool"

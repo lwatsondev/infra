@@ -1,11 +1,7 @@
 ---
 zfs_scrub_pools:
-  - "luna"
-  - "luna-data"
+  - "rpool"
+  - "dpool"
 
 zfs_trim_pools:
-  - "luna"
-
-# First saturday and sunday of the month.
-zfs_scrub_schedule: "Sat *-*-1..7 03:00"
-zfs_trim_schedule: "Sun *-*-1..7 03:00"
+  - "rpool"

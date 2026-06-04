@@ -8,8 +8,8 @@ all:
     nova:
       ansible_host: "nova.hedgehog-skate.ts.net"
       ansible_user: "lwatson"
-    uptime-kuma:
-      ansible_host: "uptime-kuma.hedgehog-skate.ts.net"
+    monitor:
+      ansible_host: "monitor.hedgehog-skate.ts.net"
     pve:
       ansible_host: "pve.internal.home.lwatson.dev"
     pve-router:
@@ -39,14 +39,14 @@ all:
         luna:
         pve:
         do-ams3-01:
-        uptime-kuma:
+        monitor:
     vms:
       hosts:
         pve-frigate:
         pve-vaultwarden:
         pve-zigbee2mqtt:
         do-ams3-01:
-        uptime-kuma:
+        monitor:
     zfs:
       hosts:
         luna:
@@ -69,7 +69,7 @@ all:
         pve-zigbee2mqtt:
         pve-frigate:
         do-ams3-01:
-        uptime-kuma:
+        monitor:
     lxc:
       hosts:
         pve-router:
@@ -90,7 +90,7 @@ all:
         luna:
         serenity:
         nova:
-        uptime-kuma:
+        monitor:
         pve-vaultwarden:
         pve-zigbee2mqtt:
         pve-frigate:

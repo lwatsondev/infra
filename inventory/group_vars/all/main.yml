@@ -48,3 +48,14 @@ zram_devices:
   zram0:
     zram-size: "ram / 2"
     compression-algorithm: "zstd"
+
+docker_daemon_config:
+  log-driver: "journald"
+  storage-driver: "overlay2"
+  log-opts:
+    tag: "{{ '{{.Name}}' }}"
+  features:
+    buildkit: true
+  iptables: true
+  ip6tables: true
+  experimental: true

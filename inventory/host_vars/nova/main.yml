@@ -1,6 +1,6 @@
 ---
 zfs_scrub_pools:
-  - "nova"
+  - "rpool"
 
 zfs_trim_pools:
-  - "nova"
+  - "rpool"

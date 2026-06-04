@@ -1,12 +1,8 @@
 ---
-ansible_user: "rev"
+ansible_user: "lwatson"
 
 zfs_scrub_pools:
-  - "serenity"
+  - "rpool"
 
 zfs_trim_pools:
-  - "serenity"
-
-# First saturday and sunday of the month.
-zfs_scrub_schedule: "Sat *-*-1..7 09:00"
-zfs_trim_schedule: "Sun *-*-1..7 09:00"
+  - "rpool"
