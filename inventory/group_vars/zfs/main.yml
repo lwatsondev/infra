@@ -1,8 +1,5 @@
 ---
-zfs_monitoring_telegram_bot_token: "{{ telegram_bot_token }}"
 zfs_monitoring_telegram_chat_id: "{{ telegram_chat_id }}"
-smartmontools_telegram_bot_token: "{{ telegram_bot_token }}"
-smartmontools_telegram_chat_id: "{{ telegram_chat_id }}"
 
 zfs_monitoring_scrub_schedule: "weekly"
 zfs_monitoring_trim_schedule: "weekly"

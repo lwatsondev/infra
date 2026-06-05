@@ -1,4 +1,7 @@
 ---
+tgsend_bot_token: "{{ telegram_bot_token }}"
+tgsend_chat_id: "{{ telegram_chat_id }}"
+
 msmtp_host: "email-smtp.eu-north-1.amazonaws.com"
 
 apt_unattended_upgrades_origins:

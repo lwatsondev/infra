@@ -57,3 +57,5 @@ docker_daemon_config:
   iptables: true
   ip6tables: true
   experimental: true
+
+smartmontools_telegram_chat_id: "{{ telegram_chat_id }}"
