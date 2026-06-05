@@ -1,9 +1,6 @@
 ---
 systemd_resolved_enabled: false
 
-zfs_monitoring_uptime_kuma_push_url: "{{ uptime_kuma_zfs_push_url }}"
-smartmontools_uptime_kuma_push_url: "{{ uptime_kuma_smartd_push_url }}"
-
 zfs_monitoring_scrub_pools:
   - "rpool"
 

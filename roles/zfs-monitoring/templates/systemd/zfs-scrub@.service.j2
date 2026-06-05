@@ -7,7 +7,7 @@ Description=zpool scrub on %i
 
 [Service]
 KillSignal=SIGINT
-ExecStart=/sbin/zpool scrub -w %i
+ExecStart=/usr/bin/zpool scrub -w %i
 
 [Install]
 WantedBy=multi-user.target

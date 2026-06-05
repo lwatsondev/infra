@@ -1,0 +1,3 @@
+---
+# Short self-test daily at 02:00, long self-test Sundays at 02:00
+smartmontools_schedule: "S/../.././02|L/../../7/02"
