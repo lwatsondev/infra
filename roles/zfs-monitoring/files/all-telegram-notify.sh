@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 #
 # Send a Telegram message on various ZFS events.
@@ -16,6 +16,8 @@
 [ -n "${ZEVENT_POOL}" ] || exit 9
 [ -n "${ZEVENT_SUBCLASS}" ] || exit 9
 
+zed_check_cmd "${ZPOOL}" "curl" "jq" || exit 9
+
 case "${ZEVENT_SUBCLASS}" in
     io.failure | data.corruption | vdev.remove | vdev.fault | vdev.degraded)
         emoji="🔴"
@@ -30,12 +32,15 @@ case "${ZEVENT_SUBCLASS}" in
         emoji="🔴"
         severity="CRITICAL"
         ;;
-    *) exit 0 ;;
+    *) exit 3 ;;
 esac
 
-zpool_status="$("${ZPOOL}" status "${ZEVENT_POOL}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')"
-message="${emoji} <b>ZFS ${severity} — $(hostname -s)</b>
+zed_rate_limit "telegram-${ZEVENT_POOL}-${ZEVENT_SUBCLASS}" || exit 3
 
+zpool_status="$("${ZPOOL}" status "${ZEVENT_POOL}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')"
+message="${emoji} <b>ZFS ${severity}</b>
+
+<b>Host:</b> $(hostname -s)
 <b>Event:</b> ${ZEVENT_SUBCLASS}
 <b>EID:</b> ${ZEVENT_EID}
 <b>Time:</b> ${ZEVENT_TIME_STRING}
@@ -54,7 +59,7 @@ response=$(curl \
     "https://api.telegram.org/bot${ZED_TELEGRAM_BOT_TOKEN}/sendMessage")
 
 if echo "${response}" | jq -e '.ok' > /dev/null 2>&1; then
-    zed_log_msg "Telegram alert sent for ${ZEVENT_SUBCLASS} on ${ZEVENT_POOL:-unknown}"
+    zed_log_msg "Telegram alert sent for ${ZEVENT_SUBCLASS} on ${ZEVENT_POOL}"
 else
     zed_log_err "Telegram API error: $(echo "${response}" | jq -r '.description // "unknown error"')"
     exit 1

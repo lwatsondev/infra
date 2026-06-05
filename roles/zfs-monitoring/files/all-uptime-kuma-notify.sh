@@ -41,5 +41,9 @@ curl --silent --output /dev/null --show-error --fail \
     "${ZED_UPTIME_KUMA_PUSH_URL}"
 
 rc=$?
-[ "${rc}" -ne 0 ] && zed_log_err "Uptime Kuma push failed (curl exit=${rc})"
+if [ "${rc}" -eq 0 ]; then
+    zed_log_msg "Uptime Kuma push sent (status=${push_status}) for ${ZEVENT_SUBCLASS} on ${ZEVENT_POOL}"
+else
+    zed_log_err "Uptime Kuma push failed (curl exit=${rc})"
+fi
 exit "${rc}"

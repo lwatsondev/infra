@@ -46,5 +46,9 @@ curl --silent --output /dev/null --show-error --fail \
     "${gatus_url}"
 
 rc=$?
-[ "${rc}" -ne 0 ] && zed_log_err "Gatus push failed (curl exit=${rc})"
+if [ "${rc}" -eq 0 ]; then
+    zed_log_msg "Gatus push sent (success=${push_success}) for ${ZEVENT_SUBCLASS} on ${ZEVENT_POOL}"
+else
+    zed_log_err "Gatus push failed (curl exit=${rc})"
+fi
 exit "${rc}"
