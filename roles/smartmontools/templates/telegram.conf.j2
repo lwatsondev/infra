@@ -2,5 +2,10 @@
 # {{ ansible_managed }}
 #
 
+{% if smartmontools_telegram_bot_token is defined %}
 SMARTD_TELEGRAM_BOT_TOKEN="{{ smartmontools_telegram_bot_token }}"
 SMARTD_TELEGRAM_CHAT_ID="{{ smartmontools_telegram_chat_id }}"
+{% else %}
+# SMARTD_TELEGRAM_BOT_TOKEN=""
+# SMARTD_TELEGRAM_CHAT_ID=""
+{% endif %}
