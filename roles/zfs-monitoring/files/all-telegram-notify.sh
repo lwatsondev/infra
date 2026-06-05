@@ -6,6 +6,7 @@
 
 # shellcheck disable=SC1091
 [ -f "${ZED_ZEDLET_DIR}/zed.rc" ] && . "${ZED_ZEDLET_DIR}/zed.rc"
+
 # shellcheck disable=SC1091
 . "${ZED_ZEDLET_DIR}/zed-functions.sh"
 
