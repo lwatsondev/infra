@@ -1,4 +1,8 @@
 ---
+- name: "docker"
+  ansible.builtin.include_tasks: "install.yml"
+  when: "docker_install"
+
 - name: "docker:config_dir:create"
   ansible.builtin.file:
     path: "/etc/docker"

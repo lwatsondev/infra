@@ -1,0 +1,22 @@
+---
+__docker_conflicting_packages:
+  Debian:
+    - "docker.io"
+    - "docker-doc"
+    - "docker-compose"
+    - "podman-docker"
+    - "containerd"
+    - "runc"
+
+__docker_packages:
+  Debian:
+    - "docker-ce"
+    - "docker-buildx-plugin"
+    - "docker-compose-plugin"
+  Gentoo:
+    - "app-containers/docker"
+
+__docker_arch_map:
+  x86_64: "amd64"
+  aarch64: "arm64"
+  armv7l: "armhf"

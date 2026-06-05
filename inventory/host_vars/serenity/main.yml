@@ -1,5 +1,6 @@
 ---
 ansible_user: "lwatson"
+docker_service_enable: false
 
 zfs_monitoring_scrub_pools:
   - "rpool"
