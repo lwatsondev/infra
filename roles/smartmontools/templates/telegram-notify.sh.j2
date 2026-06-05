@@ -56,9 +56,9 @@ response=$(curl \
     --data-urlencode "parse_mode=HTML" \
     "https://api.telegram.org/bot${SMARTD_TELEGRAM_BOT_TOKEN}/sendMessage")
 
-if echo "${response}" | jq -e '.ok' > /dev/null 2>&1; then
+if printf '%s\n' "${response}" | jq -e '.ok' > /dev/null 2>&1; then
     logger -t smartd-telegram "Telegram alert sent: ${SMARTD_FAILTYPE} on ${display_device}"
 else
-    logger -t smartd-telegram "Telegram API error: $(echo "${response}" | jq -r '.description // "unknown error"')"
+    logger -t smartd-telegram "Telegram API error: $(printf '%s\n' "${response}" | jq -r '.description // "unknown error"')"
     exit 1
 fi

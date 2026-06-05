@@ -10,13 +10,29 @@ config_file="/etc/smartmontools/uptime-kuma.conf"
 [ -f "${config_file}" ] && . "${config_file}"
 
 [ -n "${SMARTD_UPTIME_KUMA_PUSH_URL}" ] || exit 0
+[ -n "${SMARTD_FAILTYPE}" ] || exit 1
+
+case "${SMARTD_FAILTYPE}" in
+    Health | Usage | SelfTest | CurrentPendingSector | OfflineUncorrectableSector | FailedHealthCheck | FailedOpenDevice | \
+    ErrorCount | Temperature | FailedReadSmartData | FailedReadSmartErrorLog | FailedReadSmartSelfTestLog)
+        push_status="down"
+        ;;
+    *)
+        push_status="up"
+        ;;
+esac
 
 if curl \
     --silent \
+    --output /dev/null \
+    --show-error \
+    --fail \
     --max-time 5 \
     --retry 3 \
     --retry-delay 3 \
-    "${SMARTD_UPTIME_KUMA_PUSH_URL}" > /dev/null; then
+    --url-query "status=${push_status}" \
+    --url-query "msg=${SMARTD_FAILTYPE}" \
+    "${SMARTD_UPTIME_KUMA_PUSH_URL}"; then
     logger -t smartd-uptime-kuma "Push sent for ${SMARTD_FAILTYPE:-unknown} on ${SMARTD_DEVICE:-unknown}"
 else
     logger -t smartd-uptime-kuma "Push failed for ${SMARTD_FAILTYPE:-unknown} on ${SMARTD_DEVICE:-unknown}"

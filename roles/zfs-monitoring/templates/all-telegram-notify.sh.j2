@@ -41,15 +41,21 @@ esac
 
 zed_rate_limit "telegram-${ZEVENT_POOL}-${ZEVENT_SUBCLASS}" || exit 3
 
-display_device=$(find /dev/disk/by-id/ -maxdepth 1 ! -name '*-part*' -type l | sort | while IFS= read -r _link; do [ "$(readlink -f "$_link")" = "$(readlink -f "${ZEVENT_VDEV_PATH:-/dev/null}")" ] && { basename "$_link"; break; }; done)
-display_device="${display_device:-$(basename "${ZEVENT_VDEV_PATH:-unknown}")}"
+if [ -n "${ZEVENT_VDEV_PATH}" ]; then
+    display_device=$(find /dev/disk/by-id/ -maxdepth 1 ! -name '*-part*' -type l | sort | while IFS= read -r _link; do [ "$(readlink -f "$_link")" = "$(readlink -f "${ZEVENT_VDEV_PATH}")" ] && { basename "$_link"; break; }; done)
+    display_device="${display_device:-$(basename "${ZEVENT_VDEV_PATH}")}"
+    device_line="<b>Device:</b> ${display_device}
+"
+else
+    device_line=""
+fi
 
 zpool_status="$("${ZPOOL}" status "${ZEVENT_POOL}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')"
 message="${emoji} <b>ZFS ${severity}</b>
 
 <b>Host:</b> $(hostname -s)
-<b>Device:</b> ${display_device}
-<b>Event:</b> ${ZEVENT_SUBCLASS}
+<b>Pool:</b> ${ZEVENT_POOL}
+${device_line}<b>Event:</b> ${ZEVENT_SUBCLASS}
 <b>Time:</b> ${ZEVENT_TIME_STRING}
 
 <pre>${zpool_status}</pre>"
@@ -65,9 +71,9 @@ response=$(curl \
     --data-urlencode "parse_mode=HTML" \
     "https://api.telegram.org/bot${ZED_TELEGRAM_BOT_TOKEN}/sendMessage")
 
-if echo "${response}" | jq -e '.ok' > /dev/null 2>&1; then
+if printf '%s\n' "${response}" | jq -e '.ok' > /dev/null 2>&1; then
     zed_log_msg "Telegram alert sent for ${ZEVENT_SUBCLASS} on ${ZEVENT_POOL}"
 else
-    zed_log_err "Telegram API error: $(echo "${response}" | jq -r '.description // "unknown error"')"
+    zed_log_err "Telegram API error: $(printf '%s\n' "${response}" | jq -r '.description // "unknown error"')"
     exit 1
 fi

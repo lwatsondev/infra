@@ -42,6 +42,7 @@ esac
 if curl --silent --output /dev/null --show-error --fail \
     --max-time 5 --retry 3 --retry-delay 3 \
     --url-query "status=${push_status}" \
+    --url-query "msg=${ZEVENT_SUBCLASS}" \
     "${ZED_UPTIME_KUMA_PUSH_URL}"; then
     zed_log_msg "Uptime Kuma push sent (status=${push_status}) for ${ZEVENT_SUBCLASS} on ${ZEVENT_POOL}"
 else
