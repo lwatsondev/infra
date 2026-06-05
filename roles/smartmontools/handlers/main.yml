@@ -1,0 +1,5 @@
+---
+- name: "smartd:restart"
+  ansible.builtin.service:
+    name: "smartd"
+    state: "restarted"

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+#
+# {{ ansible_managed }}
+#
+
+config_file="/etc/smartmontools/uptime-kuma.conf"
+
+# shellcheck disable=SC1090
+[ -f "${config_file}" ] && . "${config_file}"
+
+[ -n "${SMARTD_UPTIME_KUMA_PUSH_URL}" ] || exit 0
+
+if curl \
+    --silent \
+    --max-time 5 \
+    --retry 3 \
+    --retry-delay 3 \
+    "${SMARTD_UPTIME_KUMA_PUSH_URL}" > /dev/null; then
+    logger -t smartd-uptime-kuma "Push sent for ${SMARTD_FAILTYPE:-unknown} on ${SMARTD_DEVICE:-unknown}"
+else
+    logger -t smartd-uptime-kuma "Push failed for ${SMARTD_FAILTYPE:-unknown} on ${SMARTD_DEVICE:-unknown}"
+    exit 1
+fi

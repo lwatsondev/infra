@@ -1,0 +1,130 @@
+---
+- name: "smartmontools:install:packages"
+  ansible.builtin.package:
+    name: "{{ __smartmontools_packages[ansible_facts['pkg_mgr']] }}"
+  when: "ansible_facts['pkg_mgr'] in __smartmontools_packages"
+
+- name: "smartmontools:config:directories"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  loop:
+    - "/etc/smartmontools"
+    - "/etc/smartmontools/run.d"
+    - "/usr/local/libexec/smartmontools"
+
+- name: "smartmontools:runner:deploy"
+  ansible.builtin.template:
+    src: "smartd-runner.j2"
+    dest: "/usr/local/libexec/smartmontools/smartd-runner"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: "ansible_facts['pkg_mgr'] != 'apt'"
+  notify: "smartd:restart"
+
+- name: "smartmontools:config:symlink"
+  ansible.builtin.file:
+    src: "/etc/smartmontools/smartd.conf"
+    dest: "/etc/smartd.conf"
+    state: "link"
+    force: true
+  when: "ansible_facts['pkg_mgr'] != 'apt'"
+  notify: "smartd:restart"
+
+- name: "smartmontools:configure:smartd.conf"
+  ansible.builtin.template:
+    src: "smartd.conf.j2"
+    dest: "/etc/smartmontools/smartd.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "smartd:restart"
+
+- name: "smartmontools:configure:telegram.conf"
+  ansible.builtin.template:
+    src: "telegram.conf.j2"
+    dest: "/etc/smartmontools/telegram.conf"
+    owner: "root"
+    group: "root"
+    mode: "0640"
+  when: "smartmontools_telegram_bot_token is defined"
+  notify: "smartd:restart"
+
+- name: "smartmontools:configure:telegram-notify:script"
+  ansible.builtin.template:
+    src: "telegram-notify.sh.j2"
+    dest: "/usr/local/libexec/smartmontools/telegram-notify.sh"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: "smartmontools_telegram_bot_token is defined"
+  notify: "smartd:restart"
+
+- name: "smartmontools:configure:telegram-notify:link"
+  ansible.builtin.file:
+    src: "/usr/local/libexec/smartmontools/telegram-notify.sh"
+    dest: "/etc/smartmontools/run.d/telegram-notify"
+    state: "link"
+  when: "smartmontools_telegram_bot_token is defined"
+  notify: "smartd:restart"
+
+- name: "smartmontools:configure:telegram:absent"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "absent"
+  when: "smartmontools_telegram_bot_token is not defined"
+  loop:
+    - "/etc/smartmontools/telegram.conf"
+    - "/etc/smartmontools/run.d/telegram-notify"
+    - "/usr/local/libexec/smartmontools/telegram-notify.sh"
+  notify: "smartd:restart"
+
+- name: "smartmontools:configure:uptime-kuma.conf"
+  ansible.builtin.template:
+    src: "uptime-kuma.conf.j2"
+    dest: "/etc/smartmontools/uptime-kuma.conf"
+    owner: "root"
+    group: "root"
+    mode: "0640"
+  when: "smartmontools_uptime_kuma_push_url is defined"
+  notify: "smartd:restart"
+
+- name: "smartmontools:configure:uptime-kuma:script"
+  ansible.builtin.template:
+    src: "uptime-kuma-notify.sh.j2"
+    dest: "/usr/local/libexec/smartmontools/uptime-kuma-notify.sh"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: "smartmontools_uptime_kuma_push_url is defined"
+  notify: "smartd:restart"
+
+- name: "smartmontools:configure:uptime-kuma:link"
+  ansible.builtin.file:
+    src: "/usr/local/libexec/smartmontools/uptime-kuma-notify.sh"
+    dest: "/etc/smartmontools/run.d/uptime-kuma-notify"
+    state: "link"
+  when: "smartmontools_uptime_kuma_push_url is defined"
+  notify: "smartd:restart"
+
+- name: "smartmontools:configure:uptime-kuma:absent"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: "absent"
+  when: "smartmontools_uptime_kuma_push_url is not defined"
+  loop:
+    - "/etc/smartmontools/uptime-kuma.conf"
+    - "/etc/smartmontools/run.d/uptime-kuma-notify"
+    - "/usr/local/libexec/smartmontools/uptime-kuma-notify.sh"
+  notify: "smartd:restart"
+
+- name: "smartmontools:service:enable"
+  ansible.builtin.systemd:
+    name: "smartd"
+    state: "started"
+    enabled: true
+    daemon_reload: true

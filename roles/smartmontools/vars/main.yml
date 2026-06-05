@@ -1,0 +1,15 @@
+---
+__smartmontools_packages:
+  apt:
+    - "smartmontools"
+    - "curl"
+    - "jq"
+  portage:
+    - "sys-apps/smartmontools"
+    - "sys-apps/debianutils"
+    - "net-misc/curl"
+    - "app-misc/jq"
+
+__smartmontools_runner_path:
+  apt: "/usr/share/smartmontools/smartd-runner"
+  portage: "/usr/local/libexec/smartmontools/smartd-runner"

@@ -1,0 +1,5 @@
+#
+# {{ ansible_managed }}
+#
+
+DEVICESCAN -a -o on -S on -n standby,q -s ({{ smartmontools_schedule }}) -m <nomailer> -M exec {{ __smartmontools_runner_path[ansible_facts['pkg_mgr']] }}

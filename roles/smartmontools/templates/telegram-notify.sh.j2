@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+#
+# {{ ansible_managed }}
+#
+
+config_file="/etc/smartmontools/telegram.conf"
+
+# shellcheck disable=SC1090
+[ -f "${config_file}" ] && . "${config_file}"
+
+[ -n "${SMARTD_TELEGRAM_BOT_TOKEN}" ] || exit 0
+[ -n "${SMARTD_TELEGRAM_CHAT_ID}" ] || exit 0
+
+[ -n "${SMARTD_DEVICE}" ] || exit 1
+[ -n "${SMARTD_FAILTYPE}" ] || exit 1
+
+case "${SMARTD_FAILTYPE}" in
+    Health | Usage | SelfTest | CurrentPendingSector | OfflineUncorrectableSector | FailedHealthCheck | FailedOpenDevice)
+        emoji="🔴"
+        severity="CRITICAL"
+        ;;
+    ErrorCount | Temperature | FailedReadSmartData | FailedReadSmartErrorLog | FailedReadSmartSelfTestLog)
+        emoji="⚠️"
+        severity="WARNING"
+        ;;
+    EmailTest)
+        emoji="ℹ️"
+        severity="TEST"
+        ;;
+    *)
+        exit 0
+        ;;
+esac
+
+device_id=$(find /dev/disk/by-id/ -maxdepth 1 -not -name '*-part*' -type l | while read -r link; do
+    [ "$(readlink -f "${link}")" = "$(readlink -f "${SMARTD_DEVICE}")" ] && basename "${link}" && break
+done)
+[ -n "${device_id}" ] && display_device="${device_id}" || display_device="${SMARTD_DEVICE}"
+
+message="${emoji} <b>S.M.A.R.T. ${severity}</b>
+
+<b>Host:</b> $(hostname -s)
+<b>Device:</b> ${display_device}
+<b>Failure type:</b> ${SMARTD_FAILTYPE}
+<b>Summary:</b> ${SMARTD_MESSAGE}
+
+<pre>$(echo "${SMARTD_FULLMESSAGE}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')</pre>"
+
+response=$(curl \
+    --silent \
+    --max-time 15 \
+    --retry 3 \
+    --retry-delay 5 \
+    --request POST \
+    --data-urlencode "chat_id=${SMARTD_TELEGRAM_CHAT_ID}" \
+    --data-urlencode "text=${message}" \
+    --data-urlencode "parse_mode=HTML" \
+    "https://api.telegram.org/bot${SMARTD_TELEGRAM_BOT_TOKEN}/sendMessage")
+
+if echo "${response}" | jq -e '.ok' > /dev/null 2>&1; then
+    logger -t smartd-telegram "Telegram alert sent: ${SMARTD_FAILTYPE} on ${SMARTD_DEVICE}"
+else
+    logger -t smartd-telegram "Telegram API error: $(echo "${response}" | jq -r '.description // "unknown error"')"
+    exit 1
+fi

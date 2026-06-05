@@ -1,0 +1,5 @@
+---
+# Short self-test daily at noon, long self-test Sundays at noon
+smartmontools_schedule: "S/../.././12|L/../../7/12"
+
+# smartmontools_uptime_kuma_push_url: ""
