@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 #
 # {{ ansible_managed }}
@@ -33,19 +33,17 @@ case "${SMARTD_FAILTYPE}" in
         ;;
 esac
 
-device_id=$(find /dev/disk/by-id/ -maxdepth 1 -not -name '*-part*' -type l | while read -r link; do
-    [ "$(readlink -f "${link}")" = "$(readlink -f "${SMARTD_DEVICE}")" ] && basename "${link}" && break
-done)
-[ -n "${device_id}" ] && display_device="${device_id}" || display_device="${SMARTD_DEVICE}"
+display_device=$(find /dev/disk/by-id/ -maxdepth 1 ! -name '*-part*' -type l | sort | while IFS= read -r _link; do [ "$(readlink -f "$_link")" = "$(readlink -f "${SMARTD_DEVICE}")" ] && { basename "$_link"; break; }; done)
+display_device="${display_device:-$(basename "${SMARTD_DEVICE}")}"
 
 message="${emoji} <b>S.M.A.R.T. ${severity}</b>
 
 <b>Host:</b> $(hostname -s)
 <b>Device:</b> ${display_device}
-<b>Failure type:</b> ${SMARTD_FAILTYPE}
+<b>Failure:</b> ${SMARTD_FAILTYPE}
 <b>Summary:</b> ${SMARTD_MESSAGE}
 
-<pre>$(echo "${SMARTD_FULLMESSAGE}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')</pre>"
+<pre>$(smartctl -A "${SMARTD_DEVICE}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')</pre>"
 
 response=$(curl \
     --silent \
@@ -59,7 +57,7 @@ response=$(curl \
     "https://api.telegram.org/bot${SMARTD_TELEGRAM_BOT_TOKEN}/sendMessage")
 
 if echo "${response}" | jq -e '.ok' > /dev/null 2>&1; then
-    logger -t smartd-telegram "Telegram alert sent: ${SMARTD_FAILTYPE} on ${SMARTD_DEVICE}"
+    logger -t smartd-telegram "Telegram alert sent: ${SMARTD_FAILTYPE} on ${display_device}"
 else
     logger -t smartd-telegram "Telegram API error: $(echo "${response}" | jq -r '.description // "unknown error"')"
     exit 1

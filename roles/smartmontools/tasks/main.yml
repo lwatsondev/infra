@@ -32,7 +32,6 @@
     dest: "/etc/smartd.conf"
     state: "link"
     force: true
-  when: "ansible_facts['pkg_mgr'] != 'apt'"
   notify: "smartd:restart"
 
 - name: "smartmontools:configure:smartd.conf"

@@ -35,16 +35,15 @@
   roles:
     - "msmtp"
 
-- name: "Set up SMART disk monitoring"
+- name: "Set up S.M.A.R.T. disk monitoring"
   hosts: "all,!lxc,!vms,!nova"
   roles:
     - "smartmontools"
 
-- name: "Set up notification tools"
-  hosts: "debian"
+- name: "Set up uv for zfs-autobackup"
+  hosts: "zfs"
   roles:
     - "uv"
-    - "telegram-send"
 
 - name: "Set up ZFS monitoring"
   hosts: "zfs"

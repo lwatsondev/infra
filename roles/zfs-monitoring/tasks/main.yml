@@ -5,14 +5,14 @@
   when: "ansible_facts['pkg_mgr'] in __zfs_monitoring_packages"
 
 - name: "zfs-monitoring:install:scripts"
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: "{{ item }}"
-    dest: "/etc/zfs/zed.d/{{ item | basename }}"
+    dest: "/etc/zfs/zed.d/{{ item | basename | splitext | first }}"
     owner: "root"
     group: "root"
     mode: "0755"
   with_fileglob:
-    - "*.sh"
+    - "{{ role_path }}/templates/*.sh.j2"
   notify: "zfs-zed:restart"
 
 - name: "zfs-monitoring:configure:zed.rc"

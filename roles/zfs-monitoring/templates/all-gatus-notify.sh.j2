@@ -1,6 +1,10 @@
 #!/bin/sh
 
 #
+# {{ ansible_managed }}
+#
+
+#
 # Ping a Gatus external endpoint on various ZFS events.
 #
 
@@ -38,17 +42,14 @@ case "${ZEVENT_SUBCLASS}" in
 esac
 
 gatus_url="${ZED_GATUS_BASE_URL%/}/api/v1/endpoints/${ZED_GATUS_ENDPOINT_KEY}/external"
-curl --silent --output /dev/null --show-error --fail \
+if curl --silent --output /dev/null --show-error --fail \
     --max-time 5 --retry 3 --retry-delay 3 \
     --request POST \
     --header "Authorization: Bearer ${ZED_GATUS_AUTH_TOKEN}" \
     --url-query "success=${push_success}" \
-    "${gatus_url}"
-
-rc=$?
-if [ "${rc}" -eq 0 ]; then
+    "${gatus_url}"; then
     zed_log_msg "Gatus push sent (success=${push_success}) for ${ZEVENT_SUBCLASS} on ${ZEVENT_POOL}"
 else
-    zed_log_err "Gatus push failed (curl exit=${rc})"
+    zed_log_err "Gatus push failed for ${ZEVENT_SUBCLASS} on ${ZEVENT_POOL}"
+    exit 1
 fi
-exit "${rc}"

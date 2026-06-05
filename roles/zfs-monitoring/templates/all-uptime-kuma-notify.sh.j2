@@ -1,6 +1,10 @@
 #!/bin/sh
 
 #
+# {{ ansible_managed }}
+#
+
+#
 # Ping an Uptime Kuma push monitor on various ZFS events.
 #
 
@@ -35,15 +39,12 @@ case "${ZEVENT_SUBCLASS}" in
         ;;
 esac
 
-curl --silent --output /dev/null --show-error --fail \
+if curl --silent --output /dev/null --show-error --fail \
     --max-time 5 --retry 3 --retry-delay 3 \
     --url-query "status=${push_status}" \
-    "${ZED_UPTIME_KUMA_PUSH_URL}"
-
-rc=$?
-if [ "${rc}" -eq 0 ]; then
+    "${ZED_UPTIME_KUMA_PUSH_URL}"; then
     zed_log_msg "Uptime Kuma push sent (status=${push_status}) for ${ZEVENT_SUBCLASS} on ${ZEVENT_POOL}"
 else
-    zed_log_err "Uptime Kuma push failed (curl exit=${rc})"
+    zed_log_err "Uptime Kuma push failed for ${ZEVENT_SUBCLASS} on ${ZEVENT_POOL}"
+    exit 1
 fi
-exit "${rc}"

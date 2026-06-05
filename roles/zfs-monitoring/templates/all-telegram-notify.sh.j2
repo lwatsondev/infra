@@ -1,6 +1,10 @@
 #!/bin/sh
 
 #
+# {{ ansible_managed }}
+#
+
+#
 # Send a Telegram message on various ZFS events.
 #
 
@@ -19,11 +23,11 @@
 zed_check_cmd "${ZPOOL}" "curl" "jq" || exit 9
 
 case "${ZEVENT_SUBCLASS}" in
-    io.failure | data.corruption | vdev.remove | vdev.fault | vdev.degraded)
+    io_failure | data | vdev_remove | vdev_fault | vdev_degraded)
         emoji="🔴"
         severity="CRITICAL"
         ;;
-    checksum | scrub.abort)
+    checksum | scrub_abort)
         emoji="⚠️"
         severity="WARNING"
         ;;
@@ -37,12 +41,15 @@ esac
 
 zed_rate_limit "telegram-${ZEVENT_POOL}-${ZEVENT_SUBCLASS}" || exit 3
 
+display_device=$(find /dev/disk/by-id/ -maxdepth 1 ! -name '*-part*' -type l | sort | while IFS= read -r _link; do [ "$(readlink -f "$_link")" = "$(readlink -f "${ZEVENT_VDEV_PATH:-/dev/null}")" ] && { basename "$_link"; break; }; done)
+display_device="${display_device:-$(basename "${ZEVENT_VDEV_PATH:-unknown}")}"
+
 zpool_status="$("${ZPOOL}" status "${ZEVENT_POOL}" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')"
 message="${emoji} <b>ZFS ${severity}</b>
 
 <b>Host:</b> $(hostname -s)
+<b>Device:</b> ${display_device}
 <b>Event:</b> ${ZEVENT_SUBCLASS}
-<b>EID:</b> ${ZEVENT_EID}
 <b>Time:</b> ${ZEVENT_TIME_STRING}
 
 <pre>${zpool_status}</pre>"
