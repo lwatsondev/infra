@@ -1,0 +1,5 @@
+---
+- name: "zfs-zed:restart"
+  ansible.builtin.service:
+    name: "zfs-zed"
+    state: "restarted"

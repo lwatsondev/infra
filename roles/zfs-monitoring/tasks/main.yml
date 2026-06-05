@@ -1,0 +1,50 @@
+---
+- name: "zfs-monitoring:install:packages"
+  ansible.builtin.apt:
+    name:
+      - "zfs-zed"
+      - "curl"
+  when: "ansible_facts['pkg_mgr'] == 'apt'"
+
+- name: "zfs-monitoring:install:scripts"
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/zfs/zed.d/{{ item }}"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  loop:
+    - "all-gatus-notify.sh"
+    - "all-uptime-kuma-notify.sh"
+  notify: "zfs-zed:restart"
+
+- name: "zfs-monitoring:configure:gatus"
+  ansible.builtin.lineinfile:
+    path: "/etc/zfs/zed.d/zed.rc"
+    regexp: "^{{ item.key }}="
+    line: '{{ item.key }}="{{ item.value }}"'
+    create: true
+    owner: "root"
+    group: "root"
+    mode: "0640"
+  loop:
+    - key: "ZED_GATUS_BASE_URL"
+      value: "{{ zfs_monitoring_gatus_base_url }}"
+    - key: "ZED_GATUS_ENDPOINT_KEY"
+      value: "{{ zfs_monitoring_gatus_endpoint_key }}"
+    - key: "ZED_GATUS_AUTH_TOKEN"
+      value: "{{ zfs_monitoring_gatus_auth_token }}"
+  when: "zfs_monitoring_gatus_base_url is defined"
+  notify: "zfs-zed:restart"
+
+- name: "zfs-monitoring:configure:uptime-kuma"
+  ansible.builtin.lineinfile:
+    path: "/etc/zfs/zed.d/zed.rc"
+    regexp: "^ZED_UPTIME_KUMA_PUSH_URL="
+    line: 'ZED_UPTIME_KUMA_PUSH_URL="{{ zfs_monitoring_uptime_kuma_push_url }}"'
+    create: true
+    owner: "root"
+    group: "root"
+    mode: "0640"
+  when: "zfs_monitoring_uptime_kuma_push_url is defined"
+  notify: "zfs-zed:restart"

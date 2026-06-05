@@ -41,3 +41,4 @@
     - "uv"
     - "telegram-send"
     - "zfs-maintenance"
+    - "zfs-monitoring"
