@@ -1,4 +1,6 @@
 ---
+msmtp_host: "email-smtp.eu-north-1.amazonaws.com"
+
 apt_unattended_upgrades_origins:
   - "o=Debian,n=${distro_codename}-updates"
   - "o=apt.postgresql.org,n=${distro_codename}-pgdg"

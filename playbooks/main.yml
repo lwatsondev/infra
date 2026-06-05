@@ -31,13 +31,22 @@
     - "needrestart"
 
 - name: "Set up msmtp"
-  hosts: "all,!nova"
+  hosts: "debian"
   roles:
     - "msmtp"
 
-- name: "Set up ZFS maintenance and alerts"
-  hosts: "zfs"
+- name: "Set up SMART disk monitoring"
+  hosts: "all,!lxc,!vms,!nova"
+  roles:
+    - "smartmontools"
+
+- name: "Set up notification tools"
+  hosts: "debian"
   roles:
     - "uv"
     - "telegram-send"
+
+- name: "Set up ZFS monitoring"
+  hosts: "zfs"
+  roles:
     - "zfs-monitoring"
