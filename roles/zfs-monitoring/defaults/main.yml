@@ -1,5 +1,21 @@
 ---
+zfs_monitoring_zed_notify_verbose: false
+zfs_monitoring_zed_notify_interval_secs: 3600
+zfs_monitoring_zed_scrub_after_resilver: false
+zfs_monitoring_zed_email_addr: "none"
+zfs_monitoring_zed_extra: {}
+
 # zfs_monitoring_gatus_base_url: ""
 # zfs_monitoring_gatus_endpoint_key: ""
 # zfs_monitoring_gatus_auth_token: ""
+
 # zfs_monitoring_uptime_kuma_push_url: ""
+
+# zfs_monitoring_telegram_bot_token: ""
+# zfs_monitoring_telegram_chat_id: ""
+
+zfs_monitoring_install_timers: true
+zfs_monitoring_scrub_schedule: "weekly"
+zfs_monitoring_scrub_pools: []
+zfs_monitoring_trim_schedule: "weekly"
+zfs_monitoring_trim_pools: []

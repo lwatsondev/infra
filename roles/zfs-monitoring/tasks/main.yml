@@ -1,50 +1,54 @@
 ---
 - name: "zfs-monitoring:install:packages"
-  ansible.builtin.apt:
-    name:
-      - "zfs-zed"
-      - "curl"
-  when: "ansible_facts['pkg_mgr'] == 'apt'"
+  ansible.builtin.package:
+    name: "{{ __zfs_monitoring_packages[ansible_facts['pkg_mgr']] }}"
+  when: "ansible_facts['pkg_mgr'] in __zfs_monitoring_packages"
 
 - name: "zfs-monitoring:install:scripts"
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "/etc/zfs/zed.d/{{ item }}"
+    dest: "/etc/zfs/zed.d/{{ item | basename }}"
     owner: "root"
     group: "root"
     mode: "0755"
-  loop:
-    - "all-gatus-notify.sh"
-    - "all-uptime-kuma-notify.sh"
+  with_fileglob:
+    - "*.sh"
   notify: "zfs-zed:restart"
 
-- name: "zfs-monitoring:configure:gatus"
-  ansible.builtin.lineinfile:
-    path: "/etc/zfs/zed.d/zed.rc"
-    regexp: "^{{ item.key }}="
-    line: '{{ item.key }}="{{ item.value }}"'
-    create: true
+- name: "zfs-monitoring:configure:zed.rc"
+  ansible.builtin.template:
+    src: "templates/zed.rc.j2"
+    dest: "/etc/zfs/zed.d/zed.rc"
     owner: "root"
     group: "root"
     mode: "0640"
-  loop:
-    - key: "ZED_GATUS_BASE_URL"
-      value: "{{ zfs_monitoring_gatus_base_url }}"
-    - key: "ZED_GATUS_ENDPOINT_KEY"
-      value: "{{ zfs_monitoring_gatus_endpoint_key }}"
-    - key: "ZED_GATUS_AUTH_TOKEN"
-      value: "{{ zfs_monitoring_gatus_auth_token }}"
-  when: "zfs_monitoring_gatus_base_url is defined"
   notify: "zfs-zed:restart"
 
-- name: "zfs-monitoring:configure:uptime-kuma"
-  ansible.builtin.lineinfile:
-    path: "/etc/zfs/zed.d/zed.rc"
-    regexp: "^ZED_UPTIME_KUMA_PUSH_URL="
-    line: 'ZED_UPTIME_KUMA_PUSH_URL="{{ zfs_monitoring_uptime_kuma_push_url }}"'
-    create: true
+- name: "zfs-monitoring:timers:install"
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item | basename | splitext | first }}"
     owner: "root"
     group: "root"
-    mode: "0640"
-  when: "zfs_monitoring_uptime_kuma_push_url is defined"
-  notify: "zfs-zed:restart"
+    mode: "0644"
+  with_fileglob:
+    - "{{ role_path }}/templates/systemd/*.j2"
+  when: "zfs_monitoring_install_timers"
+
+- name: "zfs-monitoring:timers:enable:scrub"
+  ansible.builtin.systemd:
+    name: "zfs-scrub@{{ item }}.timer"
+    state: "started"
+    enabled: true
+    daemon_reload: true
+  loop: "{{ zfs_monitoring_scrub_pools }}"
+  when: "zfs_monitoring_install_timers"
+
+- name: "zfs-monitoring:timers:enable:trim"
+  ansible.builtin.systemd:
+    name: "zfs-trim@{{ item }}.timer"
+    state: "started"
+    enabled: true
+    daemon_reload: true
+  loop: "{{ zfs_monitoring_trim_pools }}"
+  when: "zfs_monitoring_install_timers"

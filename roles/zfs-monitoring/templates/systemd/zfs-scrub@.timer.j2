@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Scheduled zpool scrub on %i
+
+[Timer]
+OnCalendar={{ zfs_monitoring_scrub_schedule }}
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target

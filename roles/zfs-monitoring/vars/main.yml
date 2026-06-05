@@ -1,0 +1,10 @@
+---
+__zfs_monitoring_packages:
+  apt:
+    - "zfs-zed"
+    - "curl"
+    - "jq"
+  portage:
+    - "sys-fs/zfs"
+    - "net-misc/curl"
+    - "app-misc/jq"

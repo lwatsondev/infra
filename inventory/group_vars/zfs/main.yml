@@ -1,7 +1,3 @@
 ---
-zfs_zed_email_addr: "none"
-zfs_zed_email_prog: "/usr/local/sbin/uvx telegram-send"
-zfs_zed_email_opts: "-g --pre --stdin --disable-web-page-preview --silent"
-
-zfs_scrub_schedule: "weekly"
-zfs_trim_schedule: "weekly"
+zfs_monitoring_scrub_schedule: "weekly"
+zfs_monitoring_trim_schedule: "weekly"

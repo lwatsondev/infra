@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Scheduled zpool trim on %i
+
+[Timer]
+OnCalendar={{ zfs_monitoring_trim_schedule }}
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target

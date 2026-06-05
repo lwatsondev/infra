@@ -1,0 +1,28 @@
+# {{ ansible_managed }}
+
+ZED_NOTIFY_VERBOSE={{ zfs_monitoring_zed_notify_verbose | int }}
+ZED_NOTIFY_INTERVAL_SECS={{ zfs_monitoring_zed_notify_interval_secs }}
+ZED_SCRUB_AFTER_RESILVER={{ zfs_monitoring_zed_scrub_after_resilver | int }}
+
+ZED_EMAIL_ADDR="{{ zfs_monitoring_zed_email_addr }}"
+
+{% if zfs_monitoring_zed_extra %}
+{% for key, value in zfs_monitoring_zed_extra.items() %}
+{{ key }}="{{ value }}"
+{% endfor %}
+
+{% endif %}
+{% if zfs_monitoring_gatus_base_url is defined %}
+ZED_GATUS_BASE_URL="{{ zfs_monitoring_gatus_base_url }}"
+ZED_GATUS_ENDPOINT_KEY="{{ zfs_monitoring_gatus_endpoint_key }}"
+ZED_GATUS_AUTH_TOKEN="{{ zfs_monitoring_gatus_auth_token }}"
+{% endif %}
+
+{% if zfs_monitoring_uptime_kuma_push_url is defined %}
+ZED_UPTIME_KUMA_PUSH_URL="{{ zfs_monitoring_uptime_kuma_push_url }}"
+{% endif %}
+
+{% if zfs_monitoring_telegram_bot_token is defined %}
+ZED_TELEGRAM_BOT_TOKEN="{{ zfs_monitoring_telegram_bot_token }}"
+ZED_TELEGRAM_CHAT_ID="{{ zfs_monitoring_telegram_chat_id }}"
+{% endif %}

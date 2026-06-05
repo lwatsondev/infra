@@ -1,8 +1,8 @@
 ---
 systemd_resolved_enabled: false
 
-zfs_scrub_pools:
+zfs_monitoring_scrub_pools:
   - "rpool"
 
-zfs_trim_pools:
+zfs_monitoring_trim_pools:
   - "rpool"

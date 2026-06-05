@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=zpool trim on %i
+
+[Service]
+KillSignal=SIGINT
+ExecStart=/sbin/zpool trim -w %i
+
+[Install]
+WantedBy=multi-user.target
