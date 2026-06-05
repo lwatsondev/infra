@@ -50,6 +50,7 @@
     owner: "root"
     group: "root"
     mode: "0640"
+  when: "smartmontools_telegram_bot_token is defined"
   notify: "smartd:restart"
 
 - name: "smartmontools:configure:telegram-notify:script"
@@ -76,6 +77,7 @@
     state: "absent"
   when: "smartmontools_telegram_bot_token is not defined"
   loop:
+    - "/etc/smartmontools/telegram.conf"
     - "/etc/smartmontools/run.d/telegram-notify"
     - "/usr/local/libexec/smartmontools/telegram-notify.sh"
   notify: "smartd:restart"
@@ -87,6 +89,7 @@
     owner: "root"
     group: "root"
     mode: "0640"
+  when: "smartmontools_uptime_kuma_push_url is defined"
   notify: "smartd:restart"
 
 - name: "smartmontools:configure:uptime-kuma:script"
@@ -113,6 +116,7 @@
     state: "absent"
   when: "smartmontools_uptime_kuma_push_url is not defined"
   loop:
+    - "/etc/smartmontools/uptime-kuma.conf"
     - "/etc/smartmontools/run.d/uptime-kuma-notify"
     - "/usr/local/libexec/smartmontools/uptime-kuma-notify.sh"
   notify: "smartd:restart"
