@@ -1,0 +1,6 @@
+---
+__systemd_cron_packages:
+  Debian:
+    - "systemd-cron"
+  Gentoo:
+    - "sys-process/systemd-cron"

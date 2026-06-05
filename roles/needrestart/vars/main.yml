@@ -1,0 +1,6 @@
+---
+__needrestart_packages:
+  Debian:
+    - "needrestart"
+  Gentoo:
+    - "app-admin/needrestart"

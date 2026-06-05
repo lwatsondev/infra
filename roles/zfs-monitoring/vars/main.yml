@@ -1,10 +1,10 @@
 ---
 __zfs_monitoring_packages:
-  apt:
+  Debian:
     - "zfs-zed"
     - "curl"
     - "jq"
-  portage:
+  Gentoo:
     - "sys-fs/zfs"
     - "net-misc/curl"
     - "app-misc/jq"

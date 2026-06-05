@@ -1,8 +1,8 @@
 ---
 - name: "smartmontools:install:packages"
   ansible.builtin.package:
-    name: "{{ __smartmontools_packages[ansible_facts['pkg_mgr']] }}"
-  when: "ansible_facts['pkg_mgr'] in __smartmontools_packages"
+    name: "{{ __smartmontools_packages[ansible_facts['os_family']] }}"
+  when: "ansible_facts['os_family'] in __smartmontools_packages"
 
 - name: "smartmontools:config:directories"
   ansible.builtin.file:
@@ -23,7 +23,7 @@
     owner: "root"
     group: "root"
     mode: "0755"
-  when: "ansible_facts['pkg_mgr'] != 'apt'"
+  when: "ansible_facts['os_family'] != 'Debian'"
   notify: "smartd:restart"
 
 - name: "smartmontools:config:symlink"

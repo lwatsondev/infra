@@ -1,8 +1,8 @@
 ---
 - name: "zfs-monitoring:install:packages"
   ansible.builtin.package:
-    name: "{{ __zfs_monitoring_packages[ansible_facts['pkg_mgr']] }}"
-  when: "ansible_facts['pkg_mgr'] in __zfs_monitoring_packages"
+    name: "{{ __zfs_monitoring_packages[ansible_facts['os_family']] }}"
+  when: "ansible_facts['os_family'] in __zfs_monitoring_packages"
 
 - name: "zfs-monitoring:install:scripts"
   ansible.builtin.template:

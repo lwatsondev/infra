@@ -1,6 +1,6 @@
 ---
 __zram_system_packages:
-  portage:
+  Gentoo:
     - "sys-apps/zram-generator"
-  apt:
+  Debian:
     - "systemd-zram-generator"

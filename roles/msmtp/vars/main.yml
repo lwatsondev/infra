@@ -1,11 +1,11 @@
 ---
 __msmtp_config_file: "/root/.config/msmtp/config"
 __msmtp_system_packages:
-  portage:
+  Gentoo:
     - "mail-mta/msmtp"
     - "mail-client/mailx"
     - "app-misc/ca-certificates"
-  apt:
+  Debian:
     - "msmtp"
     - "msmtp-mta"
     - "bsd-mailx"

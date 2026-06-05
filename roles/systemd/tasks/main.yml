@@ -27,7 +27,7 @@
 
 - name: "systemd:cron:install"
   ansible.builtin.package:
-    name: "systemd-cron"
+    name: "{{ __systemd_cron_packages[ansible_facts['os_family']] }}"
   notify: "systemd:cron|restart"
   when:
     - "systemd_cron_enabled"
@@ -36,7 +36,7 @@
   ansible.builtin.package:
     name: "systemd-oomd"
   when:
-    - "ansible_facts['distribution'] == 'Debian'"
+    - "ansible_facts['os_family'] == 'Debian'"
     - "ansible_facts['virtualization_type'] != 'lxc'"
     - "systemd_oomd_enabled"
   notify: "systemd:oomd|restart"
@@ -46,7 +46,7 @@
     name: "systemd-resolved"
   when:
     - "systemd_resolved_enabled"
-    - "ansible_facts['distribution'] == 'Debian'"
+    - "ansible_facts['os_family'] == 'Debian'"
 
 - name: "systemd:resolved:config_dir:create"
   ansible.builtin.file:
