@@ -1,3 +1,4 @@
+# shellcheck shell=sh
 #
 # {{ ansible_managed }}
 #

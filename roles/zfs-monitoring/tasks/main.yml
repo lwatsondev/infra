@@ -7,12 +7,12 @@
 - name: "zfs-monitoring:install:scripts"
   ansible.builtin.template:
     src: "{{ item }}"
-    dest: "/etc/zfs/zed.d/{{ item | basename | splitext | first }}"
+    dest: "/etc/zfs/zed.d/{{ item | basename }}"
     owner: "root"
     group: "root"
     mode: "0755"
   with_fileglob:
-    - "{{ role_path }}/templates/*.sh.j2"
+    - "{{ role_path }}/templates/*.sh"
   notify: "zfs-zed:restart"
 
 - name: "zfs-monitoring:configure:zed.rc"

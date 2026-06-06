@@ -54,7 +54,7 @@
 
 - name: "smartmontools:configure:telegram-notify:script"
   ansible.builtin.template:
-    src: "telegram-notify.sh.j2"
+    src: "telegram-notify.sh"
     dest: "/usr/local/libexec/smartmontools/telegram-notify.sh"
     owner: "root"
     group: "root"

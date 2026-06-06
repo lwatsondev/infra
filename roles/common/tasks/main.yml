@@ -1,6 +1,6 @@
 ---
 - name: "common:profile:xdg_dirs"
   ansible.builtin.template:
-    src: "etc/profile.d/xdg.sh.j2"
+    src: "etc/profile.d/xdg.sh"
     dest: "/etc/profile.d/xdg.sh"
     mode: "0644"
