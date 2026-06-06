@@ -81,45 +81,6 @@
     - "/usr/local/libexec/smartmontools/telegram-notify.sh"
   notify: "smartd:restart"
 
-- name: "smartmontools:configure:uptime-kuma.conf"
-  ansible.builtin.template:
-    src: "uptime-kuma.conf.j2"
-    dest: "/etc/smartmontools/uptime-kuma.conf"
-    owner: "root"
-    group: "root"
-    mode: "0640"
-  when: "smartmontools_uptime_kuma_push_url is defined"
-  notify: "smartd:restart"
-
-- name: "smartmontools:configure:uptime-kuma:script"
-  ansible.builtin.template:
-    src: "uptime-kuma-notify.sh.j2"
-    dest: "/usr/local/libexec/smartmontools/uptime-kuma-notify.sh"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-  when: "smartmontools_uptime_kuma_push_url is defined"
-  notify: "smartd:restart"
-
-- name: "smartmontools:configure:uptime-kuma:link"
-  ansible.builtin.file:
-    src: "/usr/local/libexec/smartmontools/uptime-kuma-notify.sh"
-    dest: "/etc/smartmontools/run.d/uptime-kuma-notify"
-    state: "link"
-  when: "smartmontools_uptime_kuma_push_url is defined"
-  notify: "smartd:restart"
-
-- name: "smartmontools:configure:uptime-kuma:absent"
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: "absent"
-  when: "smartmontools_uptime_kuma_push_url is not defined"
-  loop:
-    - "/etc/smartmontools/uptime-kuma.conf"
-    - "/etc/smartmontools/run.d/uptime-kuma-notify"
-    - "/usr/local/libexec/smartmontools/uptime-kuma-notify.sh"
-  notify: "smartd:restart"
-
 - name: "smartmontools:service:enable"
   ansible.builtin.systemd:
     name: "smartd"
