@@ -1,0 +1,34 @@
+[[repos]]
+repo = "builtin"
+hooks = [
+  { id = "end-of-file-fixer" },
+  { id = "trailing-whitespace" },
+  { id = "check-shebang-scripts-are-executable" },
+]
+
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "yamllint"
+name = "yamllint"
+entry = "uv run yamllint"
+args = ["--strict"]
+language = "system"
+types = ["yaml"]
+
+[[repos.hooks]]
+id = "shellcheck"
+name = "shellcheck"
+entry = "uv run shellcheck"
+language = "system"
+types = ["shell"]
+
+[[repos.hooks]]
+id = "ansible-lint"
+name = "ansible-lint"
+entry = "uv run ansible-lint"
+language = "system"
+types = ["text"]
+pass_filenames = false
+always_run = true
