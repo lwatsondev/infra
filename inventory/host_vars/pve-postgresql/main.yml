@@ -1,8 +1,4 @@
 ---
-borgmatic_repositories:
-  - path: "ssh://zh4596@zh4596.rsync.net/./borg/postgresql.internal.home.lwatson.dev"
-    label: "rsync.net"
-
 borgmatic_postgresql_databases:
   - name: "all"
     hostname: "127.0.0.1"
