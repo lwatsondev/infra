@@ -53,7 +53,7 @@
     owner: "root"
     group: "root"
     mode: "0755"
-  when: "_borgmatic_telegram_bot_token is defined"
+  when: "_borgmatic_telegram_bot_token is defined and _borgmatic_telegram_chat_id is defined"
 
 - name: "borgmatic:notify:script"
   ansible.builtin.template:
@@ -62,7 +62,7 @@
     owner: "root"
     group: "root"
     mode: "0700"
-  when: "_borgmatic_telegram_bot_token is defined"
+  when: "_borgmatic_telegram_bot_token is defined and _borgmatic_telegram_chat_id is defined"
 
 - name: "borgmatic:config:deploy"
   ansible.builtin.template:
