@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/sh
 
 #
 # {{ ansible_managed }}
 #
 
-set -euo pipefail
+set -eu
 
 error=$(printf '%s' "$*" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
 printf '🔴 borgmatic error on %s\n\n<pre>%s</pre>' "$(hostname)" "$error" \
