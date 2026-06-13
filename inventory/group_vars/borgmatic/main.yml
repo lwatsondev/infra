@@ -1,0 +1,29 @@
+---
+borgmatic_ssh_command: "ssh -i /etc/borgmatic/secrets/id_ed25519 -o StrictHostKeyChecking=accept-new"
+borgmatic_remote_path: "borg14"
+borgmatic_upload_rate_limit: 10000
+borgmatic_keep_hourly: 8
+borgmatic_keep_daily: 7
+borgmatic_keep_weekly: 4
+borgmatic_keep_monthly: 6
+
+borgmatic_service_overrides:
+  Unit:
+    - "Requires=network-online.target"
+    - "StartLimitInterval=200"
+    - "StartLimitBurst=5"
+  Service:
+    - "ExecStartPre="
+    - "ExecStart="
+    - "ExecStart=/usr/bin/borgmatic --verbosity -1 --syslog-verbosity 1 --stats"
+    - "IOSchedulingClass=idle"
+    - "TimeoutSec=1h"
+    - "RestartSec=10"
+
+borgmatic_timer_overrides:
+  Unit:
+    - "After=network-online.target"
+    - "Requires=network-online.target"
+  Timer:
+    - "OnCalendar=0/3:00"
+    - "RandomizedDelaySec=10m"

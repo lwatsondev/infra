@@ -1,0 +1,30 @@
+---
+__borgmatic_packages:
+  Debian:
+    - "borgmatic"
+  Gentoo:
+    - "app-backup/borgmatic"
+
+__borgmatic_global_settings:
+  source_directories:
+    - "/efi"
+    - "/etc"
+    - "/root"
+    - "/home"
+    - "/usr/local"
+    - "/var/log"
+  exclude_patterns:
+    - "/var/cache"
+    - "/var/tmp"
+    - "**/.cache"
+  source_directories_must_exist: false
+  exclude_caches: true
+  exclude_if_present:
+    - ".nobackup"
+  compression: "zstd"
+  archive_name_format: "{hostname}-{now:%Y-%m-%dT%H:%M:%S}"
+  retries: 5
+  retry_wait: 60
+  checks:
+    - name: "archives"
+      frequency: "1 week"

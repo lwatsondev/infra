@@ -1,0 +1,11 @@
+#
+# {{ ansible_managed }}
+#
+
+{% for section, lines in borgmatic_timer_overrides.items() %}
+[{{ section }}]
+{% for line in lines %}
+{{ line }}
+{% endfor %}
+
+{% endfor %}

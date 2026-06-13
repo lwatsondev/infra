@@ -3,3 +3,13 @@ zfs_monitoring_telegram_chat_id: "{{ telegram_chat_id }}"
 
 zfs_monitoring_scrub_schedule: "weekly"
 zfs_monitoring_trim_schedule: "weekly"
+
+borgmatic_service_overrides_extra:
+  Service:
+    - "ExecStart="
+    - >-
+      ExecStart=systemd-inhibit --who="borgmatic" --what="sleep:shutdown"
+      --why="Prevent interrupting scheduled backup"
+      /usr/bin/borgmatic --verbosity -2 --syslog-verbosity 1 --stats
+    - "PrivateDevices=no"
+    - "CapabilityBoundingSet=CAP_DAC_READ_SEARCH CAP_NET_RAW CAP_SYS_ADMIN"

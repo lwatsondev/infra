@@ -1,0 +1,100 @@
+---
+- name: "borgmatic:install:packages"
+  ansible.builtin.package:
+    name: "{{ __borgmatic_packages[ansible_facts['os_family']] }}"
+  when: "ansible_facts['os_family'] in __borgmatic_packages"
+
+- name: "borgmatic:config:directories"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "{{ item.mode }}"
+  loop:
+    - path: "/etc/borgmatic"
+      mode: "0755"
+    - path: "/etc/borgmatic/secrets"
+      mode: "0700"
+    - path: "/etc/systemd/system/borgmatic.service.d"
+      mode: "0755"
+    - path: "/etc/systemd/system/borgmatic.timer.d"
+      mode: "0755"
+
+- name: "borgmatic:secrets:ssh-key"
+  ansible.builtin.copy:
+    content: "{{ borgmatic_ssh_key_contents | trim }}\n"
+    dest: "/etc/borgmatic/secrets/id_ed25519"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+  when: "borgmatic_ssh_key_contents is defined"
+
+- name: "borgmatic:secrets:ssh-pub-key:read"
+  ansible.builtin.command:
+    cmd: "ssh-keygen -y -f /etc/borgmatic/secrets/id_ed25519"
+  register: "_borgmatic_ssh_pub_key"
+  changed_when: false
+  when: "borgmatic_ssh_key_contents is defined"
+
+- name: "borgmatic:secrets:ssh-pub-key:write"
+  ansible.builtin.copy:
+    content: "{{ _borgmatic_ssh_pub_key.stdout }}\n"
+    dest: "/etc/borgmatic/secrets/id_ed25519.pub"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: "borgmatic_ssh_key_contents is defined"
+
+- name: "borgmatic:notify:directory"
+  ansible.builtin.file:
+    path: "/usr/local/libexec/borgmatic"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: "_borgmatic_telegram_bot_token is defined"
+
+- name: "borgmatic:notify:script"
+  ansible.builtin.template:
+    src: "telegram-notify.sh"
+    dest: "/usr/local/libexec/borgmatic/telegram-notify.sh"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+  when: "_borgmatic_telegram_bot_token is defined"
+
+- name: "borgmatic:config:deploy"
+  ansible.builtin.template:
+    src: "config.yaml.j2"
+    dest: "/etc/borgmatic/config.yaml"
+    owner: "root"
+    group: "root"
+    mode: "0600"
+
+- name: "borgmatic:systemd:service"
+  ansible.builtin.template:
+    src: "systemd/borgmatic.service.d/00-ansible.conf.j2"
+    dest: "/etc/systemd/system/borgmatic.service.d/00-ansible.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify: "borgmatic:systemd:daemon-reload"
+
+- name: "borgmatic:systemd:timer"
+  ansible.builtin.template:
+    src: "systemd/borgmatic.timer.d/00-ansible.conf.j2"
+    dest: "/etc/systemd/system/borgmatic.timer.d/00-ansible.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  notify:
+    - "borgmatic:systemd:daemon-reload"
+    - "borgmatic:timer:restart"
+
+- name: "borgmatic:service:enable"
+  ansible.builtin.systemd:
+    name: "borgmatic.timer"
+    state: "started"
+    enabled: true
+    daemon_reload: true

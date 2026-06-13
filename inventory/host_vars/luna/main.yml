@@ -5,3 +5,52 @@ zfs_monitoring_scrub_pools:
 
 zfs_monitoring_trim_pools:
   - "rpool"
+
+borgmatic_source_directories:
+  - "/srv/caddy"
+  - "/srv/cappuccino/config"
+  - "/srv/docker-monitoring/config"
+  - "/srv/foxbnc"
+  - "/srv/gentoogram"
+  - "/srv/gitea/config"
+  - "/srv/gitea/data/gitea"
+  - "/srv/gitea/gitea-shell"
+  - "/srv/mediaserver/config/deluge"
+  - "/srv/mediaserver/config/seerr"
+  - "/srv/mediaserver/config/plex/Library/Application Support/Plex Media Server/Preferences.xml"
+  - "/srv/mediaserver/config/prowlarr"
+  - "/srv/mediaserver/config/radarr"
+  - "/srv/mediaserver/config/sonarr"
+  - "/srv/mediaserver/config/tautulli"
+  - "/srv/minecraft/config/proxy"
+  - "/srv/minecraft/config/survival"
+  - "/srv/minecraft/data/proxy"
+  - "/srv/minecraft/data/survival"
+  - "/srv/rehome/config"
+  - "/srv/rehome/data/rehome"
+  - "/srv/stacks"
+  - "/srv/www"
+  - "/var/lib/portage"
+
+borgmatic_repositories:
+  - path: "ssh://zh4596@zh4596.rsync.net/./borg/luna.lwatson.dev"
+    label: "rsync.net"
+
+borgmatic_postgresql_databases:
+  - name: "gitea"
+    username: "gitea"
+    pg_dump_command: "docker exec gitea_db_18 pg_dump"
+    pg_restore_command: "docker exec gitea_db_18 pg_restore"
+    psql_command: "docker exec gitea_db_18 psql"
+  - name: "cappuccino"
+    username: "cappuccino"
+    pg_dump_command: "docker exec cappuccino_db_18 pg_dump"
+    pg_restore_command: "docker exec cappuccino_db_18 pg_restore"
+    psql_command: "docker exec cappuccino_db_18 psql"
+
+borgmatic_uptime_kuma:
+  push_url: "{{ _borgmatic_uptime_kuma_push_url }}"
+  states:
+    - "start"
+    - "finish"
+    - "fail"

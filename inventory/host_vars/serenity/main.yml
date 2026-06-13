@@ -7,3 +7,28 @@ zfs_monitoring_scrub_pools:
 
 zfs_monitoring_trim_pools:
   - "rpool"
+
+borgmatic_source_directories:
+  - "/var/lib/portage"
+
+borgmatic_repositories:
+  - path: "ssh://zh4596@zh4596.rsync.net/./borg/serenity.lwatson.dev"
+    label: "rsync.net"
+
+borgmatic_uptime_kuma:
+  push_url: "{{ _borgmatic_uptime_kuma_push_url }}"
+  states:
+    - "start"
+    - "finish"
+    - "fail"
+
+borgmatic_service_overrides_extra:
+  Service:
+    - "ExecStart="
+    - >-
+      ExecStart=systemd-inhibit --who="borgmatic" --what="sleep:shutdown"
+      --why="Prevent interrupting scheduled backup"
+      /usr/bin/borgmatic --verbosity -2 --syslog-verbosity 1 --stats
+    - "PrivateDevices=no"
+    - "CapabilityBoundingSet=CAP_DAC_READ_SEARCH CAP_NET_RAW CAP_SYS_ADMIN"
+    - "RestrictNamespaces=no"

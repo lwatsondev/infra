@@ -1,2 +1,6 @@
 ---
 systemd_resolved_enabled: false
+
+borgmatic_repositories:
+  - path: "ssh://zh4596@zh4596.rsync.net/./borg/pve/{{ inventory_hostname }}"
+    label: "rsync.net"

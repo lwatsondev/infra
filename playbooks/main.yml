@@ -54,3 +54,8 @@
   hosts: "all,!workstations"
   roles:
     - "ssh"
+
+- name: "Set up borgmatic backups"
+  hosts: "borgmatic"
+  roles:
+    - "borgmatic"

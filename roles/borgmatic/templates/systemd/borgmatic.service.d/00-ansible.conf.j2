@@ -1,0 +1,12 @@
+#
+# {{ ansible_managed }}
+#
+
+{% set _svc = borgmatic_service_overrides | combine(borgmatic_service_overrides_extra | default({}), recursive=true, list_merge='append') %}
+{% for section, lines in _svc.items() %}
+[{{ section }}]
+{% for line in lines %}
+{{ line }}
+{% endfor %}
+
+{% endfor %}

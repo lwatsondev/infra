@@ -1,0 +1,9 @@
+---
+- name: "borgmatic:systemd:daemon-reload"
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: "borgmatic:timer:restart"
+  ansible.builtin.systemd:
+    name: "borgmatic.timer"
+    state: "restarted"

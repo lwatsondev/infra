@@ -85,6 +85,12 @@ all:
         pve-zigbee2mqtt:
         pve-frigate:
         pve-vaultwarden:
+    borgmatic:
+      hosts:
+        pve-postgresql:
+        luna:
+        monitor:
+        serenity:
     docker:
       hosts:
         luna:
