@@ -10,7 +10,6 @@ __borgmatic_global_settings:
     - "/efi"
     - "/etc"
     - "/root"
-    - "/home"
     - "/usr/local"
     - "/var/log"
   exclude_patterns:

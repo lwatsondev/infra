@@ -9,6 +9,13 @@ zfs_monitoring_trim_pools:
   - "rpool"
 
 borgmatic_source_directories:
+  - "/home/lwatson/.config"
+  - "/home/lwatson/.local/share/weechat/logs"
+  - "/home/lwatson/.ssh"
+  - "/home/lwatson/documents"
+  - "/home/lwatson/games"
+  - "/home/lwatson/music"
+  - "/home/lwatson/pictures"
   - "/var/lib/portage"
 
 borgmatic_repositories:
