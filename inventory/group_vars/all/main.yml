@@ -59,3 +59,14 @@ docker_daemon_config:
   experimental: true
 
 smartmontools_telegram_chat_id: "{{ telegram_chat_id }}"
+
+ssh_keys:
+  root:
+    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"
+    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGF/qUoS5O+MqtE+1T0fkjWNHLfBG7MYWTeQPg3G86o lwatson@nova"
+    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGfepV156UKrBujA0FY+8NSVvEYg4N9s+l69Cb43K0Fz lwatson@reaver"
+    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+0Z+T9LCRa54gB1oXTIzc82R5J7IS2QLZcy4nIJLI u0_a329@localhost"
+
+ssh_sshd_config:
+  PasswordAuthentication: "no"
+  PermitRootLogin: "prohibit-password"

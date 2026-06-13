@@ -1,0 +1,7 @@
+#
+# {{ ansible_managed }}
+#
+
+{% for key, value in ssh_sshd_config.items() %}
+{{ key }} {{ value }}
+{% endfor %}

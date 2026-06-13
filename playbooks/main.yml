@@ -49,3 +49,8 @@
   hosts: "zfs"
   roles:
     - "zfs-monitoring"
+
+- name: "Apply SSH configuration"
+  hosts: "all,!workstations"
+  roles:
+    - "ssh"
