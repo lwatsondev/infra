@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/sh
 
 #
 # {{ ansible_managed }}
@@ -33,7 +33,10 @@ case "${SMARTD_FAILTYPE}" in
         ;;
 esac
 
-display_device=$(find /dev/disk/by-id/ -maxdepth 1 ! -name '*-part*' -type l | sort | while IFS= read -r _link; do [ "$(readlink -f "$_link")" = "$(readlink -f "${SMARTD_DEVICE}")" ] && { basename "$_link"; break; }; done)
+display_device=$(find /dev/disk/by-id/ -maxdepth 1 ! -name '*-part*' -type l | sort | while IFS= read -r _link; do [ "$(readlink -f "$_link")" = "$(readlink -f "${SMARTD_DEVICE}")" ] && {
+    basename "$_link"
+    break
+}; done)
 display_device="${display_device:-$(basename "${SMARTD_DEVICE}")}"
 
 message="${emoji} <b>S.M.A.R.T. ${severity}</b>
