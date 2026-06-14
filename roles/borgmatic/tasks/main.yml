@@ -23,52 +23,13 @@
       mode: "0755"
   tags: ["borgmatic"]
 
-- name: "borgmatic:secrets:ssh-key"
+- name: "borgmatic:ssh-key:deploy"
   ansible.builtin.copy:
     content: "{{ borgmatic_ssh_key_contents | trim }}\n"
     dest: "/etc/borgmatic/secrets/id_ed25519"
     owner: "root"
     group: "root"
     mode: "0600"
-  when: "borgmatic_ssh_key_contents is defined"
-  tags: ["borgmatic"]
-
-- name: "borgmatic:secrets:ssh-pub-key:read"
-  ansible.builtin.command:
-    cmd: "ssh-keygen -y -f /etc/borgmatic/secrets/id_ed25519"
-  register: "_borgmatic_ssh_pub_key"
-  changed_when: false
-  when: "borgmatic_ssh_key_contents is defined"
-  tags: ["borgmatic"]
-
-- name: "borgmatic:secrets:ssh-pub-key:write"
-  ansible.builtin.copy:
-    content: "{{ _borgmatic_ssh_pub_key.stdout }}\n"
-    dest: "/etc/borgmatic/secrets/id_ed25519.pub"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  when: "borgmatic_ssh_key_contents is defined"
-  tags: ["borgmatic"]
-
-- name: "borgmatic:notify:directory"
-  ansible.builtin.file:
-    path: "/usr/local/libexec/borgmatic"
-    state: "directory"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-  when: "_borgmatic_telegram_bot_token is defined and _borgmatic_telegram_chat_id is defined"
-  tags: ["borgmatic"]
-
-- name: "borgmatic:notify:script"
-  ansible.builtin.template:
-    src: "telegram-notify.sh"
-    dest: "/usr/local/libexec/borgmatic/telegram-notify.sh"
-    owner: "root"
-    group: "root"
-    mode: "0700"
-  when: "_borgmatic_telegram_bot_token is defined and _borgmatic_telegram_chat_id is defined"
   tags: ["borgmatic"]
 
 - name: "borgmatic:config:deploy"
@@ -80,7 +41,49 @@
     mode: "0600"
   tags: ["borgmatic"]
 
-- name: "borgmatic:systemd:service"
+- name: "borgmatic:config:validate"
+  ansible.builtin.command:
+    cmd: "borgmatic config validate"
+  changed_when: false
+  tags: ["borgmatic"]
+
+- name: "borgmatic:repo:info"
+  ansible.builtin.command:
+    cmd: "borgmatic repo-info --override 'retries=0' --override 'retry_wait=0'"
+  register: "_borgmatic_repo_info"
+  changed_when: false
+  failed_when: false
+  tags: ["borgmatic"]
+
+- name: "borgmatic:repo:create"
+  ansible.builtin.command:
+    cmd: "borgmatic repo-create --encryption repokey-blake2"
+  when: "_borgmatic_repo_info.rc != 0"
+  register: "_borgmatic_repo_create"
+  changed_when: true
+  tags: ["borgmatic"]
+
+- name: "borgmatic:notify:directory"
+  ansible.builtin.file:
+    path: "/usr/local/libexec/borgmatic"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  when: "borgmatic_telegram_bot_token is defined and borgmatic_telegram_chat_id is defined"
+  tags: ["borgmatic"]
+
+- name: "borgmatic:notify:script"
+  ansible.builtin.template:
+    src: "telegram-notify.sh"
+    dest: "/usr/local/libexec/borgmatic/telegram-notify.sh"
+    owner: "root"
+    group: "root"
+    mode: "0700"
+  when: "borgmatic_telegram_bot_token is defined and borgmatic_telegram_chat_id is defined"
+  tags: ["borgmatic"]
+
+- name: "borgmatic:systemd:service:deploy"
   ansible.builtin.template:
     src: "systemd/borgmatic.service.d/00-ansible.conf.j2"
     dest: "/etc/systemd/system/borgmatic.service.d/00-ansible.conf"
@@ -90,7 +93,7 @@
   notify: "borgmatic:systemd:daemon-reload"
   tags: ["borgmatic"]
 
-- name: "borgmatic:systemd:timer"
+- name: "borgmatic:systemd:timer:deploy"
   ansible.builtin.template:
     src: "systemd/borgmatic.timer.d/00-ansible.conf.j2"
     dest: "/etc/systemd/system/borgmatic.timer.d/00-ansible.conf"
@@ -102,7 +105,7 @@
     - "borgmatic:timer:restart"
   tags: ["borgmatic"]
 
-- name: "borgmatic:service:enable"
+- name: "borgmatic:systemd:timer:enable"
   ansible.builtin.systemd:
     name: "borgmatic.timer"
     state: "started"

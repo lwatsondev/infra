@@ -2,12 +2,9 @@
 # {{ ansible_managed }}
 #
 
-{% set _skip = ['borgmatic_ssh_key_contents', 'borgmatic_service_overrides', 'borgmatic_service_overrides_extra', 'borgmatic_timer_overrides'] %}
 {% set ns = namespace(host={}) %}
-{% for key in hostvars[inventory_hostname] | select('match', '^borgmatic_') | sort %}
-{%   if key not in _skip %}
-{%     set ns.host = ns.host | combine({key[10:]: hostvars[inventory_hostname][key]}) %}
-{%   endif %}
+{% for key in hostvars[inventory_hostname] | select('match', '^borgmatic_config_') | sort %}
+{%   set ns.host = ns.host | combine({key[17:]: hostvars[inventory_hostname][key]}) %}
 {% endfor %}
 {% set _cfg = __borgmatic_global_settings | combine(ns.host, recursive=true, list_merge='append') %}
 {{ _cfg | to_nice_yaml(indent=2) | trim }}

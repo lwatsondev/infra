@@ -1,0 +1,4 @@
+---
+borgmatic_config_source_directories:
+  - "/srv/vaultwarden"
+  - "/srv/stacks/vaultwarden"

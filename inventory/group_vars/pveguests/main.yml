@@ -11,6 +11,6 @@ users:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGfepV156UKrBujA0FY+8NSVvEYg4N9s+l69Cb43K0Fz lwatson@reaver"
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+0Z+T9LCRa54gB1oXTIzc82R5J7IS2QLZcy4nIJLI u0_a329@localhost"
 
-borgmatic_repositories:
-  - path: "ssh://zh4596@zh4596.rsync.net/./borg/pve-guests/{{ ansible_hostname }}"
+borgmatic_config_repositories:
+  - path: "ssh://zh4596@zh4596.rsync.net/./borg/pve-guests/{{ ansible_facts['hostname'] }}"
     label: "rsync.net"

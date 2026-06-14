@@ -1,13 +1,16 @@
 ---
-borgmatic_postgresql_databases:
+borgmatic_config_source_directories:
+  - "/etc/postgresql"
+
+borgmatic_config_postgresql_databases:
   - name: "all"
     hostname: "127.0.0.1"
     username: "postgres"
-    password: "{{ _borgmatic_postgresql_password }}"
+    password: "{{ borgmatic_postgresql_password }}"
     format: "custom"
 
-borgmatic_uptime_kuma:
-  push_url: "{{ _borgmatic_uptime_kuma_push_url }}"
+borgmatic_config_uptime_kuma:
+  push_url: "{{ borgmatic_uptime_kuma_push_url }}"
   states:
     - "start"
     - "finish"

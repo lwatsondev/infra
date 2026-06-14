@@ -1,15 +1,15 @@
 ---
-borgmatic_source_directories:
+borgmatic_config_source_directories:
   - "/srv/caddy"
   - "/srv/uptimekuma"
   - "/srv/stacks"
 
-borgmatic_repositories:
+borgmatic_config_repositories:
   - path: "ssh://zh4596@zh4596.rsync.net/./borg/monitor.lwatson.dev"
     label: "rsync.net"
 
-borgmatic_uptime_kuma:
-  push_url: "{{ _borgmatic_uptime_kuma_push_url }}"
+borgmatic_config_uptime_kuma:
+  push_url: "{{ borgmatic_uptime_kuma_push_url }}"
   states:
     - "start"
     - "finish"

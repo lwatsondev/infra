@@ -88,6 +88,10 @@ all:
     borgmatic:
       hosts:
         pve-postgresql:
+        pve-vaultwarden:
+        pve-frigate:
+        pve-mqtt:
+        pve-router:
         luna:
         monitor:
         serenity:

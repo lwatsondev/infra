@@ -6,7 +6,8 @@ zfs_monitoring_scrub_pools:
 zfs_monitoring_trim_pools:
   - "rpool"
 
-borgmatic_source_directories:
+borgmatic_config_source_directories:
+  - "/efi"
   - "/srv/caddy"
   - "/srv/cappuccino/config"
   - "/srv/docker-monitoring/config"
@@ -32,11 +33,11 @@ borgmatic_source_directories:
   - "/srv/www"
   - "/var/lib/portage"
 
-borgmatic_repositories:
+borgmatic_config_repositories:
   - path: "ssh://zh4596@zh4596.rsync.net/./borg/luna.lwatson.dev"
     label: "rsync.net"
 
-borgmatic_postgresql_databases:
+borgmatic_config_postgresql_databases:
   - name: "gitea"
     username: "gitea"
     pg_dump_command: "docker exec gitea_db_18 pg_dump"
@@ -48,8 +49,8 @@ borgmatic_postgresql_databases:
     pg_restore_command: "docker exec cappuccino_db_18 pg_restore"
     psql_command: "docker exec cappuccino_db_18 psql"
 
-borgmatic_uptime_kuma:
-  push_url: "{{ _borgmatic_uptime_kuma_push_url }}"
+borgmatic_config_uptime_kuma:
+  push_url: "{{ borgmatic_uptime_kuma_push_url }}"
   states:
     - "start"
     - "finish"
