@@ -1,0 +1,6 @@
+---
+__users_packages:
+  Debian:
+    - "sudo"
+  Gentoo:
+    - "app-admin/sudo"

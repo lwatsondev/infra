@@ -1,0 +1,65 @@
+---
+- name: "users:sudo:install"
+  ansible.builtin.package:
+    name: "{{ __users_packages[ansible_facts['os_family']] }}"
+    state: "present"
+  when: "ansible_facts['os_family'] in __users_packages and users | selectattr('sudo', 'defined') | selectattr('sudo') | list | length > 0"
+  tags: ["users"]
+
+- name: "users:create"
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    groups: "{{ item.groups | default([]) }}"
+    append: true
+    shell: "{{ item.shell | default(omit) }}"
+    skeleton: "/etc/skel"
+    create_home: true
+    password: "{{ item.password | password_hash('sha512') if item.password is defined else omit }}"
+    update_password: "{{ item.update_password | default('on_create') }}"
+    state: "present"
+  loop: "{{ users }}"
+  no_log: true
+  tags: ["users"]
+
+- name: "users:authorized_keys"
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.ssh_keys | join('\n') }}"
+    exclusive: true
+  loop: "{{ users }}"
+  when: "item.ssh_keys | default([]) | length > 0"
+  tags: ["users"]
+
+- name: "users:linger:enable"
+  ansible.builtin.command:
+    cmd: "loginctl enable-linger {{ item.name }}"
+    creates: "/var/lib/systemd/linger/{{ item.name }}"
+  loop: "{{ users }}"
+  when: "item.linger | default(false)"
+  tags: ["users"]
+
+- name: "users:linger:disable"
+  ansible.builtin.command:
+    cmd: "loginctl disable-linger {{ item.name }}"
+    removes: "/var/lib/systemd/linger/{{ item.name }}"
+  loop: "{{ users }}"
+  when: "item.linger is defined and not item.linger"
+  tags: ["users"]
+
+- name: "users:sudoers:add"
+  ansible.builtin.template:
+    src: "sudoers.d/user.j2"
+    dest: "/etc/sudoers.d/{{ item.name }}"
+    mode: "0440"
+    validate: "visudo -cf %s"
+  loop: "{{ users }}"
+  when: "item.sudo | default(false)"
+  tags: ["users"]
+
+- name: "users:sudoers:remove"
+  ansible.builtin.file:
+    path: "/etc/sudoers.d/{{ item.name }}"
+    state: "absent"
+  loop: "{{ users }}"
+  when: "not (item.sudo | default(false))"
+  tags: ["users"]
