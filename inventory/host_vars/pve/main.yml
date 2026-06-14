@@ -1,4 +1,6 @@
 ---
+ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-router'].ansible_user }}@{{ hostvars['pve-router'].ansible_host }}"
+
 systemd_resolved_enabled: false
 
 zfs_monitoring_scrub_pools:
@@ -7,10 +9,22 @@ zfs_monitoring_scrub_pools:
 zfs_monitoring_trim_pools:
   - "rpool"
 
-ssh_keys:
-  root:
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGF/qUoS5O+MqtE+1T0fkjWNHLfBG7MYWTeQPg3G86o lwatson@nova"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGfepV156UKrBujA0FY+8NSVvEYg4N9s+l69Cb43K0Fz lwatson@reaver"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+0Z+T9LCRa54gB1oXTIzc82R5J7IS2QLZcy4nIJLI u0_a329@localhost"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCY7qv5uHYerPlK6BHvDa6KY9R+178yEmeL41BBQ3d+CuR2VIqV4Xv1l3eZaM2/A+3FTEEDIyIXsCVZqr7NV6ic3GbZebmnWlP5eJb0HPhQ5NYlYd55W8eoxzYAa7VYpQYmgC6y9EzYf+P+45sXqhSm5jCP1K1kns8UcxnOBKs66mTQzwdRTsL9SAeKOrv93u2hdKBQLIQq/wNNy1h1m2dvesUPIWqRaB52IZZoopACVJcH3oBQLNZokbAzFj3FX7516IekbK2ualZ/15fg0hTuRce12kDsbecrWHiD59yi4BkHL+u6giY/TZrhjSNBNEwB80XhpCF/kMCWqDvxbpHeYobxT+zjEHxmchsWMLGLoUTbWkk7QHDuFjkqlOtiFAmjXKBf/bSKgCJmzEKz79lRzFfPWCMculJi2NHDxRBQz3WtkeT4ix02c21yKVjVqqUmjls5Cb3QvbUreAQJ0ESvQ/vubuIHlAVTmeY6Yyfx1QL931L/W4r19kMr3PYIob2BFtugs1SHjxSA23L9KHkaURRnDPLRXv9Jg6jLRg2YXOumDQo772h3toClc6bjRkiCU0MKm0eERVJOUCsIQUhR8u/67KX2u9YWMPiM//3Ox5xs7MG5rV3h9/FKOgeRexQfBq45mJbKjelsQWF5mdOT/YyJbrUOWGHjanA60AOtGw== root@pve"
+users:
+  - name: "root"
+    password: "{{ _users_root_pass }}"
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGF/qUoS5O+MqtE+1T0fkjWNHLfBG7MYWTeQPg3G86o lwatson@nova"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGfepV156UKrBujA0FY+8NSVvEYg4N9s+l69Cb43K0Fz lwatson@reaver"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+0Z+T9LCRa54gB1oXTIzc82R5J7IS2QLZcy4nIJLI u0_a329@localhost"
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCY7qv5uHYerPlK6BHvDa6KY9R+178yEmeL41BBQ3d+CuR2VIqV4Xv1l3eZaM2/A+3FTEEDIyIXsCVZqr7NV6ic3GbZebmnWlP5eJb0HPhQ5NYlYd55W8eoxzYAa7VYpQYmgC6y9EzYf+P+45sXqhSm5jCP1K1kns8UcxnOBKs66mTQzwdRTsL9SAeKOrv93u2hdKBQLIQq/wNNy1h1m2dvesUPIWqRaB52IZZoopACVJcH3oBQLNZokbAzFj3FX7516IekbK2ualZ/15fg0hTuRce12kDsbecrWHiD59yi4BkHL+u6giY/TZrhjSNBNEwB80XhpCF/kMCWqDvxbpHeYobxT+zjEHxmchsWMLGLoUTbWkk7QHDuFjkqlOtiFAmjXKBf/bSKgCJmzEKz79lRzFfPWCMculJi2NHDxRBQz3WtkeT4ix02c21yKVjVqqUmjls5Cb3QvbUreAQJ0ESvQ/vubuIHlAVTmeY6Yyfx1QL931L/W4r19kMr3PYIob2BFtugs1SHjxSA23L9KHkaURRnDPLRXv9Jg6jLRg2YXOumDQo772h3toClc6bjRkiCU0MKm0eERVJOUCsIQUhR8u/67KX2u9YWMPiM//3Ox5xs7MG5rV3h9/FKOgeRexQfBq45mJbKjelsQWF5mdOT/YyJbrUOWGHjanA60AOtGw== root@pve"
+
+  - name: "lwatson"
+    password: "{{ _users_lwatson_pass }}"
+    linger: true
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGF/qUoS5O+MqtE+1T0fkjWNHLfBG7MYWTeQPg3G86o lwatson@nova"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGfepV156UKrBujA0FY+8NSVvEYg4N9s+l69Cb43K0Fz lwatson@reaver"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+0Z+T9LCRa54gB1oXTIzc82R5J7IS2QLZcy4nIJLI u0_a329@localhost"
+    sudo: true

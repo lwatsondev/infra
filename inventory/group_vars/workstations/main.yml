@@ -1,3 +1,9 @@
 ---
 # Short self-test daily at noon, long self-test Sundays at noon
 smartmontools_schedule: "S/../.././12|L/../../7/12"
+
+users:
+  - name: "lwatson"
+    password: "{{ _users_lwatson_pass }}"
+    linger: true
+    sudo: true

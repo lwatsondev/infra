@@ -1,11 +1,4 @@
 ---
-- name: "ssh:authorized_keys"
-  ansible.posix.authorized_key:
-    user: "{{ item.key }}"
-    key: "{{ item.value | join('\n') }}"
-    exclusive: true
-  loop: "{{ ssh_keys | dict2items }}"
-
 - name: "ssh:sshd_config"
   ansible.builtin.template:
     src: "sshd_config.d/00-ansible.conf.j2"
@@ -13,3 +6,4 @@
     mode: "0644"
   when: "ssh_sshd_config is defined and ssh_sshd_config | length > 0"
   notify: "ssh:sshd|restart"
+  tags: ["ssh"]

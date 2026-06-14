@@ -1,4 +1,9 @@
 ---
+- name: "Manage users"
+  hosts: "all"
+  roles:
+    - "users"
+
 - name: "Apply common configuration"
   hosts: "all"
   roles:

@@ -7,13 +7,13 @@ all:
       ansible_host: "luna.hedgehog-skate.ts.net"
     nova:
       ansible_host: "nova.hedgehog-skate.ts.net"
-      ansible_user: "lwatson"
     monitor:
       ansible_host: "monitor.hedgehog-skate.ts.net"
     pve:
       ansible_host: "pve.internal.home.lwatson.dev"
     pve-router:
       ansible_host: "pve-router.hedgehog-skate.ts.net"
+      ansible_ssh_common_args: ""
     pve-caddy:
       ansible_host: "caddy.internal.home.lwatson.dev"
     pve-vaultwarden:
