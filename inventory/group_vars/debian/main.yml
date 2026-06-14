@@ -1,5 +1,5 @@
 ---
-borgmatic_on_error:
+borgmatic_config_on_error:
   - "/usr/local/libexec/borgmatic/telegram-notify.sh {error}"
 
 tgsend_bot_token: "{{ telegram_bot_token }}"

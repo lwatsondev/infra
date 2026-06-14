@@ -1,5 +1,5 @@
 ---
-borgmatic_commands:
+borgmatic_config_commands:
   - after: "error"
     run:
       - "/usr/local/libexec/borgmatic/telegram-notify.sh {error}"
