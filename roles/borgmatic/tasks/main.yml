@@ -3,6 +3,7 @@
   ansible.builtin.package:
     name: "{{ __borgmatic_packages[ansible_facts['os_family']] }}"
   when: "ansible_facts['os_family'] in __borgmatic_packages"
+  tags: ["borgmatic"]
 
 - name: "borgmatic:config:directories"
   ansible.builtin.file:
@@ -20,6 +21,7 @@
       mode: "0755"
     - path: "/etc/systemd/system/borgmatic.timer.d"
       mode: "0755"
+  tags: ["borgmatic"]
 
 - name: "borgmatic:secrets:ssh-key"
   ansible.builtin.copy:
@@ -29,6 +31,7 @@
     group: "root"
     mode: "0600"
   when: "borgmatic_ssh_key_contents is defined"
+  tags: ["borgmatic"]
 
 - name: "borgmatic:secrets:ssh-pub-key:read"
   ansible.builtin.command:
@@ -36,6 +39,7 @@
   register: "_borgmatic_ssh_pub_key"
   changed_when: false
   when: "borgmatic_ssh_key_contents is defined"
+  tags: ["borgmatic"]
 
 - name: "borgmatic:secrets:ssh-pub-key:write"
   ansible.builtin.copy:
@@ -45,6 +49,7 @@
     group: "root"
     mode: "0644"
   when: "borgmatic_ssh_key_contents is defined"
+  tags: ["borgmatic"]
 
 - name: "borgmatic:notify:directory"
   ansible.builtin.file:
@@ -54,6 +59,7 @@
     group: "root"
     mode: "0755"
   when: "_borgmatic_telegram_bot_token is defined and _borgmatic_telegram_chat_id is defined"
+  tags: ["borgmatic"]
 
 - name: "borgmatic:notify:script"
   ansible.builtin.template:
@@ -63,6 +69,7 @@
     group: "root"
     mode: "0700"
   when: "_borgmatic_telegram_bot_token is defined and _borgmatic_telegram_chat_id is defined"
+  tags: ["borgmatic"]
 
 - name: "borgmatic:config:deploy"
   ansible.builtin.template:
@@ -71,6 +78,7 @@
     owner: "root"
     group: "root"
     mode: "0600"
+  tags: ["borgmatic"]
 
 - name: "borgmatic:systemd:service"
   ansible.builtin.template:
@@ -80,6 +88,7 @@
     group: "root"
     mode: "0644"
   notify: "borgmatic:systemd:daemon-reload"
+  tags: ["borgmatic"]
 
 - name: "borgmatic:systemd:timer"
   ansible.builtin.template:
@@ -91,6 +100,7 @@
   notify:
     - "borgmatic:systemd:daemon-reload"
     - "borgmatic:timer:restart"
+  tags: ["borgmatic"]
 
 - name: "borgmatic:service:enable"
   ansible.builtin.systemd:
@@ -98,3 +108,4 @@
     state: "started"
     enabled: true
     daemon_reload: true
+  tags: ["borgmatic"]

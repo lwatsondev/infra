@@ -4,6 +4,7 @@
     name: "{{ __docker_conflicting_packages[ansible_facts['os_family']] }}"
     state: "absent"
   when: "ansible_facts['os_family'] in __docker_conflicting_packages"
+  tags: ["docker"]
 
 - name: "docker:apt:keyrings_dir:create"
   ansible.builtin.file:
@@ -11,6 +12,7 @@
     state: "directory"
     mode: "0755"
   when: "ansible_facts['os_family'] == 'Debian'"
+  tags: ["docker"]
 
 - name: "docker:apt:gpg_key:download"
   ansible.builtin.get_url:
@@ -18,6 +20,7 @@
     dest: "/etc/apt/keyrings/docker.asc"
     mode: "0644"
   when: "ansible_facts['os_family'] == 'Debian'"
+  tags: ["docker"]
 
 - name: "docker:apt:repository:add"
   ansible.builtin.deb822_repository:
@@ -30,23 +33,27 @@
     signed_by: "/etc/apt/keyrings/docker.asc"
     state: "present"
   when: "ansible_facts['os_family'] == 'Debian'"
+  tags: ["docker"]
 
 - name: "docker:apt:update"
   ansible.builtin.apt:
     update_cache: true
   when: "ansible_facts['os_family'] == 'Debian'"
+  tags: ["docker"]
 
 - name: "docker:packages:install"
   ansible.builtin.package:
     name: "{{ __docker_packages[ansible_facts['os_family']] }}"
     state: "present"
   when: "ansible_facts['os_family'] in __docker_packages"
+  tags: ["docker"]
 
 - name: "docker:socket:enable"
   ansible.builtin.service:
     name: "docker.socket"
     enabled: true
   when: "ansible_facts['os_family'] in __docker_packages"
+  tags: ["docker"]
 
 - name: "docker:service:configure"
   ansible.builtin.service:
@@ -54,3 +61,4 @@
     state: "{{ 'started' if docker_service_enable else 'stopped' }}"
     enabled: "{{ docker_service_enable }}"
   when: "ansible_facts['os_family'] in __docker_packages"
+  tags: ["docker"]

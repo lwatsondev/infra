@@ -3,6 +3,7 @@
   ansible.builtin.package:
     name: "{{ __zfs_monitoring_packages[ansible_facts['os_family']] }}"
   when: "ansible_facts['os_family'] in __zfs_monitoring_packages"
+  tags: ["zfs-monitoring"]
 
 - name: "zfs-monitoring:install:scripts"
   ansible.builtin.template:
@@ -14,6 +15,7 @@
   with_fileglob:
     - "{{ role_path }}/templates/*.sh"
   notify: "zfs-zed:restart"
+  tags: ["zfs-monitoring"]
 
 - name: "zfs-monitoring:configure:zed.rc"
   ansible.builtin.template:
@@ -23,6 +25,7 @@
     group: "root"
     mode: "0640"
   notify: "zfs-zed:restart"
+  tags: ["zfs-monitoring"]
 
 - name: "zfs-monitoring:timers:install"
   ansible.builtin.template:
@@ -34,6 +37,7 @@
   with_fileglob:
     - "{{ role_path }}/templates/systemd/*.j2"
   when: "zfs_monitoring_install_timers"
+  tags: ["zfs-monitoring"]
 
 - name: "zfs-monitoring:timers:enable:scrub"
   ansible.builtin.systemd:
@@ -43,6 +47,7 @@
     daemon_reload: true
   loop: "{{ zfs_monitoring_scrub_pools }}"
   when: "zfs_monitoring_install_timers"
+  tags: ["zfs-monitoring"]
 
 - name: "zfs-monitoring:timers:enable:trim"
   ansible.builtin.systemd:
@@ -52,3 +57,4 @@
     daemon_reload: true
   loop: "{{ zfs_monitoring_trim_pools }}"
   when: "zfs_monitoring_install_timers"
+  tags: ["zfs-monitoring"]

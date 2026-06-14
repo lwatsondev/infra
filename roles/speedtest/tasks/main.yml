@@ -4,13 +4,16 @@
     url: "{{ __speedtest_script_url }}"
     dest: "{{ __speedtest_script_destination }}"
     mode: "0644"
+  tags: ["speedtest"]
 
 - name: "speedtest:run"
   ansible.builtin.command:
     cmd: "python3 {{ __speedtest_script_destination }} --simple --secure"
   register: "__speedtest_output"
   changed_when: false
+  tags: ["speedtest"]
 
 - name: "speedtest:show_results"
   ansible.builtin.debug:
     msg: "{{ __speedtest_output.stdout_lines }}"
+  tags: ["speedtest"]

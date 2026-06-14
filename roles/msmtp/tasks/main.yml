@@ -2,15 +2,18 @@
 - name: "msmtp:dependencies:install"
   ansible.builtin.package:
     name: "{{ __msmtp_system_packages[ansible_facts['os_family']] }}"
+  tags: ["msmtp"]
 
 - name: "msmtp:config_dir:create"
   ansible.builtin.file:
     path: "{{ __msmtp_config_file | dirname }}"
     recurse: true
     state: "directory"
+  tags: ["msmtp"]
 
 - name: "msmtp:configure"
   ansible.builtin.template:
     src: "msmtp/config.j2"
     dest: "{{ __msmtp_config_file }}"
     mode: "0640"
+  tags: ["msmtp"]

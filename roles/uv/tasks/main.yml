@@ -3,6 +3,7 @@
   ansible.builtin.stat:
     path: "{{ __uv_bin_dir }}/uv"
   register: "__uv_exists_result"
+  tags: ["uv"]
 
 - name: "uv:installer:download"
   ansible.builtin.get_url:
@@ -11,6 +12,7 @@
     mode: "0755"
   when: "not __uv_exists_result.stat.exists"
   changed_when: false
+  tags: ["uv"]
 
 - name: "uv:installer:run"
   environment:
@@ -20,3 +22,4 @@
     cmd: "{{ __uv_installer_download_dest }}"
     creates: "{{ __uv_bin_dir }}/uv"
   changed_when: false
+  tags: ["uv"]

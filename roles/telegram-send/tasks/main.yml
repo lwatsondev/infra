@@ -10,3 +10,4 @@
     - "tgsend_bot_token | length > 0"
     - "tgsend_chat_id | length > 0"
   notify: "tgsend|test"
+  tags: ["telegram-send"]

@@ -3,6 +3,7 @@
   ansible.builtin.package:
     name: "{{ __smartmontools_packages[ansible_facts['os_family']] }}"
   when: "ansible_facts['os_family'] in __smartmontools_packages"
+  tags: ["smartmontools"]
 
 - name: "smartmontools:config:directories"
   ansible.builtin.file:
@@ -14,6 +15,7 @@
   loop:
     - "/etc/smartmontools/run.d"
     - "/usr/local/libexec/smartmontools"
+  tags: ["smartmontools"]
 
 - name: "smartmontools:runner:deploy"
   ansible.builtin.template:
@@ -24,6 +26,7 @@
     mode: "0755"
   when: "ansible_facts['os_family'] != 'Debian'"
   notify: "smartd:restart"
+  tags: ["smartmontools"]
 
 - name: "smartmontools:config:symlink"
   ansible.builtin.file:
@@ -32,6 +35,7 @@
     state: "link"
     force: true
   notify: "smartd:restart"
+  tags: ["smartmontools"]
 
 - name: "smartmontools:configure:smartd.conf"
   ansible.builtin.template:
@@ -41,6 +45,7 @@
     group: "root"
     mode: "0644"
   notify: "smartd:restart"
+  tags: ["smartmontools"]
 
 - name: "smartmontools:configure:telegram.conf"
   ansible.builtin.template:
@@ -51,6 +56,7 @@
     mode: "0640"
   when: "smartmontools_telegram_bot_token is defined and smartmontools_telegram_chat_id is defined"
   notify: "smartd:restart"
+  tags: ["smartmontools"]
 
 - name: "smartmontools:configure:telegram-notify:script"
   ansible.builtin.template:
@@ -61,6 +67,7 @@
     mode: "0755"
   when: "smartmontools_telegram_bot_token is defined and smartmontools_telegram_chat_id is defined"
   notify: "smartd:restart"
+  tags: ["smartmontools"]
 
 - name: "smartmontools:configure:telegram-notify:link"
   ansible.builtin.file:
@@ -69,6 +76,7 @@
     state: "link"
   when: "smartmontools_telegram_bot_token is defined and smartmontools_telegram_chat_id is defined"
   notify: "smartd:restart"
+  tags: ["smartmontools"]
 
 - name: "smartmontools:configure:telegram:absent"
   ansible.builtin.file:
@@ -80,6 +88,7 @@
     - "/etc/smartmontools/run.d/telegram-notify"
     - "/usr/local/libexec/smartmontools/telegram-notify.sh"
   notify: "smartd:restart"
+  tags: ["smartmontools"]
 
 - name: "smartmontools:service:enable"
   ansible.builtin.systemd:
@@ -87,3 +96,4 @@
     state: "started"
     enabled: true
     daemon_reload: true
+  tags: ["smartmontools"]

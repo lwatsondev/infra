@@ -4,3 +4,4 @@
     src: "etc/profile.d/xdg.sh"
     dest: "/etc/profile.d/xdg.sh"
     mode: "0644"
+  tags: ["common"]

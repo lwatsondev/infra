@@ -4,6 +4,7 @@
     path: "/etc/systemd/journald.conf.d"
     state: "directory"
     mode: "0755"
+  tags: ["systemd"]
 
 - name: "systemd:journald:configure"
   ansible.builtin.template:
@@ -11,12 +12,14 @@
     dest: "/etc/systemd/journald.conf.d/00-ansible.conf"
     mode: "0644"
   notify: "systemd:journald|restart"
+  tags: ["systemd"]
 
 - name: "systemd:config_dir:create"
   ansible.builtin.file:
     path: "/etc/systemd/system.conf.d"
     state: "directory"
     mode: "0755"
+  tags: ["systemd"]
 
 - name: "systemd:configure"
   ansible.builtin.template:
@@ -24,6 +27,7 @@
     dest: "/etc/systemd/system.conf.d/00-ansible.conf"
     mode: "0644"
   notify: "systemd:systemd|daemon-reexec"
+  tags: ["systemd"]
 
 - name: "systemd:cron:install"
   ansible.builtin.package:
@@ -31,6 +35,7 @@
   notify: "systemd:cron|restart"
   when:
     - "systemd_cron_enabled"
+  tags: ["systemd"]
 
 - name: "systemd:oomd:install"
   ansible.builtin.package:
@@ -40,6 +45,7 @@
     - "ansible_facts['virtualization_type'] != 'lxc'"
     - "systemd_oomd_enabled"
   notify: "systemd:oomd|restart"
+  tags: ["systemd"]
 
 - name: "systemd:resolved:install"
   ansible.builtin.package:
@@ -47,6 +53,7 @@
   when:
     - "systemd_resolved_enabled"
     - "ansible_facts['os_family'] == 'Debian'"
+  tags: ["systemd"]
 
 - name: "systemd:resolved:config_dir:create"
   ansible.builtin.file:
@@ -54,6 +61,7 @@
     state: "directory"
     mode: "0755"
   when: "systemd_resolved_enabled"
+  tags: ["systemd"]
 
 - name: "systemd:resolved:configure"
   ansible.builtin.template:
@@ -62,3 +70,4 @@
     mode: "0644"
   notify: "systemd:resolved|restart"
   when: "systemd_resolved_enabled"
+  tags: ["systemd"]

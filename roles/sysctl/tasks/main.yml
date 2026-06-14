@@ -6,6 +6,7 @@
     mode: "0755"
   when:
     - "ansible_facts['virtualization_type'] != 'lxc'"
+  tags: ["sysctl"]
 
 - name: "sysctl:configure"
   ansible.posix.sysctl:
@@ -17,3 +18,4 @@
   loop: "{{ __sysctl_base_vars | community.general.lists_mergeby(sysctl_vars, 'name') }}"
   when:
     - "ansible_facts['virtualization_type'] != 'lxc'"
+  tags: ["sysctl"]
