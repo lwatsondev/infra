@@ -1,0 +1,8 @@
+---
+borgmatic_config_source_directories:
+  - "/srv/rehome"
+  - "/srv/stacks/rehome"
+
+borgmatic_config_sqlite_databases:
+  - path: "/srv/rehome/data/rehome/app.db"
+    name: "rehome"

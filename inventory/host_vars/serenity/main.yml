@@ -8,6 +8,8 @@ zfs_monitoring_scrub_pools:
 zfs_monitoring_trim_pools:
   - "rpool"
 
+borgmatic_repo_encryption: "repokey"
+
 borgmatic_config_source_directories:
   - "/efi"
   - "/home/lwatson/.config"
@@ -20,7 +22,7 @@ borgmatic_config_source_directories:
   - "/var/lib/portage"
 
 borgmatic_config_repositories:
-  - path: "ssh://zh4596@zh4596.rsync.net/./borg/serenity.lwatson.dev"
+  - path: "ssh://zh4596@zh4596.rsync.net/./borg/serenity"
     label: "rsync.net"
 
 borgmatic_config_uptime_kuma:

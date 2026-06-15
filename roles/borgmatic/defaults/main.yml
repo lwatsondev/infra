@@ -1,3 +1,4 @@
 ---
 borgmatic_service_overrides: {}
 borgmatic_timer_overrides: {}
+borgmatic_repo_encryption: "repokey-blake2"

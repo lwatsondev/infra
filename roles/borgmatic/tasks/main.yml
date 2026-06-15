@@ -49,7 +49,7 @@
 
 - name: "borgmatic:repo:info"
   ansible.builtin.command:
-    cmd: "borgmatic repo-info --override 'retries=0' --override 'retry_wait=0'"
+    cmd: "borgmatic repo-info --override 'retries=0' --override 'retry_wait=0' --override 'ssh_command={{ borgmatic_config_ssh_command }} -o ConnectTimeout=10'"
   register: "_borgmatic_repo_info"
   changed_when: false
   failed_when: false
@@ -57,7 +57,7 @@
 
 - name: "borgmatic:repo:create"
   ansible.builtin.command:
-    cmd: "borgmatic repo-create --encryption repokey-blake2"
+    cmd: "borgmatic repo-create --encryption {{ borgmatic_repo_encryption }} --make-parent-dirs"
   when: "_borgmatic_repo_info.rc != 0"
   register: "_borgmatic_repo_create"
   changed_when: true
@@ -81,6 +81,20 @@
     group: "root"
     mode: "0700"
   when: "borgmatic_telegram_bot_token is defined and borgmatic_telegram_chat_id is defined"
+  tags: ["borgmatic"]
+
+- name: "borgmatic:notify:script:remove"
+  ansible.builtin.file:
+    path: "/usr/local/libexec/borgmatic/telegram-notify.sh"
+    state: "absent"
+  when: "borgmatic_telegram_bot_token is not defined or borgmatic_telegram_chat_id is not defined"
+  tags: ["borgmatic"]
+
+- name: "borgmatic:notify:directory:remove"
+  ansible.builtin.file:
+    path: "/usr/local/libexec/borgmatic"
+    state: "absent"
+  when: "borgmatic_telegram_bot_token is not defined or borgmatic_telegram_chat_id is not defined"
   tags: ["borgmatic"]
 
 - name: "borgmatic:systemd:service:deploy"

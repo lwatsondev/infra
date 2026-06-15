@@ -1,0 +1,12 @@
+---
+borgmatic_config_source_directories:
+  - "/srv/gitea"
+  - "/srv/stacks/gitea"
+  - "/etc/ssh/sshd_config.d/git.conf"
+
+borgmatic_config_postgresql_databases:
+  - name: "gitea"
+    username: "gitea"
+    pg_dump_command: "docker exec gitea_db_18 pg_dump"
+    pg_restore_command: "docker exec gitea_db_18 pg_restore"
+    psql_command: "docker exec gitea_db_18 psql"

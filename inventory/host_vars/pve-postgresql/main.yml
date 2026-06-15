@@ -8,10 +8,3 @@ borgmatic_config_postgresql_databases:
     username: "postgres"
     password: "{{ borgmatic_postgresql_password }}"
     format: "custom"
-
-borgmatic_config_uptime_kuma:
-  push_url: "{{ borgmatic_uptime_kuma_push_url }}"
-  states:
-    - "start"
-    - "finish"
-    - "fail"

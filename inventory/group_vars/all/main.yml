@@ -22,6 +22,7 @@ needrestart_overrides:
   ^polkit: 0
   ^dbus: 0
   ^networking: 0
+  ^proxmox-firewall: 0
 
 sysctl_vars:
   - name: "net.core.rmem_max"
@@ -44,7 +45,7 @@ sysctl_vars:
 
 zram_devices:
   zram0:
-    zram-size: "ram / 2"
+    zram-size: "min(ram / 2, 8192)"
     compression-algorithm: "zstd"
 
 docker_daemon_config:
@@ -63,3 +64,5 @@ smartmontools_telegram_chat_id: "{{ telegram_chat_id }}"
 ssh_sshd_config:
   PasswordAuthentication: "no"
   PermitRootLogin: "prohibit-password"
+
+_ansible_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOWZq+7EW0LI9qBSp3tHsQeOuuzsHJoP++M2eseSe8k ansible@lwatson"

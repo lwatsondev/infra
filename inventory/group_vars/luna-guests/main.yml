@@ -1,31 +1,10 @@
 ---
+ansible_ssh_common_args: "-o ProxyJump={{ hostvars['luna-jumphost'].ansible_user }}@{{ hostvars['luna-jumphost'].ansible_host }}"
+
 systemd_resolved_enabled: false
-
-zfs_monitoring_scrub_pools:
-  - "rpool"
-  - "dpool"
-
-zfs_monitoring_trim_pools:
-  - "rpool"
-
-borgmatic_repo_encryption: "repokey"
-
-borgmatic_config_repositories:
-  - path: "ssh://zh4596@zh4596.rsync.net/./borg/luna"
-    label: "rsync.net"
-
-borgmatic_config_keep_monthly: 6
-
-borgmatic_config_uptime_kuma:
-  push_url: "{{ borgmatic_uptime_kuma_push_url }}"
-  states:
-    - "start"
-    - "finish"
-    - "fail"
 
 users:
   - name: "root"
-    password: "{{ _users_root_pass }}"
     ssh_keys:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGF/qUoS5O+MqtE+1T0fkjWNHLfBG7MYWTeQPg3G86o lwatson@nova"
@@ -34,12 +13,11 @@ users:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHtBhLl76UPRlu9tYRMoi3FSmt6KURSQ9T6vTUQOL0R5uGSjafM46PzFNvgcSlUS/QqMlVuICUwXjpFPqzNggHG41tFIf971+3h3zVv3eyY0FDV4Dc4SLNbnNx5h/xxENTnQbAR73Lv4KIJbTWbsmhlZ+nR5aRQuN1osBHSmsKSjucU+axOm/ctIrgLVBQh8ovIeW/7X8dM4KLOZH8Ac+oEl2xfJvYiMSvTPLAReZMuprVnn/mL0pH9Tq7Hq70NJRKCF1DvTeqbCeMko9ugXewHVA1kTwfvYeAUzQkXTT28CWvVcojPKPQxyN7kQ9JO3aT2h5D4556QahSPpgQCOTEPsn42HtGq3Cj/o5NUsL13IpaNTBxCpSLXDZIOGOca3wlapIr3FcohShyxKDx6ZfWxSEow2Uz7k3JFfwFK6HrxcyAfv5+xPGMhdjr4Xi87zDjErc3xhMtE+NBTx+OmI2az363V9uDMUpAPH2WBXcc7pHOp2U3PYlE753F0hi4JYqMsHjrgD0MM6kZrwYYSNT1M4wgw8khxFLuVV/W/Myl+ubFwax3qlBRgUxRu5zkj3O33V6DQTuIRBSlSLlLsfyoxLM9Ot2qV2WB621J/tkiNbLZrbWNXA7uO8ZOBHSnoYi1znYcYSrRXFbgyFWXBg9BF9TStF0VYCwInCcOTYe43w== root@luna"
       - "{{ _ansible_public_key }}"
 
-  - name: "lwatson"
-    password: "{{ _users_lwatson_pass }}"
-    linger: true
-    ssh_keys:
-      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"
-      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGF/qUoS5O+MqtE+1T0fkjWNHLfBG7MYWTeQPg3G86o lwatson@nova"
-      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGfepV156UKrBujA0FY+8NSVvEYg4N9s+l69Cb43K0Fz lwatson@reaver"
-      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+0Z+T9LCRa54gB1oXTIzc82R5J7IS2QLZcy4nIJLI u0_a329@localhost"
-    sudo: true
+borgmatic_config_on_error:
+  - "/usr/local/libexec/borgmatic/telegram-notify.sh {error}"
+
+borgmatic_config_repositories:
+  - path: "ssh://zh4596@zh4596.rsync.net/./borg/luna-guests/{{ ansible_facts['hostname'] }}"
+    label: "rsync.net"
+
+borgmatic_config_keep_monthly: 0

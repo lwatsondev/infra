@@ -2,3 +2,7 @@
 borgmatic_config_source_directories:
   - "/srv/frigate/config"
   - "/srv/stacks/frigate"
+
+borgmatic_config_sqlite_databases:
+  - path: "/srv/frigate/config/frigate.db"
+    name: "frigate"

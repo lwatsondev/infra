@@ -1,0 +1,11 @@
+---
+borgmatic_config_source_directories:
+  - "/srv/cappuccino"
+  - "/srv/stacks/cappuccino"
+
+borgmatic_config_postgresql_databases:
+  - name: "cappuccino"
+    username: "cappuccino"
+    pg_dump_command: "docker exec cappuccino_db_18 pg_dump"
+    pg_restore_command: "docker exec cappuccino_db_18 pg_restore"
+    psql_command: "docker exec cappuccino_db_18 psql"

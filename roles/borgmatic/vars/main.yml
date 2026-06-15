@@ -2,8 +2,10 @@
 __borgmatic_packages:
   Debian:
     - "borgmatic"
+    - "sqlite3"
   Gentoo:
     - "app-backup/borgmatic"
+    - "dev-db/sqlite"
 
 __borgmatic_global_settings:
   source_directories:

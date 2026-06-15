@@ -3,8 +3,6 @@ all:
   hosts:
     serenity:
       ansible_connection: "local"
-    luna:
-      ansible_host: "luna.hedgehog-skate.ts.net"
     nova:
       ansible_host: "nova.hedgehog-skate.ts.net"
     monitor:
@@ -28,7 +26,27 @@ all:
       ansible_host: "frigate.internal.home.lwatson.dev"
     do-ams3-01:
       ansible_host: "do-ams3-01.hedgehog-skate.ts.net"
-
+    luna:
+      ansible_host: "luna.lwatson.dev"
+    luna-firewall:
+      ansible_host: "firewall.internal.luna.lwatson.dev"
+    luna-jumphost:
+      ansible_host: "jumphost.luna.lwatson.dev"
+      ansible_ssh_common_args: ""
+    luna-dns:
+      ansible_host: "dns.internal.luna.lwatson.dev"
+    luna-proxy:
+      ansible_host: "proxy.internal.luna.lwatson.dev"
+    luna-rehome:
+      ansible_host: "rehome.internal.luna.lwatson.dev"
+    luna-media:
+      ansible_host: "media.internal.luna.lwatson.dev"
+    luna-cappuccino:
+      ansible_host: "cappuccino.internal.luna.lwatson.dev"
+    luna-gentoogram:
+      ansible_host: "gentoogram.internal.luna.lwatson.dev"
+    luna-gitea:
+      ansible_host: "gitea.internal.luna.lwatson.dev"
   children:
     workstations:
       hosts:
@@ -47,6 +65,11 @@ all:
         pve-zigbee2mqtt:
         do-ams3-01:
         monitor:
+        luna-rehome:
+        luna-media:
+        luna-cappuccino:
+        luna-gentoogram:
+        luna-gitea:
     zfs:
       hosts:
         luna:
@@ -55,7 +78,6 @@ all:
         pve:
     gentoo:
       hosts:
-        luna:
         serenity:
         nova:
     debian:
@@ -70,13 +92,27 @@ all:
         pve-frigate:
         do-ams3-01:
         monitor:
+        luna:
+        luna-firewall:
+        luna-jumphost:
+        luna-dns:
+        luna-proxy:
+        luna-rehome:
+        luna-media:
+        luna-cappuccino:
+        luna-gentoogram:
+        luna-gitea:
     lxc:
       hosts:
         pve-router:
         pve-caddy:
         pve-postgresql:
         pve-mqtt:
-    pveguests:
+        luna-firewall:
+        luna-jumphost:
+        luna-dns:
+        luna-proxy:
+    pve-guests:
       hosts:
         pve-router:
         pve-caddy:
@@ -85,22 +121,45 @@ all:
         pve-zigbee2mqtt:
         pve-frigate:
         pve-vaultwarden:
+    luna-guests:
+      hosts:
+        luna-firewall:
+        luna-jumphost:
+        luna-dns:
+        luna-proxy:
+        luna-rehome:
+        luna-media:
+        luna-cappuccino:
+        luna-gentoogram:
+        luna-gitea:
     borgmatic:
       hosts:
         pve-postgresql:
         pve-vaultwarden:
         pve-frigate:
         pve-mqtt:
+        pve-zigbee2mqtt:
         pve-router:
         luna:
+        pve:
         monitor:
         serenity:
+        luna-cappuccino:
+        luna-gentoogram:
+        luna-gitea:
+        luna-media:
+        luna-rehome:
     docker:
       hosts:
-        luna:
+        # luna:
         serenity:
         nova:
         monitor:
         pve-vaultwarden:
         pve-zigbee2mqtt:
         pve-frigate:
+        luna-rehome:
+        luna-media:
+        luna-cappuccino:
+        luna-gentoogram:
+        luna-gitea:
