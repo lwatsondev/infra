@@ -144,11 +144,15 @@ all:
         pve:
         monitor:
         serenity:
+        luna-firewall:
+        luna-jumphost:
+        luna-dns:
+        luna-proxy:
+        luna-rehome:
+        luna-media:
         luna-cappuccino:
         luna-gentoogram:
         luna-gitea:
-        luna-media:
-        luna-rehome:
     docker:
       hosts:
         # luna:
