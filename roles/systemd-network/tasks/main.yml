@@ -1,0 +1,69 @@
+---
+- name: "systemd-network:resolved:install"
+  ansible.builtin.package:
+    name: "systemd-resolved"
+  tags: ["systemd-network"]
+
+- name: "systemd-network:resolved:enable"
+  ansible.builtin.systemd:
+    name: "systemd-resolved"
+    enabled: true
+    state: "started"
+  tags: ["systemd-network"]
+
+- name: "systemd-network:resolv.conf:symlink"
+  ansible.builtin.file:
+    src: "/run/systemd/resolve/resolv.conf"
+    dest: "/etc/resolv.conf"
+    state: "link"
+    force: true
+  tags: ["systemd-network"]
+
+- name: "systemd-network:networkd:config"
+  ansible.builtin.template:
+    src: "etc/systemd/network/00-ansible.network.j2"
+    dest: "/etc/systemd/network/00-ansible.network"
+    mode: "0644"
+  notify: "systemd-network:networkd:reload"
+  tags: ["systemd-network"]
+
+- name: "systemd-network:networkd:wait-online:dropin_dir"
+  ansible.builtin.file:
+    path: "/etc/systemd/system/systemd-networkd-wait-online.service.d"
+    state: "directory"
+    mode: "0755"
+  tags: ["systemd-network"]
+
+- name: "systemd-network:networkd:wait-online:dropin"
+  ansible.builtin.template:
+    src: "etc/systemd/system/systemd-networkd-wait-online.service.d/00-ansible.conf.j2"
+    dest: "/etc/systemd/system/systemd-networkd-wait-online.service.d/00-ansible.conf"
+    mode: "0644"
+  notify: "systemd-network:systemd:daemon-reload"
+  tags: ["systemd-network"]
+
+- name: "systemd-network:networkd:enable"
+  ansible.builtin.systemd:
+    name: "systemd-networkd"
+    enabled: true
+    daemon_reload: true
+  tags: ["systemd-network"]
+
+- name: "systemd-network:networking.service:disable"
+  ansible.builtin.systemd:
+    name: "networking"
+    enabled: false
+  failed_when: false
+  tags: ["systemd-network"]
+
+- name: "systemd-network:dhcp:purge"
+  ansible.builtin.apt:
+    name:
+      - "dhcpcd"
+      - "dhcpcd-base"
+      - "isc-dhcp-client"
+      - "isc-dhcp-common"
+    state: "absent"
+    purge: true
+    autoremove: true
+  tags: ["systemd-network"]

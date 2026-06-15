@@ -1,0 +1,15 @@
+#
+# {{ ansible_managed }}
+#
+
+[Match]
+Name=en*
+
+[Network]
+DHCP=yes
+{% for route in systemd_network_routes %}
+
+[Route]
+Destination={{ route.destination }}
+Gateway={{ route.gateway }}
+{% endfor %}

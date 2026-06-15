@@ -1,4 +1,8 @@
 ---
+systemd_network_routes:
+  - destination: "100.64.0.0/10"
+    gateway: "10.10.20.2"
+
 borgmatic_config_source_directories:
   - "/srv/mediaserver/config/deluge"
   - "/srv/mediaserver/config/seerr"

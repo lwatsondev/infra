@@ -15,6 +15,11 @@
   roles:
     - "sysctl"
 
+- name: "Apply guest VM networking configuration"
+  hosts: "luna-guests,pve-guests,!lxc"
+  roles:
+    - "systemd-network"
+
 - name: "Apply docker daemon configuration"
   hosts: "docker"
   roles:
