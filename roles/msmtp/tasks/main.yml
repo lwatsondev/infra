@@ -2,6 +2,7 @@
 - name: "msmtp:dependencies:install"
   ansible.builtin.package:
     name: "{{ __msmtp_system_packages[ansible_facts['os_family']] }}"
+  when: "msmtp_enabled"
   tags: ["msmtp"]
 
 - name: "msmtp:config_dir:create"
@@ -9,6 +10,7 @@
     path: "{{ __msmtp_config_file | dirname }}"
     recurse: true
     state: "directory"
+  when: "msmtp_enabled"
   tags: ["msmtp"]
 
 - name: "msmtp:configure"
@@ -16,4 +18,19 @@
     src: "msmtp/config.j2"
     dest: "{{ __msmtp_config_file }}"
     mode: "0640"
+  when: "msmtp_enabled"
+  tags: ["msmtp"]
+
+- name: "msmtp:config_dir:remove"
+  ansible.builtin.file:
+    path: "{{ __msmtp_config_file | dirname }}"
+    state: "absent"
+  when: "not msmtp_enabled"
+  tags: ["msmtp"]
+
+- name: "msmtp:dependencies:remove"
+  ansible.builtin.package:
+    name: "{{ __msmtp_system_packages[ansible_facts['os_family']] | reject('search', 'ca-certificates') | list }}"
+    state: "absent"
+  when: "not msmtp_enabled"
   tags: ["msmtp"]

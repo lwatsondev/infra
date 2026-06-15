@@ -1,4 +1,6 @@
 ---
+msmtp_enabled: true
+
 msmtp_account_name: "main"
 msmtp_port: 587
 msmtp_tls: true

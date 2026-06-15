@@ -3,6 +3,8 @@ ansible_ssh_common_args: "-o ProxyJump={{ hostvars['luna-jumphost'].ansible_user
 
 systemd_resolved_enabled: false
 
+msmtp_enabled: false
+
 users:
   - name: "root"
     ssh_keys:
