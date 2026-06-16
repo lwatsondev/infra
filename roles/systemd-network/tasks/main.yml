@@ -21,9 +21,10 @@
 
 - name: "systemd-network:networkd:config"
   ansible.builtin.template:
-    src: "etc/systemd/network/00-ansible.network.j2"
-    dest: "/etc/systemd/network/00-ansible.network"
+    src: "etc/systemd/network/network.j2"
+    dest: "/etc/systemd/network/{{ item.filename }}"
     mode: "0644"
+  loop: "{{ systemd_network_files }}"
   notify: "systemd-network:networkd:reload"
   tags: ["systemd-network"]
 

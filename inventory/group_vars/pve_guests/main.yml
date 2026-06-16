@@ -1,4 +1,18 @@
 ---
+systemd_network_files:
+  - filename: "00-ansible.network"
+    sections:
+      - name: "Match"
+        settings:
+          Name: "en*"
+      - name: "Network"
+        settings:
+          DHCP: "yes"
+      - name: "Route"
+        settings:
+          Destination: "100.64.0.0/10"
+          Gateway: "10.10.20.2"
+
 ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-router'].ansible_user }}@{{ hostvars['pve-router'].ansible_host }}"
 
 systemd_resolved_enabled: false

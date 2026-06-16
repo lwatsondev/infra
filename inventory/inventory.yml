@@ -28,13 +28,9 @@ all:
       ansible_host: "do-ams3-01.hedgehog-skate.ts.net"
     luna:
       ansible_host: "luna.lwatson.dev"
-    luna-firewall:
-      ansible_host: "firewall.internal.luna.lwatson.dev"
     luna-jumphost:
       ansible_host: "jumphost.luna.lwatson.dev"
       ansible_ssh_common_args: ""
-    luna-dns:
-      ansible_host: "dns.internal.luna.lwatson.dev"
     luna-proxy:
       ansible_host: "proxy.internal.luna.lwatson.dev"
     luna-rehome:
@@ -47,6 +43,10 @@ all:
       ansible_host: "gentoogram.internal.luna.lwatson.dev"
     luna-gitea:
       ansible_host: "gitea.internal.luna.lwatson.dev"
+    luna-znc:
+      ansible_host: "znc.internal.luna.lwatson.dev"
+    luna-firewall:
+      ansible_host: "firewall.luna.lwatson.dev"
   children:
     workstations:
       hosts:
@@ -70,6 +70,8 @@ all:
         luna-cappuccino:
         luna-gentoogram:
         luna-gitea:
+        luna-znc:
+        luna-firewall:
     zfs:
       hosts:
         luna:
@@ -93,26 +95,24 @@ all:
         do-ams3-01:
         monitor:
         luna:
-        luna-firewall:
         luna-jumphost:
-        luna-dns:
         luna-proxy:
         luna-rehome:
         luna-media:
         luna-cappuccino:
         luna-gentoogram:
         luna-gitea:
+        luna-znc:
+        luna-firewall:
     lxc:
       hosts:
         pve-router:
         pve-caddy:
         pve-postgresql:
         pve-mqtt:
-        luna-firewall:
         luna-jumphost:
-        luna-dns:
         luna-proxy:
-    pve-guests:
+    pve_guests:
       hosts:
         pve-router:
         pve-caddy:
@@ -121,17 +121,17 @@ all:
         pve-zigbee2mqtt:
         pve-frigate:
         pve-vaultwarden:
-    luna-guests:
+    luna_guests:
       hosts:
-        luna-firewall:
         luna-jumphost:
-        luna-dns:
         luna-proxy:
         luna-rehome:
         luna-media:
         luna-cappuccino:
         luna-gentoogram:
         luna-gitea:
+        luna-znc:
+        luna-firewall:
     borgmatic:
       hosts:
         pve-postgresql:
@@ -144,15 +144,15 @@ all:
         pve:
         monitor:
         serenity:
-        luna-firewall:
         luna-jumphost:
-        luna-dns:
         luna-proxy:
         luna-rehome:
         luna-media:
         luna-cappuccino:
         luna-gentoogram:
         luna-gitea:
+        luna-znc:
+        luna-firewall:
     docker:
       hosts:
         # luna:
@@ -167,3 +167,4 @@ all:
         luna-cappuccino:
         luna-gentoogram:
         luna-gitea:
+        luna-znc:
