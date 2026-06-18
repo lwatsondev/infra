@@ -1,0 +1,17 @@
+---
+# notifications_apprise_urls:
+#   - url: "tgram://{{ bot_token }}/{{ chat_id }}"
+#     tags:
+#       - "borgmatic-error"
+#       - "smartd"
+#       - "zfs-error"
+#       - "zfs-warning"
+#   - url: "forms://monitor.example.com/api/push/TOKEN?-status=up&method=get"
+#     tags:
+#       - "borgmatic-start"
+#       - "borgmatic-success"
+#   - url: "forms://monitor.example.com/api/push/TOKEN?-status=down&method=get"
+#     tags:
+#       - "borgmatic-error"
+
+notifications_apprise_urls: []

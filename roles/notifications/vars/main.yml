@@ -1,0 +1,4 @@
+---
+__notifications_install_dir: "/usr/local/libexec/notifications"
+__notifications_uv_bin_dir: "/usr/local/sbin"
+__notifications_uv_installer_dest: "/tmp/uv-install.sh"

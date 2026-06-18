@@ -50,6 +50,11 @@
   roles:
     - "smartmontools"
 
+- name: "Set up notifications"
+  hosts: "borgmatic:zfs"
+  roles:
+    - "notifications"
+
 - name: "Set up uv for zfs-autobackup"
   hosts: "zfs"
   roles:

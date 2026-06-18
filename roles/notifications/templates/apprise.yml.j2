@@ -1,0 +1,11 @@
+#
+# {{ ansible_managed }}
+#
+
+urls:
+{% for entry in notifications_apprise_urls %}
+  - {{ entry.url }}:
+{% for tag in entry.tags %}
+    - tag: {{ tag }}
+{% endfor %}
+{% endfor %}

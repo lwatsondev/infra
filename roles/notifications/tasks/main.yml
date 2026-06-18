@@ -1,0 +1,107 @@
+---
+- name: "notifications:uv:checkexists"
+  ansible.builtin.stat:
+    path: "{{ __notifications_uv_bin_dir }}/uv"
+  register: "__notifications_uv_exists"
+  tags: ["notifications"]
+
+- name: "notifications:uv:installer:download"
+  ansible.builtin.get_url:
+    url: "https://astral.sh/uv/install.sh"
+    dest: "{{ __notifications_uv_installer_dest }}"
+    mode: "0755"
+  when: "not __notifications_uv_exists.stat.exists"
+  changed_when: false
+  tags: ["notifications"]
+
+- name: "notifications:uv:installer:run"
+  environment:
+    INSTALLER_NO_MODIFY_PATH: "1"
+    UV_INSTALL_DIR: "{{ __notifications_uv_bin_dir }}"
+  ansible.builtin.command:
+    cmd: "{{ __notifications_uv_installer_dest }}"
+    creates: "{{ __notifications_uv_bin_dir }}/uv"
+  changed_when: false
+  tags: ["notifications"]
+
+- name: "notifications:install:dir"
+  ansible.builtin.file:
+    path: "{{ __notifications_install_dir }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  tags: ["notifications"]
+
+- name: "notifications:config:dir"
+  ansible.builtin.file:
+    path: "/etc/apprise"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  tags: ["notifications"]
+
+- name: "notifications:config:deploy"
+  ansible.builtin.template:
+    src: "apprise.yml.j2"
+    dest: "/etc/apprise/apprise.yml"
+    owner: "root"
+    group: "root"
+    mode: "0640"
+  tags: ["notifications"]
+
+- name: "notifications:script:borgmatic"
+  ansible.builtin.template:
+    src: "borgmatic-notify.py"
+    dest: "{{ __notifications_install_dir }}/borgmatic-notify.py"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  tags: ["notifications"]
+
+- name: "notifications:script:smartd"
+  ansible.builtin.template:
+    src: "smartd-notify.py"
+    dest: "{{ __notifications_install_dir }}/smartd-notify.py"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  tags: ["notifications"]
+
+- name: "notifications:script:zfs"
+  ansible.builtin.template:
+    src: "zfs-notify.py"
+    dest: "{{ __notifications_install_dir }}/zfs-notify.py"
+    owner: "root"
+    group: "root"
+    mode: "0755"
+  tags: ["notifications"]
+
+- name: "notifications:symlink:smartd:check"
+  ansible.builtin.stat:
+    path: "/etc/smartmontools/run.d"
+  register: "__notifications_smartd_run_d"
+  tags: ["notifications"]
+
+- name: "notifications:symlink:smartd"
+  ansible.builtin.file:
+    src: "{{ __notifications_install_dir }}/smartd-notify.py"
+    dest: "/etc/smartmontools/run.d/smartd-notify"
+    state: "link"
+  when: "__notifications_smartd_run_d.stat.exists"
+  tags: ["notifications"]
+
+- name: "notifications:symlink:zfs:check"
+  ansible.builtin.stat:
+    path: "/etc/zfs/zed.d"
+  register: "__notifications_zfs_zed_d"
+  tags: ["notifications"]
+
+- name: "notifications:symlink:zfs"
+  ansible.builtin.file:
+    src: "{{ __notifications_install_dir }}/zfs-notify.py"
+    dest: "/etc/zfs/zed.d/all-apprise-notify"
+    state: "link"
+  when: "__notifications_zfs_zed_d.stat.exists"
+  tags: ["notifications"]
