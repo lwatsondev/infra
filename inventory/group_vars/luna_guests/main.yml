@@ -1,10 +1,10 @@
 ---
 systemd_network_files:
-  - filename: "00-ansible.network"
+  - filename: "00-ens18.network"
     sections:
       - name: "Match"
         settings:
-          Name: "en*"
+          Name: "ens18"
       - name: "Network"
         settings:
           DHCP: "yes"

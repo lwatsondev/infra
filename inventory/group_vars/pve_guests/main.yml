@@ -1,18 +1,4 @@
 ---
-systemd_network_files:
-  - filename: "00-ansible.network"
-    sections:
-      - name: "Match"
-        settings:
-          Name: "en*"
-      - name: "Network"
-        settings:
-          DHCP: "yes"
-      - name: "Route"
-        settings:
-          Destination: "100.64.0.0/10"
-          Gateway: "10.10.20.2"
-
 ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-router'].ansible_user }}@{{ hostvars['pve-router'].ansible_host }}"
 
 systemd_resolved_enabled: false
@@ -28,8 +14,10 @@ users:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+0Z+T9LCRa54gB1oXTIzc82R5J7IS2QLZcy4nIJLI u0_a329@localhost"
       - "{{ _ansible_public_key }}"
 
-borgmatic_config_on_error:
-  - "/usr/local/libexec/borgmatic/telegram-notify.sh {error}"
+_notifications_apprise_urls_borgmatic:
+  - url: "tgram://{{ borgmatic_telegram_bot_token }}/{{ telegram_chat_id }}"
+    tags:
+      - "borgmatic-error"
 
 borgmatic_config_repositories:
   - path: "ssh://zh4596@zh4596.rsync.net/./borg/pve-guests/{{ ansible_facts['hostname'] }}"
