@@ -66,17 +66,17 @@ EVENTS: dict[str, Event] = {
     "error": Event(
         tag="zfs zfs-error",
         notify_type=apprise.NotifyType.FAILURE,
-        header="🔴 ZFS: CRITICAL",
+        header="🔴 ZFS CRITICAL",
     ),
     "warning": Event(
         tag="zfs zfs-warning",
         notify_type=apprise.NotifyType.WARNING,
-        header="🟡 ZFS: WARNING",
+        header="🟡 ZFS WARNING",
     ),
     "ok": Event(
         tag="zfs zfs-ok",
         notify_type=apprise.NotifyType.SUCCESS,
-        header="🟢 ZFS: HEALTHY",
+        header="🟢 ZFS HEALTHY",
     ),
 }
 
