@@ -7,3 +7,6 @@ skip_list:
   - "yaml[line-length]"
   - "role-name"
   - "package-latest"
+
+exclude_paths:
+  - "mitogen/"
