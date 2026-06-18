@@ -17,6 +17,16 @@
   notify: "zfs-zed:restart"
   tags: ["zfs-monitoring"]
 
+- name: "zfs-monitoring:scripts:absent"
+  ansible.builtin.file:
+    path: "/etc/zfs/zed.d/{{ item }}"
+    state: "absent"
+  loop:
+    - "all-telegram-notify.sh"
+    - "all-uptime-kuma-notify.sh"
+  notify: "zfs-zed:restart"
+  tags: ["zfs-monitoring"]
+
 - name: "zfs-monitoring:configure:zed.rc"
   ansible.builtin.template:
     src: "templates/zed.rc.j2"
