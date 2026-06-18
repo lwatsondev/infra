@@ -2,7 +2,7 @@
 all:
   hosts:
     serenity:
-      ansible_connection: "local"
+      ansible_host: "serenity.hedgehog-skate.ts.net"
     nova:
       ansible_host: "nova.hedgehog-skate.ts.net"
     monitor:
@@ -31,6 +31,7 @@ all:
     luna-jumphost:
       ansible_host: "jumphost.luna.lwatson.dev"
       ansible_ssh_common_args: ""
+      ansible_connection: "ssh"
     luna-proxy:
       ansible_host: "proxy.internal.luna.lwatson.dev"
     luna-rehome:
@@ -45,8 +46,12 @@ all:
       ansible_host: "gitea.internal.luna.lwatson.dev"
     luna-znc:
       ansible_host: "znc.internal.luna.lwatson.dev"
+    luna-gitea-runner-01:
+      ansible_host: "gitea-runner-01.internal.luna.lwatson.dev"
+    luna-gitea-runner-02:
+      ansible_host: "gitea-runner-02.internal.luna.lwatson.dev"
     luna-firewall:
-      ansible_host: "firewall.luna.lwatson.dev"
+      ansible_host: "firewall.internal.luna.lwatson.dev"
   children:
     workstations:
       hosts:
@@ -72,6 +77,8 @@ all:
         luna-gitea:
         luna-znc:
         luna-firewall:
+        luna-gitea-runner-01:
+        luna-gitea-runner-02:
     zfs:
       hosts:
         luna:
@@ -104,6 +111,8 @@ all:
         luna-gitea:
         luna-znc:
         luna-firewall:
+        luna-gitea-runner-01:
+        luna-gitea-runner-02:
     lxc:
       hosts:
         pve-router:
@@ -132,6 +141,8 @@ all:
         luna-gitea:
         luna-znc:
         luna-firewall:
+        luna-gitea-runner-01:
+        luna-gitea-runner-02:
     borgmatic:
       hosts:
         pve-postgresql:
@@ -168,3 +179,5 @@ all:
         luna-gentoogram:
         luna-gitea:
         luna-znc:
+        luna-gitea-runner-01:
+        luna-gitea-runner-02:
