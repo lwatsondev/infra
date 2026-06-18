@@ -24,6 +24,13 @@
   changed_when: false
   tags: ["notifications"]
 
+- name: "notifications:uv:selfupdate"
+  ansible.builtin.command:
+    cmd: "{{ __notifications_uv_bin_dir }}/uv self update"
+  when: "__notifications_uv_exists.stat.exists"
+  changed_when: false
+  tags: ["notifications"]
+
 - name: "notifications:install:dir"
   ansible.builtin.file:
     path: "{{ __notifications_install_dir }}"
