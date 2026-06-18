@@ -1,6 +1,0 @@
----
-- name: "tgsend|test"
-  ansible.builtin.command:
-    cmd: "uvx telegram-send -g 'ANSIBLE CONFIG TEST on {{ ansible_hostname }}'"
-  when: "tgsend_test_config"
-  changed_when: false

@@ -55,11 +55,6 @@
   roles:
     - "notifications"
 
-- name: "Set up uv for zfs-autobackup"
-  hosts: "zfs"
-  roles:
-    - "uv"
-
 - name: "Set up ZFS monitoring"
   hosts: "zfs"
   roles:
