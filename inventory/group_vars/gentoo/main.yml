@@ -1,1 +1,18 @@
 ---
+common_packages:
+  - "app-shells/bash-completion"
+  - "app-misc/ca-certificates"
+  - "net-misc/curl"
+  - "net-dns/bind-tools"
+  - "net-libs/ldns"
+  - "dev-vcs/git"
+  - "app-crypt/gnupg"
+  - "sys-process/htop"
+  - "app-misc/jq"
+  - "net-analyzer/mtr"
+  - "sys-apps/net-tools"
+  - "sys-process/psmisc"
+  - "app-admin/sudo"
+  - "net-analyzer/tcpdump"
+  - "app-misc/tmux"
+  - "app-editors/vim"
