@@ -1,9 +1,10 @@
 ---
 - name: "apt-unattended-upgrades:install_packages"
-  ansible.builtin.package:
+  ansible.builtin.apt:
     name:
       - "unattended-upgrades"
       - "apt-listchanges"
+    install_recommends: false
   tags: ["apt-unattended-upgrades"]
 
 - name: "apt-unattended-upgrades:configure"
