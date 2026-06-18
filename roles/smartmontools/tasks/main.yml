@@ -47,42 +47,10 @@
   notify: "smartd:restart"
   tags: ["smartmontools"]
 
-- name: "smartmontools:configure:telegram.conf"
-  ansible.builtin.template:
-    src: "telegram.conf.j2"
-    dest: "/etc/smartmontools/telegram.conf"
-    owner: "root"
-    group: "root"
-    mode: "0640"
-  when: "smartmontools_telegram_bot_token is defined and smartmontools_telegram_chat_id is defined"
-  notify: "smartd:restart"
-  tags: ["smartmontools"]
-
-- name: "smartmontools:configure:telegram-notify:script"
-  ansible.builtin.template:
-    src: "telegram-notify.sh"
-    dest: "/usr/local/libexec/smartmontools/telegram-notify.sh"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-  when: "smartmontools_telegram_bot_token is defined and smartmontools_telegram_chat_id is defined"
-  notify: "smartd:restart"
-  tags: ["smartmontools"]
-
-- name: "smartmontools:configure:telegram-notify:link"
-  ansible.builtin.file:
-    src: "/usr/local/libexec/smartmontools/telegram-notify.sh"
-    dest: "/etc/smartmontools/run.d/telegram-notify"
-    state: "link"
-  when: "smartmontools_telegram_bot_token is defined and smartmontools_telegram_chat_id is defined"
-  notify: "smartd:restart"
-  tags: ["smartmontools"]
-
 - name: "smartmontools:configure:telegram:absent"
   ansible.builtin.file:
     path: "{{ item }}"
     state: "absent"
-  when: "smartmontools_telegram_bot_token is not defined or smartmontools_telegram_chat_id is not defined"
   loop:
     - "/etc/smartmontools/telegram.conf"
     - "/etc/smartmontools/run.d/telegram-notify"
