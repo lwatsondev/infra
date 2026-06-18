@@ -1,4 +1,9 @@
 ---
+_notifications_apprise_urls_borgmatic:
+  - url: "tgram://{{ borgmatic_telegram_bot_token }}/{{ telegram_chat_id }}"
+    tags:
+      - "borgmatic-error"
+
 borgmatic_config_ssh_command: "ssh -i /etc/borgmatic/secrets/id_ed25519 -o StrictHostKeyChecking=accept-new"
 borgmatic_config_remote_path: "borg14"
 borgmatic_config_upload_rate_limit: 10000

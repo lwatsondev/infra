@@ -1,8 +1,12 @@
 ---
-zfs_monitoring_telegram_chat_id: "{{ telegram_chat_id }}"
-
 zfs_monitoring_scrub_schedule: "weekly"
 zfs_monitoring_trim_schedule: "weekly"
+
+_notifications_apprise_urls_zfs:
+  - url: "tgram://{{ zfs_monitoring_telegram_bot_token }}/{{ telegram_chat_id }}"
+    tags:
+      - "zfs-error"
+      - "zfs-warning"
 
 borgmatic_service_overrides_extra:
   Service:

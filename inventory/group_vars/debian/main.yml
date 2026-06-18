@@ -1,4 +1,13 @@
 ---
+borgmatic_config_before_everything:
+  - "/usr/local/libexec/notifications/borgmatic-notify.py start"
+
+borgmatic_config_after_everything:
+  - "/usr/local/libexec/notifications/borgmatic-notify.py finish"
+
+borgmatic_config_on_error:
+  - "/usr/local/libexec/notifications/borgmatic-notify.py error {error}"
+
 tgsend_bot_token: "{{ telegram_bot_token }}"
 tgsend_chat_id: "{{ telegram_chat_id }}"
 

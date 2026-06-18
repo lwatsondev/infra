@@ -12,9 +12,11 @@ borgmatic_config_sqlite_databases:
   - path: "/srv/uptimekuma/data/kuma.db"
     name: "kuma"
 
-borgmatic_config_uptime_kuma:
-  push_url: "{{ borgmatic_uptime_kuma_push_url }}"
-  states:
-    - "start"
-    - "finish"
-    - "fail"
+_notifications_apprise_urls_uk:
+  - url: "{{ borgmatic_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=up&method=get"
+    tags:
+      - "borgmatic-start"
+      - "borgmatic-success"
+  - url: "{{ borgmatic_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=down&method=get"
+    tags:
+      - "borgmatic-error"

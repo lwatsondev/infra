@@ -25,12 +25,39 @@ borgmatic_config_repositories:
   - path: "ssh://zh4596@zh4596.rsync.net/./borg/serenity"
     label: "rsync.net"
 
-borgmatic_config_uptime_kuma:
-  push_url: "{{ borgmatic_uptime_kuma_push_url }}"
-  states:
-    - "start"
-    - "finish"
-    - "fail"
+borgmatic_config_commands:
+  - before: "action"
+    when:
+      - "create"
+    run:
+      - "/usr/local/libexec/notifications/borgmatic-notify.py start"
+  - after: "action"
+    when:
+      - "create"
+    states:
+      - "finish"
+    run:
+      - "/usr/local/libexec/notifications/borgmatic-notify.py finish"
+  - after: "error"
+    when:
+      - "create"
+    run:
+      - "/usr/local/libexec/notifications/borgmatic-notify.py error {error}"
+
+_notifications_apprise_urls_uk:
+  - url: "{{ borgmatic_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=up&method=get"
+    tags:
+      - "borgmatic-start"
+      - "borgmatic-success"
+  - url: "{{ borgmatic_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=down&method=get"
+    tags:
+      - "borgmatic-error"
+  - url: "{{ zfs_monitoring_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=up&method=get"
+    tags:
+      - "zfs-ok"
+  - url: "{{ zfs_monitoring_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=down&method=get"
+    tags:
+      - "zfs-error"
 
 borgmatic_service_overrides_extra:
   Service:

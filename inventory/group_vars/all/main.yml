@@ -59,7 +59,18 @@ docker_daemon_config:
   ip6tables: true
   experimental: true
 
-smartmontools_telegram_chat_id: "{{ telegram_chat_id }}"
+_notifications_apprise_urls_smartd:
+  - url: "tgram://{{ smartmontools_telegram_bot_token }}/{{ telegram_chat_id }}"
+    tags:
+      - "smartd"
+
+notifications_apprise_urls: >-
+  {{
+    _notifications_apprise_urls_smartd
+    + (_notifications_apprise_urls_borgmatic if _notifications_apprise_urls_borgmatic is defined else [])
+    + (_notifications_apprise_urls_zfs if _notifications_apprise_urls_zfs is defined else [])
+    + (_notifications_apprise_urls_uk if _notifications_apprise_urls_uk is defined else [])
+  }}
 
 ssh_sshd_config:
   PasswordAuthentication: "no"
