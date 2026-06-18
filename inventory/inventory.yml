@@ -143,6 +143,11 @@ all:
         luna-firewall:
         luna-gitea-runner-01:
         luna-gitea-runner-02:
+    smartmontools:
+      hosts:
+        serenity:
+        luna:
+        pve:
     borgmatic:
       hosts:
         pve-postgresql:
