@@ -1,10 +1,4 @@
 ---
-borgmatic_config_before_everything:
-  - "/usr/local/libexec/notifications/borgmatic-notify.py start"
-
-borgmatic_config_after_everything:
-  - "/usr/local/libexec/notifications/borgmatic-notify.py finish"
-
 borgmatic_config_on_error:
   - "/usr/local/libexec/notifications/borgmatic-notify.py error {error}"
 

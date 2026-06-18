@@ -1,4 +1,10 @@
 ---
+borgmatic_config_before_everything:
+  - "/usr/local/libexec/notifications/borgmatic-notify.py start"
+
+borgmatic_config_after_everything:
+  - "/usr/local/libexec/notifications/borgmatic-notify.py finish"
+
 borgmatic_config_source_directories:
   - "/srv/caddy"
   - "/srv/uptimekuma"
@@ -13,10 +19,10 @@ borgmatic_config_sqlite_databases:
     name: "kuma"
 
 _notifications_apprise_urls_uk:
-  - url: "{{ borgmatic_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=up&method=get"
+  - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=up&method=get"
     tags:
       - "borgmatic-start"
       - "borgmatic-success"
-  - url: "{{ borgmatic_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=down&method=get"
+  - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=down&method=get"
     tags:
       - "borgmatic-error"

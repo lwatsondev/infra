@@ -1,6 +1,12 @@
 ---
 ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-router'].ansible_user }}@{{ hostvars['pve-router'].ansible_host }}"
 
+borgmatic_config_before_everything:
+  - "/usr/local/libexec/notifications/borgmatic-notify.py start"
+
+borgmatic_config_after_everything:
+  - "/usr/local/libexec/notifications/borgmatic-notify.py finish"
+
 borgmatic_config_repositories:
   - path: "ssh://zh4596@zh4596.rsync.net/./borg/pve"
     label: "rsync.net"
@@ -8,17 +14,17 @@ borgmatic_config_repositories:
 borgmatic_config_keep_monthly: 6
 
 _notifications_apprise_urls_uk:
-  - url: "{{ borgmatic_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=up&method=get"
+  - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=up&method=get"
     tags:
       - "borgmatic-start"
       - "borgmatic-success"
-  - url: "{{ borgmatic_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=down&method=get"
+  - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=down&method=get"
     tags:
       - "borgmatic-error"
-  - url: "{{ zfs_monitoring_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=up&method=get"
+  - url: "{{ zfs_monitoring_uptime_kuma_push_url }}?-status=up&method=get"
     tags:
       - "zfs-ok"
-  - url: "{{ zfs_monitoring_uptime_kuma_push_url | regex_replace('^https?://', 'forms://') }}?-status=down&method=get"
+  - url: "{{ zfs_monitoring_uptime_kuma_push_url }}?-status=down&method=get"
     tags:
       - "zfs-error"
 
