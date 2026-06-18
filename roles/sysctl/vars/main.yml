@@ -8,9 +8,3 @@ __sysctl_base_vars:
 
   - name: "kernel.core_pattern"
     value: "/dev/null"
-
-  - name: "net.ipv4.tcp_syncookies"
-    value: 1
-
-  - name: "net.ipv4.tcp_synack_retries"
-    value: 5
