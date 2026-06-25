@@ -4,9 +4,7 @@ __msmtp_system_packages:
   Gentoo:
     - "mail-mta/msmtp"
     - "mail-client/mailx"
-    - "app-misc/ca-certificates"
   Debian:
     - "msmtp"
     - "msmtp-mta"
     - "bsd-mailx"
-    - "ca-certificates"
