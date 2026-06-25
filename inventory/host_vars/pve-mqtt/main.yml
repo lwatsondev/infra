@@ -1,6 +1,2 @@
 ---
 borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
-
-borgmatic_config_source_directories:
-  - "/srv/vaultwarden"
-  - "/srv/stacks/vaultwarden"

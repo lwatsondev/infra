@@ -2,6 +2,8 @@
 zfs_monitoring_scrub_schedule: "weekly"
 zfs_monitoring_trim_schedule: "weekly"
 
+zfs_monitoring_telegram_bot_token: "{{ _vault_zfs_monitoring_telegram_bot_token }}"
+
 _notifications_apprise_urls_zfs:
   - url: "tgram://{{ zfs_monitoring_telegram_bot_token }}/{{ telegram_chat_id }}"
     tags:

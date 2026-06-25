@@ -59,6 +59,8 @@ docker_daemon_config:
   ip6tables: true
   experimental: true
 
+telegram_chat_id: "{{ _vault_telegram_chat_id }}"
+
 notifications_apprise_urls: >-
   {{
     (_notifications_apprise_urls_smartd if _notifications_apprise_urls_smartd is defined else [])

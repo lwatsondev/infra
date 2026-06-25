@@ -1,6 +1,19 @@
 ---
 ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-router'].ansible_user }}@{{ hostvars['pve-router'].ansible_host }}"
 
+systemd_resolved_enabled: false
+
+zfs_monitoring_uptime_kuma_push_url: "{{ _vault_zfs_monitoring_uptime_kuma_push_url }}"
+zfs_monitoring_scrub_pools:
+  - "rpool"
+
+zfs_monitoring_trim_pools:
+  - "rpool"
+
+borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
+borgmatic_uptime_kuma_push_url: "{{ _vault_borgmatic_uptime_kuma_push_url }}"
+borgmatic_ssh_key_contents: "{{ _vault_borgmatic_ssh_key_contents }}"
+
 borgmatic_config_before_everything:
   - "/usr/local/libexec/notifications/borgmatic-notify.py start"
 
@@ -28,17 +41,9 @@ _notifications_apprise_urls_uk:
     tags:
       - "zfs-error"
 
-systemd_resolved_enabled: false
-
-zfs_monitoring_scrub_pools:
-  - "rpool"
-
-zfs_monitoring_trim_pools:
-  - "rpool"
-
 users:
   - name: "root"
-    password: "{{ _users_root_pass }}"
+    password: "{{ _vault_users_root_pass }}"
     ssh_keys:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGF/qUoS5O+MqtE+1T0fkjWNHLfBG7MYWTeQPg3G86o lwatson@nova"
@@ -48,7 +53,7 @@ users:
       - "{{ _ansible_public_key }}"
 
   - name: "lwatson"
-    password: "{{ _users_lwatson_pass }}"
+    password: "{{ _vault_users_lwatson_pass }}"
     linger: true
     ssh_keys:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"

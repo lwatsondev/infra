@@ -1,9 +1,8 @@
 ---
 ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-router'].ansible_user }}@{{ hostvars['pve-router'].ansible_host }}"
+ansible_ssh_pass: "{{ _vault_ansible_ssh_pass }}"
 
 systemd_resolved_enabled: false
-
-msmtp_enabled: false
 
 users:
   - name: "root"
@@ -13,6 +12,9 @@ users:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGfepV156UKrBujA0FY+8NSVvEYg4N9s+l69Cb43K0Fz lwatson@reaver"
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+0Z+T9LCRa54gB1oXTIzc82R5J7IS2QLZcy4nIJLI u0_a329@localhost"
       - "{{ _ansible_public_key }}"
+
+borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
+borgmatic_ssh_key_contents: "{{ _vault_borgmatic_ssh_key_contents }}"
 
 _notifications_apprise_urls_borgmatic:
   - url: "tgram://{{ borgmatic_telegram_bot_token }}/{{ telegram_chat_id }}"

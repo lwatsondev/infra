@@ -1,4 +1,8 @@
 ---
+ansible_ssh_common_args: "-o ProxyJump={{ hostvars['luna-jumphost'].ansible_user }}@{{ hostvars['luna-jumphost'].ansible_host }}"
+ansible_ssh_pass: "{{ _vault_ansible_ssh_pass }}"
+
+systemd_resolved_enabled: false
 systemd_network_files:
   - filename: "00-ens18.network"
     sections:
@@ -13,12 +17,6 @@ systemd_network_files:
           Destination: "100.64.0.0/10"
           Gateway: "10.10.0.1"
 
-ansible_ssh_common_args: "-o ProxyJump={{ hostvars['luna-jumphost'].ansible_user }}@{{ hostvars['luna-jumphost'].ansible_host }}"
-
-systemd_resolved_enabled: false
-
-msmtp_enabled: false
-
 users:
   - name: "root"
     ssh_keys:
@@ -28,6 +26,9 @@ users:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+0Z+T9LCRa54gB1oXTIzc82R5J7IS2QLZcy4nIJLI u0_a329@localhost"
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDHtBhLl76UPRlu9tYRMoi3FSmt6KURSQ9T6vTUQOL0R5uGSjafM46PzFNvgcSlUS/QqMlVuICUwXjpFPqzNggHG41tFIf971+3h3zVv3eyY0FDV4Dc4SLNbnNx5h/xxENTnQbAR73Lv4KIJbTWbsmhlZ+nR5aRQuN1osBHSmsKSjucU+axOm/ctIrgLVBQh8ovIeW/7X8dM4KLOZH8Ac+oEl2xfJvYiMSvTPLAReZMuprVnn/mL0pH9Tq7Hq70NJRKCF1DvTeqbCeMko9ugXewHVA1kTwfvYeAUzQkXTT28CWvVcojPKPQxyN7kQ9JO3aT2h5D4556QahSPpgQCOTEPsn42HtGq3Cj/o5NUsL13IpaNTBxCpSLXDZIOGOca3wlapIr3FcohShyxKDx6ZfWxSEow2Uz7k3JFfwFK6HrxcyAfv5+xPGMhdjr4Xi87zDjErc3xhMtE+NBTx+OmI2az363V9uDMUpAPH2WBXcc7pHOp2U3PYlE753F0hi4JYqMsHjrgD0MM6kZrwYYSNT1M4wgw8khxFLuVV/W/Myl+ubFwax3qlBRgUxRu5zkj3O33V6DQTuIRBSlSLlLsfyoxLM9Ot2qV2WB621J/tkiNbLZrbWNXA7uO8ZOBHSnoYi1znYcYSrRXFbgyFWXBg9BF9TStF0VYCwInCcOTYe43w== root@luna"
       - "{{ _ansible_public_key }}"
+
+borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
+borgmatic_ssh_key_contents: "{{ _vault_borgmatic_ssh_key_contents }}"
 
 _notifications_apprise_urls_borgmatic:
   - url: "tgram://{{ borgmatic_telegram_bot_token }}/{{ telegram_chat_id }}"

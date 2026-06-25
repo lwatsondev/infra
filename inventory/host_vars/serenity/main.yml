@@ -1,5 +1,6 @@
 ---
 ansible_user: "lwatson"
+ansible_become_pass: "{{ _vault_ansible_become_pass }}"
 docker_service_enable: false
 
 zfs_monitoring_scrub_pools:
@@ -8,6 +9,9 @@ zfs_monitoring_scrub_pools:
 zfs_monitoring_trim_pools:
   - "rpool"
 
+borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
+borgmatic_uptime_kuma_push_url: "{{ _vault_borgmatic_uptime_kuma_push_url }}"
+borgmatic_ssh_key_contents: "{{ _vault_borgmatic_ssh_key_contents }}"
 borgmatic_repo_encryption: "repokey"
 
 borgmatic_config_source_directories:
@@ -44,21 +48,6 @@ borgmatic_config_commands:
     run:
       - "/usr/local/libexec/notifications/borgmatic-notify.py error {error}"
 
-_notifications_apprise_urls_uk:
-  - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=up&method=get"
-    tags:
-      - "borgmatic-start"
-      - "borgmatic-success"
-  - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=down&method=get"
-    tags:
-      - "borgmatic-error"
-  - url: "{{ zfs_monitoring_uptime_kuma_push_url }}?-status=up&method=get"
-    tags:
-      - "zfs-ok"
-  - url: "{{ zfs_monitoring_uptime_kuma_push_url }}?-status=down&method=get"
-    tags:
-      - "zfs-error"
-
 borgmatic_service_overrides_extra:
   Service:
     - "ExecStart="
@@ -69,3 +58,12 @@ borgmatic_service_overrides_extra:
     - "PrivateDevices=no"
     - "CapabilityBoundingSet=CAP_DAC_READ_SEARCH CAP_NET_RAW CAP_SYS_ADMIN"
     - "RestrictNamespaces=no"
+
+_notifications_apprise_urls_uk:
+  - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=up&method=get"
+    tags:
+      - "borgmatic-start"
+      - "borgmatic-success"
+  - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=down&method=get"
+    tags:
+      - "borgmatic-error"

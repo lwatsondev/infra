@@ -1,4 +1,6 @@
 ---
+ansible_become_pass: "{{ _vault_ansible_become_pass }}"
+
 zfs_monitoring_scrub_pools:
   - "rpool"
 

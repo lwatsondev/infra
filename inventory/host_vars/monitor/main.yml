@@ -1,4 +1,8 @@
 ---
+borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
+borgmatic_uptime_kuma_push_url: "{{ _vault_borgmatic_uptime_kuma_push_url }}"
+borgmatic_ssh_key_contents: "{{ _vault_borgmatic_ssh_key_contents }}"
+
 borgmatic_config_before_everything:
   - "/usr/local/libexec/notifications/borgmatic-notify.py start"
 

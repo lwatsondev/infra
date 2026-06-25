@@ -4,7 +4,7 @@ smartmontools_schedule: "S/../.././02|L/../../7/02"
 
 users:
   - name: "root"
-    password: "{{ _users_root_pass }}"
+    password: "{{ _vault_users_root_pass }}"
     ssh_keys:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGF/qUoS5O+MqtE+1T0fkjWNHLfBG7MYWTeQPg3G86o lwatson@nova"
@@ -13,7 +13,7 @@ users:
       - "{{ _ansible_public_key }}"
 
   - name: "lwatson"
-    password: "{{ _users_lwatson_pass }}"
+    password: "{{ _vault_users_lwatson_pass }}"
     linger: true
     ssh_keys:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"

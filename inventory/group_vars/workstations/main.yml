@@ -4,6 +4,6 @@ smartmontools_schedule: "S/../.././12|L/../../7/12"
 
 users:
   - name: "lwatson"
-    password: "{{ _users_lwatson_pass }}"
+    password: "{{ _vault_users_lwatson_pass }}"
     linger: true
     sudo: true

@@ -1,2 +1,4 @@
 ---
+borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
+
 apt_unattended_upgrades_mail_enabled: true
