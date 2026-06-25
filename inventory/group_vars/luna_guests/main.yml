@@ -1,6 +1,4 @@
 ---
-apt_unattended_upgrades_mail_enabled: false
-
 systemd_network_files:
   - filename: "00-ens18.network"
     sections:

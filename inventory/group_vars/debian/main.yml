@@ -8,7 +8,6 @@ tgsend_chat_id: "{{ telegram_chat_id }}"
 msmtp_host: "email-smtp.eu-north-1.amazonaws.com"
 
 apt_unattended_upgrades_mail_sender: "{{ msmtp_from_addr }}"
-apt_listchanges_enabled: false
 
 apt_unattended_upgrades_origins:
   - "o=Debian,n=${distro_codename}-updates"
