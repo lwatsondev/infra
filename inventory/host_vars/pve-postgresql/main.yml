@@ -1,4 +1,6 @@
 ---
+apt_unattended_upgrades_mail_enabled: true
+
 borgmatic_config_source_directories:
   - "/etc/postgresql"
 

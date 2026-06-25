@@ -1,0 +1,34 @@
+---
+- name: "apt:unattended-upgrades:packages"
+  ansible.builtin.apt:
+    name: "unattended-upgrades"
+    install_recommends: false
+    state: "{{ 'present' if apt_unattended_upgrades_enabled else 'absent' }}"
+    purge: true
+    update_cache: "{{ apt_unattended_upgrades_enabled | bool }}"
+  tags: ["apt"]
+
+- name: "apt:unattended-upgrades:configure"
+  ansible.builtin.template:
+    src: "52unattended-upgrades-local.j2"
+    dest: "/etc/apt/apt.conf.d/52unattended-upgrades-local"
+    mode: "0640"
+  when: "apt_unattended_upgrades_enabled"
+  tags: ["apt"]
+
+- name: "apt:listchanges:packages"
+  ansible.builtin.apt:
+    name: "apt-listchanges"
+    install_recommends: false
+    state: "{{ 'present' if apt_listchanges_enabled else 'absent' }}"
+    purge: true
+    update_cache: "{{ apt_listchanges_enabled | bool }}"
+  tags: ["apt"]
+
+- name: "apt:listchanges:configure"
+  ansible.builtin.template:
+    src: "listchanges.conf.j2"
+    dest: "/etc/apt/listchanges.conf"
+    mode: "0640"
+  when: "apt_listchanges_enabled"
+  tags: ["apt"]

@@ -1,6 +1,4 @@
 ---
-apt_unattended_upgrades_mail_sender: "{{ msmtp_from_addr }}"
-
 systemd_resolved_enabled: false
 
 zfs_monitoring_scrub_pools:

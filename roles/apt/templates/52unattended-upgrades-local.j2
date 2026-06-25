@@ -11,10 +11,7 @@ Unattended-Upgrade::Origins-Pattern {
 {% endfor %}
 };
 
-{% if apt_unattended_upgrades_mail_to | length > 0 %}
+{% if apt_unattended_upgrades_mail_enabled and apt_unattended_upgrades_mail_to | length > 0 and apt_unattended_upgrades_mail_sender | length > 0 %}
 Unattended-Upgrade::Mail "{{ apt_unattended_upgrades_mail_to }}";
-{% endif %}
-
-{% if apt_unattended_upgrades_mail_sender | length > 0 %}
 Unattended-Upgrade::Sender "Unattended-Upgrades <{{ apt_unattended_upgrades_mail_sender }}>";
 {% endif %}

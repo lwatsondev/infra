@@ -30,10 +30,10 @@
   roles:
     - "zram"
 
-- name: "Set up apt unattended-upgrades and listchanges"
+- name: "Configure apt"
   hosts: "debian"
   roles:
-    - "apt-unattended-upgrades"
+    - "apt"
 
 - name: "Set up needrestart"
   hosts: "all"

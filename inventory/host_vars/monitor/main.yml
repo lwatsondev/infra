@@ -1,6 +1,4 @@
 ---
-apt_unattended_upgrades_mail_sender: "{{ msmtp_from_addr }}"
-
 borgmatic_config_before_everything:
   - "/usr/local/libexec/notifications/borgmatic-notify.py start"
 

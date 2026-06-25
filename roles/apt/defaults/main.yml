@@ -1,0 +1,9 @@
+---
+apt_unattended_upgrades_enabled: true
+apt_unattended_upgrades_mail_enabled: true
+apt_unattended_upgrades_mail_to: ""
+apt_unattended_upgrades_mail_sender: ""
+apt_unattended_upgrades_origins: []
+
+apt_listchanges_enabled: true
+apt_listchanges_mail_to: ""

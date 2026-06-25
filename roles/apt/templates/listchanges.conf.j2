@@ -1,0 +1,14 @@
+#
+# {{ ansible_managed }}
+#
+
+[apt]
+frontend={{ 'mail' if apt_listchanges_mail_to | length > 0 else 'none' }}
+{% if apt_listchanges_mail_to | length > 0 %}
+email_address={{ apt_listchanges_mail_to }}
+{% endif %}
+confirm=false
+headers=false
+reverse=false
+save_seen=/var/lib/apt/listchanges
+which=both
