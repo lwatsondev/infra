@@ -26,7 +26,7 @@ _notifications_apprise_urls_uk:
   - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=up&method=get"
     tags:
       - "borgmatic-start"
-      - "borgmatic-success"
+      - "borgmatic-ok"
   - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=down&method=get"
     tags:
       - "borgmatic-error"

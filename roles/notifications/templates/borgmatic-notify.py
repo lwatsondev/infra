@@ -1,4 +1,4 @@
-#!/usr/bin/env -S uv run --script
+#!/usr/bin/env -S {{ __notifications_uv_bin_dir }}/uv run --script
 
 # /// script
 # requires-python = ">=3.14"
@@ -34,17 +34,17 @@ class Event:
 
 EVENTS: dict[str, Event] = {
     "start": Event(
-        tag="borgmatic borgmatic-start",
+        tag="borgmatic-start",
         notify_type=apprise.NotifyType.INFO,
         header="🔵 <b>borgmatic</b>: backup started",
     ),
     "finish": Event(
-        tag="borgmatic borgmatic-success",
+        tag="borgmatic-ok",
         notify_type=apprise.NotifyType.SUCCESS,
         header="🟢 <b>borgmatic</b>: backup finished",
     ),
     "error": Event(
-        tag="borgmatic borgmatic-error",
+        tag="borgmatic-error",
         notify_type=apprise.NotifyType.FAILURE,
         header="🔴 <b>borgmatic</b>: backup failed",
     ),

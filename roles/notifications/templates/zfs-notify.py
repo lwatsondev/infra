@@ -1,4 +1,4 @@
-#!/usr/bin/env -S uv run --script
+#!/usr/bin/env -S {{ __notifications_uv_bin_dir }}/uv run --script
 
 # /// script
 # requires-python = ">=3.14"
@@ -19,6 +19,7 @@ import subprocess
 import sys
 import time
 from dataclasses import dataclass
+from enum import Enum, auto
 from pathlib import Path
 
 import apprise
@@ -29,30 +30,27 @@ LOCK_DIR = Path("/var/lock")
 logging.basicConfig(level=logging.INFO, format="%(name)s: %(message)s")
 log = logging.getLogger("zfs-notify")
 
-CRITICAL_SUBCLASSES = frozenset(
-    {
-        "io_failure",
-        "data",
-        "vdev_remove",
-        "vdev_fault",
-        "vdev_degraded",
-    }
-)
 
-WARNING_SUBCLASSES = frozenset(
-    {
-        "checksum",
-        "scrub_abort",
-    }
-)
+class Level(Enum):
+    ERROR = auto()
+    WARNING = auto()
+    OK = auto()
+    CHECK = auto()
 
-RECOVERY_SUBCLASSES = frozenset(
-    {
-        "scrub_finish",
-        "resilver_finish",
-        "vdev_clear",
-    }
-)
+
+SUBCLASS_LEVEL: dict[str, Level] = {
+    subclass: level
+    for level, subclasses in [
+        (
+            Level.ERROR,
+            ["io_failure", "data", "vdev_remove", "vdev_fault", "vdev_degraded"],
+        ),
+        (Level.WARNING, ["checksum", "scrub_abort"]),
+        (Level.CHECK, ["scrub_finish", "resilver_finish", "vdev_clear"]),
+        (Level.OK, ["scrub_start"]),
+    ]
+    for subclass in subclasses
+}
 
 
 @dataclass(frozen=True)
@@ -62,19 +60,19 @@ class Event:
     header: str
 
 
-EVENTS: dict[str, Event] = {
-    "error": Event(
-        tag="zfs zfs-error",
+EVENTS: dict[Level, Event] = {
+    Level.ERROR: Event(
+        tag="zfs-error",
         notify_type=apprise.NotifyType.FAILURE,
         header="🔴 ZFS CRITICAL",
     ),
-    "warning": Event(
-        tag="zfs zfs-warning",
+    Level.WARNING: Event(
+        tag="zfs-warning",
         notify_type=apprise.NotifyType.WARNING,
         header="🟡 ZFS WARNING",
     ),
-    "ok": Event(
-        tag="zfs zfs-ok",
+    Level.OK: Event(
+        tag="zfs-ok",
         notify_type=apprise.NotifyType.SUCCESS,
         header="🟢 ZFS HEALTHY",
     ),
@@ -150,14 +148,11 @@ def main() -> None:
         log.error("ZEVENT_POOL and ZEVENT_SUBCLASS must be set")
         sys.exit(1)
 
-    if subclass in CRITICAL_SUBCLASSES:
-        level = "error"
-    elif subclass in WARNING_SUBCLASSES:
-        level = "warning"
-    elif subclass in RECOVERY_SUBCLASSES:
-        level = "ok" if pool_is_healthy(pool) else "error"
-    else:
+    level = SUBCLASS_LEVEL.get(subclass)
+    if level is None:
         sys.exit(0)
+    if level is Level.CHECK:
+        level = Level.OK if pool_is_healthy(pool) else Level.ERROR
 
     if not rate_limit(pool, subclass):
         log.info(f"Rate limited: {subclass} on {pool}")

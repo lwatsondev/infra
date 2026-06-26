@@ -1,4 +1,4 @@
-#!/usr/bin/env -S uv run --script
+#!/usr/bin/env -S {{ __notifications_uv_bin_dir }}/uv run --script
 
 # /// script
 # requires-python = ">=3.14"
@@ -18,6 +18,7 @@ import socket
 import subprocess
 import sys
 from dataclasses import dataclass
+from enum import Enum, auto
 from pathlib import Path
 
 import apprise
@@ -27,26 +28,42 @@ APPRISE_CONFIG = "/etc/apprise/apprise.yml"
 logging.basicConfig(level=logging.INFO, format="%(name)s: %(message)s")
 log = logging.getLogger("smartd-notify")
 
-CRITICAL_FAIL_TYPES = frozenset(
-    {
-        "Health",
-        "Usage",
-        "SelfTest",
-        "CurrentPendingSector",
-        "OfflineUncorrectableSector",
-        "FailedHealthCheck",
-        "FailedOpenDevice",
-    }
-)
-WARNING_FAIL_TYPES = frozenset(
-    {
-        "ErrorCount",
-        "Temperature",
-        "FailedReadSmartData",
-        "FailedReadSmartErrorLog",
-        "FailedReadSmartSelfTestLog",
-    }
-)
+
+class Level(Enum):
+    ERROR = auto()
+    WARNING = auto()
+    TEST = auto()
+
+
+FAILTYPE_LEVEL: dict[str, Level] = {
+    failtype: level
+    for level, failtypes in [
+        (
+            Level.ERROR,
+            [
+                "Health",
+                "Usage",
+                "SelfTest",
+                "CurrentPendingSector",
+                "OfflineUncorrectableSector",
+                "FailedHealthCheck",
+                "FailedOpenDevice",
+            ],
+        ),
+        (
+            Level.WARNING,
+            [
+                "ErrorCount",
+                "Temperature",
+                "FailedReadSmartData",
+                "FailedReadSmartErrorLog",
+                "FailedReadSmartSelfTestLog",
+            ],
+        ),
+        (Level.TEST, ["EmailTest"]),
+    ]
+    for failtype in failtypes
+}
 
 
 @dataclass(frozen=True)
@@ -56,34 +73,27 @@ class Event:
     header: str
 
 
-EVENTS: dict[str, Event] = {
-    "error": Event(
-        tag="smartd smartd-error",
+EVENTS: dict[Level, Event] = {
+    Level.ERROR: Event(
+        tag="smartd-error",
         notify_type=apprise.NotifyType.FAILURE,
         header="🔴 S.M.A.R.T. CRITICAL",
     ),
-    "warning": Event(
-        tag="smartd smartd-warning",
+    Level.WARNING: Event(
+        tag="smartd-warning",
         notify_type=apprise.NotifyType.WARNING,
         header="🟡 S.M.A.R.T. WARNING",
     ),
-    "test": Event(
-        tag="smartd smartd-test",
+    Level.TEST: Event(
+        tag="smartd-test",
         notify_type=apprise.NotifyType.INFO,
         header="🔵 S.M.A.R.T. TEST",
     ),
 }
 
 
-def classify_failtype(failtype: str) -> str | None:
-    if failtype in CRITICAL_FAIL_TYPES:
-        return "error"
-    if failtype in WARNING_FAIL_TYPES:
-        return "warning"
-    if failtype == "EmailTest":
-        return "test"
-
-    return None
+def classify_failtype(failtype: str) -> Level | None:
+    return FAILTYPE_LEVEL.get(failtype)
 
 
 def resolve_display_device(device_path: str) -> str:
