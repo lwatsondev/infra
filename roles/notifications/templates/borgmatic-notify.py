@@ -13,6 +13,7 @@
 
 import html
 import logging
+import logging.handlers
 import socket
 import sys
 from dataclasses import dataclass
@@ -21,7 +22,9 @@ import apprise
 
 APPRISE_CONFIG = "/etc/apprise/apprise.yml"
 
-logging.basicConfig(level=logging.INFO, format="%(name)s: %(message)s")
+_syslog_handler = logging.handlers.SysLogHandler(address="/dev/log")
+_syslog_handler.setFormatter(logging.Formatter("%(name)s: %(message)s"))
+logging.basicConfig(handlers=[_syslog_handler], level=logging.INFO)
 log = logging.getLogger("borgmatic-notify")
 
 
@@ -68,7 +71,10 @@ def main() -> None:
     hostname = html.escape(socket.gethostname())
 
     if event is None:
-        log.error("Usage: start|finish|error [error text]")
+        if event_name:
+            log.error(f"Unknown event {event_name!r}, expected: start, finish, error")
+        else:
+            log.error("No event passed, expected: start, finish, error")
         sys.exit(1)
 
     ap = apprise.Apprise()
@@ -88,8 +94,10 @@ def main() -> None:
     if not ok:
         raise RuntimeError(f"Notification failed: {event_name}")
 
-    sys.exit(0)
-
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        log.exception("Unhandled exception")
+        sys.exit(1)

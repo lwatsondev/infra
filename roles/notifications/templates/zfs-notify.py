@@ -13,6 +13,7 @@
 
 import html
 import logging
+import logging.handlers
 import os
 import socket
 import subprocess
@@ -27,7 +28,9 @@ import apprise
 APPRISE_CONFIG = "/etc/apprise/apprise.yml"
 LOCK_DIR = Path("/var/lock")
 
-logging.basicConfig(level=logging.INFO, format="%(name)s: %(message)s")
+_syslog_handler = logging.handlers.SysLogHandler(address="/dev/log")
+_syslog_handler.setFormatter(logging.Formatter("%(name)s: %(message)s"))
+logging.basicConfig(handlers=[_syslog_handler], level=logging.INFO)
 log = logging.getLogger("zfs-notify")
 
 
@@ -150,13 +153,14 @@ def main() -> None:
 
     level = SUBCLASS_LEVEL.get(subclass)
     if level is None:
-        sys.exit(0)
+        return
+
     if level is Level.CHECK:
         level = Level.OK if pool_is_healthy(pool) else Level.ERROR
 
     if not rate_limit(pool, subclass):
         log.info(f"Rate limited: {subclass} on {pool}")
-        sys.exit(0)
+        return
 
     event = EVENTS[level]
     hostname = html.escape(socket.gethostname())
@@ -198,8 +202,10 @@ def main() -> None:
     if not ok:
         raise RuntimeError(f"Notification failed for {subclass} on {pool}")
 
-    sys.exit(0)
-
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        log.exception("Unhandled exception")
+        sys.exit(1)
