@@ -9,9 +9,14 @@ systemd_network_files:
           Name: "ens18"
       - name: "Network"
         settings:
-          Address: "109.169.11.131/29"
-          Gateway: "109.169.11.129"
+          Address:
+            - "109.169.11.131/29"
+            - "2001:1b40:5000:51::3/64"
+          Gateway:
+            - "109.169.11.129"
+            - "2001:1b40:5000:51::1"
           DNS: "127.0.0.1"
+          IPv6AcceptRA: "no"
   - filename: "01-ens19.network"
     sections:
       - name: "Match"
@@ -19,4 +24,7 @@ systemd_network_files:
           Name: "ens19"
       - name: "Network"
         settings:
-          Address: "10.10.0.1/24"
+          Address:
+            - "10.10.0.1/24"
+            - "fd00:10:10::1/64"
+          IPv6AcceptRA: "no"
