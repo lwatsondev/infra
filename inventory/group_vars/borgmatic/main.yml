@@ -1,6 +1,5 @@
 ---
 borgmatic_telegram_bot_token: "{{ _vault_borgmatic_telegram_bot_token }}"
-borgmatic_telegram_chat_id: "{{ telegram_chat_id }}"
 
 _notifications_apprise_urls_borgmatic:
   - url: "tgram://{{ borgmatic_telegram_bot_token }}/{{ telegram_chat_id }}"
