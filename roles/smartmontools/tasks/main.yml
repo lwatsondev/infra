@@ -47,17 +47,6 @@
   notify: "smartd:restart"
   tags: ["smartmontools"]
 
-- name: "smartmontools:configure:telegram:absent"
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: "absent"
-  loop:
-    - "/etc/smartmontools/telegram.conf"
-    - "/etc/smartmontools/run.d/telegram-notify"
-    - "/usr/local/libexec/smartmontools/telegram-notify.sh"
-  notify: "smartd:restart"
-  tags: ["smartmontools"]
-
 - name: "smartmontools:service:enable"
   ansible.builtin.systemd:
     name: "smartd"

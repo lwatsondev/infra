@@ -63,40 +63,6 @@
   changed_when: true
   tags: ["borgmatic"]
 
-- name: "borgmatic:notify:directory"
-  ansible.builtin.file:
-    path: "/usr/local/libexec/borgmatic"
-    state: "directory"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-  when: "borgmatic_telegram_bot_token is defined and borgmatic_telegram_chat_id is defined"
-  tags: ["borgmatic"]
-
-- name: "borgmatic:notify:script"
-  ansible.builtin.template:
-    src: "telegram-notify.sh"
-    dest: "/usr/local/libexec/borgmatic/telegram-notify.sh"
-    owner: "root"
-    group: "root"
-    mode: "0700"
-  when: "borgmatic_telegram_bot_token is defined and borgmatic_telegram_chat_id is defined"
-  tags: ["borgmatic"]
-
-- name: "borgmatic:notify:script:remove"
-  ansible.builtin.file:
-    path: "/usr/local/libexec/borgmatic/telegram-notify.sh"
-    state: "absent"
-  when: "borgmatic_telegram_bot_token is not defined or borgmatic_telegram_chat_id is not defined"
-  tags: ["borgmatic"]
-
-- name: "borgmatic:notify:directory:remove"
-  ansible.builtin.file:
-    path: "/usr/local/libexec/borgmatic"
-    state: "absent"
-  when: "borgmatic_telegram_bot_token is not defined or borgmatic_telegram_chat_id is not defined"
-  tags: ["borgmatic"]
-
 - name: "borgmatic:systemd:service:deploy"
   ansible.builtin.template:
     src: "systemd/borgmatic.service.d/00-ansible.conf.j2"
