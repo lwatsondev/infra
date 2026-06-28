@@ -3,7 +3,7 @@ msmtp_host: "email-smtp.eu-north-1.amazonaws.com"
 msmtp_from_addr: "{{ _vault_msmtp_from_addr }}"
 msmtp_user: "{{ _vault_msmtp_user }}"
 msmtp_password: "{{ _vault_msmtp_password }}"
-msmtp_enabled: "{{ apt_unattended_upgrades_mail_enabled }}"
+msmtp_enabled: "{{ apt_unattended_upgrades_mail_enabled | default(false) }}"
 
 apt_unattended_upgrades_mail_to: "{{ _vault_apt_unattended_upgrades_mail_to }}"
 apt_unattended_upgrades_mail_sender: "{{ msmtp_from_addr }}"
