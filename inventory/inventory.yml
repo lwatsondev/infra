@@ -32,8 +32,6 @@ all:
       ansible_host: "jumphost.luna.lwatson.dev"
       ansible_ssh_common_args: ""
       ansible_connection: "ssh"
-    luna-proxy:
-      ansible_host: "proxy.internal.luna.lwatson.dev"
     luna-rehome:
       ansible_host: "rehome.internal.luna.lwatson.dev"
     luna-media:
@@ -52,6 +50,8 @@ all:
       ansible_host: "gitea-runner-02.internal.luna.lwatson.dev"
     luna-firewall:
       ansible_host: "firewall.internal.luna.lwatson.dev"
+    luna-reverse-proxy:
+      ansible_host: "reverse-proxy.internal.luna.lwatson.dev"
   children:
     workstations:
       hosts:
@@ -79,6 +79,7 @@ all:
         luna-firewall:
         luna-gitea-runner-01:
         luna-gitea-runner-02:
+        luna-reverse-proxy:
     zfs:
       hosts:
         luna:
@@ -103,7 +104,6 @@ all:
         monitor:
         luna:
         luna-jumphost:
-        luna-proxy:
         luna-rehome:
         luna-media:
         luna-cappuccino:
@@ -113,6 +113,7 @@ all:
         luna-firewall:
         luna-gitea-runner-01:
         luna-gitea-runner-02:
+        luna-reverse-proxy:
     lxc:
       hosts:
         pve-router:
@@ -120,7 +121,6 @@ all:
         pve-postgresql:
         pve-mqtt:
         luna-jumphost:
-        luna-proxy:
     pve_guests:
       hosts:
         pve-router:
@@ -133,7 +133,6 @@ all:
     luna_guests:
       hosts:
         luna-jumphost:
-        luna-proxy:
         luna-rehome:
         luna-media:
         luna-cappuccino:
@@ -161,7 +160,6 @@ all:
         monitor:
         serenity:
         luna-jumphost:
-        luna-proxy:
         luna-rehome:
         luna-media:
         luna-cappuccino:
@@ -169,6 +167,7 @@ all:
         luna-gitea:
         luna-znc:
         luna-firewall:
+        luna-reverse-proxy:
     docker:
       hosts:
         # luna:
@@ -186,3 +185,4 @@ all:
         luna-znc:
         luna-gitea-runner-01:
         luna-gitea-runner-02:
+        luna-reverse-proxy:
