@@ -15,8 +15,8 @@
   roles:
     - "sysctl"
 
-- name: "Apply guest VM networking configuration"
-  hosts: "luna_guests,pve_guests,!lxc"
+- name: "Apply networking configuration"
+  hosts: "all,!lxc"
   roles:
     - "systemd-network"
 

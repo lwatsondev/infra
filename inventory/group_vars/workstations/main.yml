@@ -2,6 +2,11 @@
 # Short self-test daily at noon, long self-test Sundays at noon
 smartmontools_schedule: "S/../.././12|L/../../7/12"
 
+systemd_network_configure: false
+systemd_network_resolved_options:
+  DNSSEC: "allow-downgrade"
+  DNSOverTLS: "opportunistic"
+
 users:
   - name: "lwatson"
     password: "{{ _vault_users_lwatson_pass }}"
