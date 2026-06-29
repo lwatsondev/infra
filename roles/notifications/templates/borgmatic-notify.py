@@ -54,7 +54,7 @@ EVENTS: dict[str, Event] = {
 }
 
 
-def build_body(
+def build_html_body(
     event_name: str, *, header: str, hostname: str, error_args: list[str]
 ) -> str:
     match event_name:
@@ -65,10 +65,22 @@ def build_body(
             return f"{header} on <b>{hostname}</b>"
 
 
+def build_md_body(
+    event_name: str, *, header: str, hostname: str, error_args: list[str]
+) -> str:
+    md_header = header.replace("<b>", "**").replace("</b>", "**")
+    match event_name:
+        case "error":
+            error_text = " ".join(error_args)
+            return f"{md_header} on **{hostname}**\n```\n{error_text}\n```"
+        case _:
+            return f"{md_header} on **{hostname}**"
+
+
 def main() -> None:
     event_name = sys.argv[1] if len(sys.argv) > 1 else ""
     event = EVENTS.get(event_name)
-    hostname = html.escape(socket.gethostname())
+    hostname = socket.gethostname()
 
     if event is None:
         if event_name:
@@ -82,16 +94,28 @@ def main() -> None:
     cfg.add(APPRISE_CONFIG)
     ap.add(cfg)
 
-    ok = ap.notify(
-        body=build_body(
-            event_name, header=event.header, hostname=hostname, error_args=sys.argv[2:]
+    ok_html = ap.notify(
+        body=build_html_body(
+            event_name,
+            header=event.header,
+            hostname=html.escape(hostname),
+            error_args=sys.argv[2:],
         ),
         notify_type=event.notify_type,
         body_format=apprise.NotifyFormat.HTML,
-        tag=event.tag,
+        tag=f"{event.tag}-html",
     )
 
-    if not ok:
+    ok_md = ap.notify(
+        body=build_md_body(
+            event_name, header=event.header, hostname=hostname, error_args=sys.argv[2:]
+        ),
+        notify_type=event.notify_type,
+        body_format=apprise.NotifyFormat.TEXT,
+        tag=f"{event.tag}-md",
+    )
+
+    if not ok_html and not ok_md:
         raise RuntimeError(f"Notification failed: {event_name}")
 
 

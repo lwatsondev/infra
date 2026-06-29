@@ -163,44 +163,61 @@ def main() -> None:
         return
 
     event = EVENTS[level]
-    hostname = html.escape(socket.gethostname())
-    pool_esc = html.escape(pool)
-    subclass_esc = html.escape(subclass)
-    time_esc = html.escape(time_string)
-
-    device_line = ""
-    if vdev_path:
-        display_device = html.escape(resolve_display_device(vdev_path))
-        device_line = f"<b>Device:</b> {display_device}\n"
-
+    hostname = socket.gethostname()
+    display_device = resolve_display_device(vdev_path) if vdev_path else ""
     status_output = pool_status(pool)
 
-    body = (
+    html_device_line = (
+        f"<b>Device:</b> {html.escape(display_device)}\n" if display_device else ""
+    )
+    html_body = (
         f"<b>{event.header}</b>\n \n"
-        f"<b>Host:</b> {hostname}\n"
-        f"<b>Pool:</b> {pool_esc}\n"
-        f"{device_line}"
-        f"<b>Event:</b> {subclass_esc}\n"
-        f"<b>Time:</b> {time_esc}"
+        f"<b>Host:</b> {html.escape(hostname)}\n"
+        f"<b>Pool:</b> {html.escape(pool)}\n"
+        f"{html_device_line}"
+        f"<b>Event:</b> {html.escape(subclass)}\n"
+        f"<b>Time:</b> {html.escape(time_string)}"
     )
 
     if status_output:
-        body += f"\n \n<pre>{html.escape(status_output)}</pre>"
+        html_body += f"\n \n<pre>{html.escape(status_output.strip())}</pre>"
+
+    md_device_line = f"**Device:** {display_device}\n" if display_device else ""
+    md_body = (
+        f"**{event.header}**\n"
+        f"**Host:** {hostname}\n"
+        f"**Pool:** {pool}\n"
+        f"{md_device_line}"
+        f"**Event:** {subclass}\n"
+        f"**Time:** {time_string}"
+    )
+
+    if status_output:
+        md_body += f"\n```\n{status_output.strip()}\n```"
 
     ap = apprise.Apprise()
     cfg = apprise.AppriseConfig()
     cfg.add(APPRISE_CONFIG)
     ap.add(cfg)
 
-    ok = ap.notify(
-        body=body,
+    ok_html = ap.notify(
+        body=html_body,
         notify_type=event.notify_type,
         body_format=apprise.NotifyFormat.HTML,
-        tag=event.tag,
+        tag=f"{event.tag}-html",
     )
 
-    if not ok:
-        raise RuntimeError(f"Notification failed for {subclass} on {pool}")
+    ok_md = ap.notify(
+        body=md_body,
+        notify_type=event.notify_type,
+        body_format=apprise.NotifyFormat.TEXT,
+        tag=f"{event.tag}-md",
+    )
+
+    if not ok_html and not ok_md:
+        log.warning(
+            f"Notification failed or no URLs configured for {subclass} on {pool}"
+        )
 
 
 if __name__ == "__main__":

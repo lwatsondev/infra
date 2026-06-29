@@ -1,17 +1,20 @@
 ---
+# Tags use -html suffix for HTML-capable services (Telegram) and -md for Markdown services (Mattermost).
+# Scripts send two notify() calls per event: one HTML body with {tag}-html, one Markdown body with {tag}-md.
 # notifications_apprise_urls:
 #   - url: "tgram://{{ bot_token }}/{{ chat_id }}"
 #     tags:
-#       - "borgmatic-error"
-#       - "smartd"
-#       - "zfs-error"
-#       - "zfs-warning"
+#       - "borgmatic-error-html"
+#       - "smartd-error-html"
+#       - "smartd-warning-html"
+#       - "zfs-error-html"
+#       - "zfs-warning-html"
 #   - url: "forms://monitor.example.com/api/push/TOKEN?-status=up&method=get"
 #     tags:
-#       - "borgmatic-start"
-#       - "borgmatic-success"
+#       - "borgmatic-start-html"
+#       - "borgmatic-ok-html"
 #   - url: "forms://monitor.example.com/api/push/TOKEN?-status=down&method=get"
 #     tags:
-#       - "borgmatic-error"
+#       - "borgmatic-error-html"
 
 notifications_apprise_urls: []

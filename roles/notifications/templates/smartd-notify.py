@@ -129,8 +129,8 @@ def main() -> None:
         return
 
     event = EVENTS[level]
-    hostname = html.escape(socket.gethostname())
-    display_device = html.escape(resolve_display_device(device))
+    hostname = socket.gethostname()
+    display_device = resolve_display_device(device)
 
     try:
         attrs = subprocess.check_output(
@@ -141,31 +141,51 @@ def main() -> None:
     except subprocess.CalledProcessError, FileNotFoundError:
         attrs = ""
 
-    body = (
-        f"<b>{event.header}</b>\n \n"  # The telegram endpoint replaces consecutive newlines with a single newline, so we add a space to preserve the blank line.
-        f"<b>Host:</b> {hostname}\n"
-        f"<b>Device:</b> {display_device}\n"
+    html_body = (
+        f"<b>{event.header}</b>\n \n"
+        f"<b>Host:</b> {html.escape(hostname)}\n"
+        f"<b>Device:</b> {html.escape(display_device)}\n"
         f"<b>Failure:</b> {html.escape(failtype)}\n"
         f"<b>Summary:</b> {html.escape(message)}"
     )
 
     if attrs:
-        body += f"\n \n<pre>{html.escape(attrs)}</pre>"
+        html_body += f"\n \n<pre>{html.escape(attrs.strip())}</pre>"
+
+    md_body = (
+        f"**{event.header}**\n"
+        f"**Host:** {hostname}\n"
+        f"**Device:** {display_device}\n"
+        f"**Failure:** {failtype}\n"
+        f"**Summary:** {message}"
+    )
+
+    if attrs:
+        md_body += f"\n```\n{attrs.strip()}\n```"
 
     ap = apprise.Apprise()
     cfg = apprise.AppriseConfig()
     cfg.add(APPRISE_CONFIG)
     ap.add(cfg)
 
-    ok = ap.notify(
-        body=body,
+    ok_html = ap.notify(
+        body=html_body,
         notify_type=event.notify_type,
         body_format=apprise.NotifyFormat.HTML,
-        tag=event.tag,
+        tag=f"{event.tag}-html",
     )
 
-    if not ok:
-        raise RuntimeError(f"Notification failed for {failtype} on {display_device}")
+    ok_md = ap.notify(
+        body=md_body,
+        notify_type=event.notify_type,
+        body_format=apprise.NotifyFormat.TEXT,
+        tag=f"{event.tag}-md",
+    )
+
+    if not ok_html and not ok_md:
+        log.warning(
+            f"Notification failed or no URLs configured for {failtype} on {display_device}"
+        )
 
 
 if __name__ == "__main__":
