@@ -46,28 +46,3 @@
     - "systemd_oomd_enabled"
   notify: "systemd:oomd|restart"
   tags: ["systemd"]
-
-- name: "systemd:resolved:install"
-  ansible.builtin.package:
-    name: "systemd-resolved"
-  when:
-    - "systemd_resolved_enabled"
-    - "ansible_facts['os_family'] == 'Debian'"
-  tags: ["systemd"]
-
-- name: "systemd:resolved:config_dir:create"
-  ansible.builtin.file:
-    path: "/etc/systemd/resolved.conf.d"
-    state: "directory"
-    mode: "0755"
-  when: "systemd_resolved_enabled"
-  tags: ["systemd"]
-
-- name: "systemd:resolved:configure"
-  ansible.builtin.template:
-    src: "etc/systemd/resolved.conf.d/00-ansible.conf.j2"
-    dest: "/etc/systemd/resolved.conf.d/00-ansible.conf"
-    mode: "0644"
-  notify: "systemd:resolved|restart"
-  when: "systemd_resolved_enabled"
-  tags: ["systemd"]

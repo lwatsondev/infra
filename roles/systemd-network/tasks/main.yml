@@ -2,6 +2,7 @@
 - name: "systemd-network:resolved:install"
   ansible.builtin.package:
     name: "systemd-resolved"
+  when: "systemd_network_resolved_enabled"
   tags: ["systemd-network"]
 
 - name: "systemd-network:resolved:enable"
@@ -9,6 +10,7 @@
     name: "systemd-resolved"
     enabled: true
     state: "started"
+  when: "systemd_network_resolved_enabled"
   tags: ["systemd-network"]
 
 - name: "systemd-network:resolv.conf:symlink"
@@ -17,6 +19,24 @@
     dest: "/etc/resolv.conf"
     state: "link"
     force: true
+  when: "systemd_network_resolved_enabled"
+  tags: ["systemd-network"]
+
+- name: "systemd-network:resolved:config_dir:create"
+  ansible.builtin.file:
+    path: "/etc/systemd/resolved.conf.d"
+    state: "directory"
+    mode: "0755"
+  when: "systemd_network_resolved_enabled and systemd_network_resolved_configure"
+  tags: ["systemd-network"]
+
+- name: "systemd-network:resolved:configure"
+  ansible.builtin.template:
+    src: "etc/systemd/resolved.conf.d/00-ansible.conf.j2"
+    dest: "/etc/systemd/resolved.conf.d/00-ansible.conf"
+    mode: "0644"
+  notify: "systemd-network:resolved|restart"
+  when: "systemd_network_resolved_enabled and systemd_network_resolved_configure"
   tags: ["systemd-network"]
 
 - name: "systemd-network:networkd:config"
@@ -26,6 +46,7 @@
     mode: "0644"
   loop: "{{ systemd_network_files }}"
   notify: "systemd-network:networkd:reload"
+  when: "systemd_network_configure"
   tags: ["systemd-network"]
 
 - name: "systemd-network:networkd:wait-online:dropin_dir"
@@ -33,6 +54,7 @@
     path: "/etc/systemd/system/systemd-networkd-wait-online.service.d"
     state: "directory"
     mode: "0755"
+  when: "systemd_network_configure"
   tags: ["systemd-network"]
 
 - name: "systemd-network:networkd:wait-online:dropin"
@@ -41,6 +63,7 @@
     dest: "/etc/systemd/system/systemd-networkd-wait-online.service.d/00-ansible.conf"
     mode: "0644"
   notify: "systemd-network:systemd:daemon-reload"
+  when: "systemd_network_configure"
   tags: ["systemd-network"]
 
 - name: "systemd-network:networkd:enable"
@@ -48,6 +71,7 @@
     name: "systemd-networkd"
     enabled: true
     daemon_reload: true
+  when: "systemd_network_configure"
   tags: ["systemd-network"]
 
 - name: "systemd-network:networking.service:disable"
@@ -55,6 +79,7 @@
     name: "networking"
     enabled: false
   failed_when: false
+  when: "systemd_network_configure"
   tags: ["systemd-network"]
 
 - name: "systemd-network:dhcp:purge"
@@ -67,4 +92,5 @@
     state: "absent"
     purge: true
     autoremove: true
+  when: "systemd_network_configure"
   tags: ["systemd-network"]

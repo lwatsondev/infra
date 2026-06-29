@@ -1,0 +1,8 @@
+#
+# {{ ansible_managed }}
+#
+
+[Resolve]
+{% for key, value in systemd_network_resolved_options.items() %}
+{{ key }}={{ value }}
+{% endfor %}

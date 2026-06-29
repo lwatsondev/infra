@@ -1,4 +1,10 @@
 ---
+- name: "systemd-network:resolved|restart"
+  ansible.builtin.service:
+    name: "systemd-resolved"
+    enabled: true
+    state: "restarted"
+
 - name: "systemd-network:systemd:daemon-reload"
   ansible.builtin.systemd:
     daemon_reload: true

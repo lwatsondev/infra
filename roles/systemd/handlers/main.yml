@@ -8,12 +8,6 @@
     name: "systemd-journald"
     state: "restarted"
 
-- name: "systemd:resolved|restart"
-  ansible.builtin.service:
-    name: "systemd-resolved"
-    enabled: true
-    state: "restarted"
-
 - name: "systemd:cron|restart"
   ansible.builtin.service:
     name: "cron.target"
