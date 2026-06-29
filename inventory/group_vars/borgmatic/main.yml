@@ -4,7 +4,7 @@ borgmatic_telegram_bot_token: "{{ _vault_borgmatic_telegram_bot_token }}"
 _notifications_apprise_urls_borgmatic:
   - url: "tgram://{{ borgmatic_telegram_bot_token }}/{{ telegram_chat_id }}"
     tags:
-      - "borgmatic-error"
+      - "borgmatic-error-html"
 
 borgmatic_config_ssh_command: "ssh -i /etc/borgmatic/secrets/id_ed25519 -o StrictHostKeyChecking=accept-new"
 borgmatic_config_remote_path: "borg14"

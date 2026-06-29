@@ -2,7 +2,7 @@
 ansible_ssh_common_args: "-o ProxyJump={{ hostvars['luna-jumphost'].ansible_user }}@{{ hostvars['luna-jumphost'].ansible_host }}"
 ansible_ssh_pass: "{{ _vault_ansible_ssh_pass }}"
 
-systemd_resolved_enabled: false
+systemd_network_resolved_configure: false
 systemd_network_files:
   - filename: "00-ens18.network"
     sections:
@@ -39,7 +39,7 @@ borgmatic_ssh_key_contents: "{{ _vault_borgmatic_ssh_key_contents }}"
 _notifications_apprise_urls_borgmatic:
   - url: "tgram://{{ borgmatic_telegram_bot_token }}/{{ telegram_chat_id }}"
     tags:
-      - "borgmatic-error"
+      - "borgmatic-error-html"
 
 borgmatic_config_repositories:
   - path: "ssh://zh4596@zh4596.rsync.net/./borg/luna-guests/{{ ansible_facts['hostname'] }}"

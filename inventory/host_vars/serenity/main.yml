@@ -62,8 +62,8 @@ borgmatic_service_overrides_extra:
 _notifications_apprise_urls_uk:
   - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=up&method=get"
     tags:
-      - "borgmatic-start"
-      - "borgmatic-ok"
+      - "borgmatic-start-html"
+      - "borgmatic-ok-html"
   - url: "{{ borgmatic_uptime_kuma_push_url }}?-status=down&method=get"
     tags:
-      - "borgmatic-error"
+      - "borgmatic-error-html"
