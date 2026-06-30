@@ -2,7 +2,7 @@
 - name: "systemd-network:resolved:install"
   ansible.builtin.package:
     name: "systemd-resolved"
-  when: "systemd_network_resolved_enabled"
+  when: "systemd_network_resolved_enabled and ansible_facts['os_family'] == 'Debian'"
   tags: ["systemd-network"]
 
 - name: "systemd-network:resolved:enable"
