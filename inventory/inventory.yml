@@ -142,6 +142,7 @@ all:
         luna-firewall:
         luna-gitea-runner-01:
         luna-gitea-runner-02:
+        luna-reverse-proxy:
     smartmontools:
       hosts:
         serenity:
@@ -155,6 +156,7 @@ all:
         pve-mqtt:
         pve-zigbee2mqtt:
         pve-router:
+        pve-caddy:
         luna:
         pve:
         monitor:
