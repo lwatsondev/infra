@@ -1,0 +1,35 @@
+---
+systemd_network_files:
+  - filename: "00-eth0.network"
+    sections:
+      - name: "Match"
+        settings:
+          Name: "eth0"
+      - name: "Network"
+        settings:
+          Address:
+            - "109.169.11.132/29"
+            - "2001:1b40:5000:51::4/64"
+          Gateway:
+            - "109.169.11.129"
+            - "2001:1b40:5000:51::1"
+          IPv6AcceptRA: "no"
+
+  - filename: "01-eth1.network"
+    sections:
+      - name: "Match"
+        settings:
+          Name: "eth1"
+      - name: "Network"
+        settings:
+          DHCP: "yes"
+      - name: "DHCP"
+        settings:
+          UseDomains: "yes"
+      - name: "IPv6AcceptRA"
+        settings:
+          UseDNS: "no"
+      - name: "Route"
+        settings:
+          Destination: "100.64.0.0/10"
+          Gateway: "10.10.0.1"
