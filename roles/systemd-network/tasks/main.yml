@@ -15,11 +15,21 @@
 
 - name: "systemd-network:resolv.conf:symlink"
   ansible.builtin.file:
-    src: "/run/systemd/resolve/resolv.conf"
+    src: "/run/systemd/resolve/stub-resolv.conf"
     dest: "/etc/resolv.conf"
     state: "link"
     force: true
   when: "systemd_network_resolved_enabled"
+  tags: ["systemd-network"]
+
+- name: "systemd-network:resolv.conf:pve-ignore"
+  ansible.builtin.file:
+    path: "/etc/.pve-ignore.resolv.conf"
+    state: "touch"
+    mode: "0644"
+    modification_time: "preserve"
+    access_time: "preserve"
+  when: "systemd_network_resolved_enabled and ansible_facts['virtualization_type'] == 'lxc'"
   tags: ["systemd-network"]
 
 - name: "systemd-network:resolved:config_dir:create"
@@ -79,18 +89,5 @@
     name: "networking"
     enabled: false
   failed_when: false
-  when: "systemd_network_configure"
-  tags: ["systemd-network"]
-
-- name: "systemd-network:dhcp:purge"
-  ansible.builtin.apt:
-    name:
-      - "dhcpcd"
-      - "dhcpcd-base"
-      - "isc-dhcp-client"
-      - "isc-dhcp-common"
-    state: "absent"
-    purge: true
-    autoremove: true
   when: "systemd_network_configure"
   tags: ["systemd-network"]
