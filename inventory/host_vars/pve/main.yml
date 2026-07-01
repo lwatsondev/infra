@@ -1,7 +1,7 @@
 ---
 ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-router'].ansible_user }}@{{ hostvars['pve-router'].ansible_host }}"
 
-systemd_resolved_enabled: false
+systemd_network_resolved_enabled: false
 
 zfs_monitoring_uptime_kuma_push_url: "{{ _vault_zfs_monitoring_uptime_kuma_push_url }}"
 zfs_monitoring_scrub_pools:

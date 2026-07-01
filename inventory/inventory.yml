@@ -63,6 +63,9 @@ all:
         pve:
         do-ams3-01:
         monitor:
+    hypervisors:
+      hosts:
+        pve:
     vms:
       hosts:
         pve-frigate:
@@ -121,6 +124,12 @@ all:
         pve-postgresql:
         pve-mqtt:
         luna-jumphost:
+    pve_lxc:
+      hosts:
+        pve-router:
+        pve-caddy:
+        pve-postgresql:
+        pve-mqtt:
     pve_guests:
       hosts:
         pve-router:

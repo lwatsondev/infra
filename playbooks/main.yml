@@ -16,7 +16,7 @@
     - "sysctl"
 
 - name: "Apply networking configuration"
-  hosts: "all,!lxc"
+  hosts: "all,!pve_lxc,!hypervisors"
   roles:
     - "systemd-network"
 
