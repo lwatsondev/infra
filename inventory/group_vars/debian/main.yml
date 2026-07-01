@@ -13,6 +13,7 @@ apt_unattended_upgrades_origins:
   - "o=cloudsmith/caddy/stable,n=${distro_codename}"
   - "o=Proxmox,n=${distro_codename},l=Proxmox Debian Repository,c=pve-no-subscription"
   - "o=Tailscale,n=${distro_codename},l=Tailscale"
+  - "o=Docker,n=${distro_codename},l=Docker CE"
 
 borgmatic_config_on_error:
   - "/usr/local/libexec/notifications/borgmatic-notify.py error {error}"

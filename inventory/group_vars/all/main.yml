@@ -8,7 +8,6 @@ systemd_journald_system_max_use: "512M"
 
 needrestart_overrides:
   ^systemd-(udevd|networkd|resolved|logind|journald): 0
-  ^(docker|containerd): 0
   ^postgresql: 0
   ^(mysql|mariadb): 0
   ^caddy: 0
@@ -23,6 +22,9 @@ needrestart_overrides:
   ^dbus: 0
   ^networking: 0
   ^proxmox-firewall: 0
+  ^pve-(firewall|cluster|manager|storage|lxc-syscalld): 0
+  ^(pvedaemon|pveproxy|pvestatd): 0
+  ^(corosync|lxc|lxc-net): 0
 
 sysctl_vars:
   - name: "net.core.rmem_max"
@@ -51,6 +53,7 @@ zram_devices:
 docker_daemon_config:
   log-driver: "journald"
   storage-driver: "overlay2"
+  live-restore: true
   log-opts:
     tag: "{{ '{{.Name}}' }}"
   features:
@@ -58,6 +61,8 @@ docker_daemon_config:
   iptables: true
   ip6tables: true
   experimental: true
+  dns-opts:
+    - "ndots:5"
 
 telegram_chat_id: "{{ _vault_telegram_chat_id }}"
 

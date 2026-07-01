@@ -1,7 +1,7 @@
 ---
 docker_install: true
 docker_service_enable: true
-docker_restart_on_config_change: false
+docker_restart_on_config_change: true
 docker_daemon_config:
   log-driver: "journald"
   storage-driver: "overlay2"
