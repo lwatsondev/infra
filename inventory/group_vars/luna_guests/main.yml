@@ -2,7 +2,9 @@
 ansible_ssh_common_args: "-o ProxyJump={{ hostvars['luna-jumphost'].ansible_user }}@{{ hostvars['luna-jumphost'].ansible_host }}"
 ansible_ssh_pass: "{{ _vault_ansible_ssh_pass }}"
 
-systemd_network_resolved_configure: false
+systemd_network_resolved_configure: true
+systemd_network_resolved_options:
+  Cache: "no"
 systemd_network_files:
   - filename: "00-ens18.network"
     sections:
