@@ -1,0 +1,10 @@
+#
+# {{ ansible_managed }}
+#
+{% for section in systemd_network_networkd_sections %}
+
+[{{ section.name }}]
+{% for key, value in section.settings.items() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% endfor %}

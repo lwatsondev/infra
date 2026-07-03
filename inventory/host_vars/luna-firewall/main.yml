@@ -1,6 +1,13 @@
 ---
 apt_unattended_upgrades_mail_enabled: true
 
+systemd_network_networkd_configure: true
+systemd_network_networkd_sections:
+  - name: "Network"
+    settings:
+      IPv4Forwarding: "yes"
+      IPv6Forwarding: "yes"
+
 systemd_network_files:
   - filename: "00-ens18.network"
     sections:
@@ -28,3 +35,5 @@ systemd_network_files:
             - "10.10.0.1/24"
             - "fd00:10:10::1/64"
           IPv6AcceptRA: "no"
+          DNS: "127.0.0.1"
+          Domains: "internal.luna.lwatson.dev"
