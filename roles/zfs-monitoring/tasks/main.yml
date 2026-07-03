@@ -5,18 +5,6 @@
   when: "ansible_facts['os_family'] in __zfs_monitoring_packages"
   tags: ["zfs-monitoring"]
 
-- name: "zfs-monitoring:install:scripts"
-  ansible.builtin.template:
-    src: "{{ item }}"
-    dest: "/etc/zfs/zed.d/{{ item | basename }}"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-  with_fileglob:
-    - "{{ role_path }}/templates/*.sh"
-  notify: "zfs-zed:restart"
-  tags: ["zfs-monitoring"]
-
 - name: "zfs-monitoring:configure:zed.rc"
   ansible.builtin.template:
     src: "templates/zed.rc.j2"
