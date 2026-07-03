@@ -8,29 +8,29 @@ all:
     monitor:
       ansible_host: "monitor.hedgehog-skate.ts.net"
     ceres:
-      ansible_host: "ceres.internal.home.lwatson.dev"
+      ansible_host: "ceres.internal.ceres.lwatson.dev"
     ceres-firewall:
-      ansible_host: "firewall.internal.home.lwatson.dev"
+      ansible_host: "firewall.internal.ceres.lwatson.dev"
     # ceres-template-debian-13-vm:
-    #   ansible_host: "template-debian-13-vm.internal.home.lwatson.dev"
+    #   ansible_host: "template-debian-13-vm.internal.ceres.lwatson.dev"
     # ceres-template-debian-13-ct:
-    #   ansible_host: "template-debian-13-ct.internal.home.lwatson.dev"
+    #   ansible_host: "template-debian-13-ct.internal.ceres.lwatson.dev"
     ceres-caddy:
-      ansible_host: "caddy.internal.home.lwatson.dev"
+      ansible_host: "caddy.internal.ceres.lwatson.dev"
     ceres-vaultwarden:
-      ansible_host: "vaultwarden.internal.home.lwatson.dev"
+      ansible_host: "vaultwarden.internal.ceres.lwatson.dev"
     ceres-jumphost:
       ansible_host: "ceres-jumphost.hedgehog-skate.ts.net"
       ansible_user: "root"
       ansible_ssh_common_args: ""
     ceres-postgresql:
-      ansible_host: "postgresql.internal.home.lwatson.dev"
+      ansible_host: "postgresql.internal.ceres.lwatson.dev"
     ceres-mqtt:
-      ansible_host: "mqtt.internal.home.lwatson.dev"
+      ansible_host: "mqtt.internal.ceres.lwatson.dev"
     ceres-zigbee2mqtt:
-      ansible_host: "zigbee2mqtt.internal.home.lwatson.dev"
+      ansible_host: "zigbee2mqtt.internal.ceres.lwatson.dev"
     ceres-frigate:
-      ansible_host: "frigate.internal.home.lwatson.dev"
+      ansible_host: "frigate.internal.ceres.lwatson.dev"
     do-ams3-01:
       ansible_host: "do-ams3-01.hedgehog-skate.ts.net"
     luna:

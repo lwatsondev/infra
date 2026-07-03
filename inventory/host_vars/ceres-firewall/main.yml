@@ -30,7 +30,7 @@ systemd_network_files:
           Address: "10.10.10.1/24"
           IPv6AcceptRA: "no"
           DNS: "127.0.0.1"
-          Domains: "internal.home.lwatson.dev"
+          Domains: "internal.ceres.lwatson.dev"
 
 users:
   - name: "root"
