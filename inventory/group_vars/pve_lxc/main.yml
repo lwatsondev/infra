@@ -1,0 +1,18 @@
+---
+systemd_network_files:
+  - filename: "00-eth0.network"
+    sections:
+      - name: "Match"
+        settings:
+          Name: "eth0"
+      - name: "Network"
+        settings:
+          DHCP: "yes"
+          Domains: "internal.home.lwatson.dev"
+      - name: "DHCP"
+        settings:
+          UseDomains: "yes"
+      - name: "Route"
+        settings:
+          Destination: "100.64.0.0/10"
+          Gateway: "10.10.10.1"

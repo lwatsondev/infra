@@ -1,5 +1,5 @@
 ---
-ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-router'].ansible_user }}@{{ hostvars['pve-router'].ansible_host }}"
+ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-jumphost'].ansible_user }}@{{ hostvars['pve-jumphost'].ansible_host }}"
 ansible_ssh_pass: "{{ _vault_ansible_ssh_pass }}"
 
 systemd_network_resolved_configure: true
@@ -15,14 +15,13 @@ systemd_network_files:
       - name: "Network"
         settings:
           DHCP: "yes"
-          Domains: "internal.home.lwatson.dev"
       - name: "DHCP"
         settings:
           UseDomains: "yes"
       - name: "Route"
         settings:
           Destination: "100.64.0.0/10"
-          Gateway: "10.10.20.2"
+          Gateway: "10.10.10.1"
 
 users:
   - name: "root"

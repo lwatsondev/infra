@@ -1,5 +1,5 @@
 ---
-ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-router'].ansible_user }}@{{ hostvars['pve-router'].ansible_host }}"
+ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-jumphost'].ansible_user }}@{{ hostvars['pve-jumphost'].ansible_host }}"
 
 systemd_network_resolved_enabled: false
 

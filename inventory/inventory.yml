@@ -9,13 +9,20 @@ all:
       ansible_host: "monitor.hedgehog-skate.ts.net"
     pve:
       ansible_host: "pve.internal.home.lwatson.dev"
-    pve-router:
-      ansible_host: "pve-router.hedgehog-skate.ts.net"
-      ansible_ssh_common_args: ""
+    pve-firewall:
+      ansible_host: "firewall.internal.home.lwatson.dev"
+    # pve-template-debian-13-vm:
+    #   ansible_host: "template-debian-13-vm.internal.home.lwatson.dev"
+    # pve-template-debian-13-ct:
+    #   ansible_host: "template-debian-13-ct.internal.home.lwatson.dev"
     pve-caddy:
       ansible_host: "caddy.internal.home.lwatson.dev"
     pve-vaultwarden:
       ansible_host: "vaultwarden.internal.home.lwatson.dev"
+    pve-jumphost:
+      ansible_host: "pve-jumphost.hedgehog-skate.ts.net"
+      ansible_user: "root"
+      ansible_ssh_common_args: ""
     pve-postgresql:
       ansible_host: "postgresql.internal.home.lwatson.dev"
     pve-mqtt:
@@ -28,10 +35,6 @@ all:
       ansible_host: "do-ams3-01.hedgehog-skate.ts.net"
     luna:
       ansible_host: "luna.lwatson.dev"
-    luna-jumphost:
-      ansible_host: "jumphost.luna.lwatson.dev"
-      ansible_ssh_common_args: ""
-      ansible_connection: "ssh"
     luna-rehome:
       ansible_host: "rehome.internal.luna.lwatson.dev"
     luna-media:
@@ -52,6 +55,14 @@ all:
       ansible_host: "firewall.internal.luna.lwatson.dev"
     luna-reverse-proxy:
       ansible_host: "reverse-proxy.internal.luna.lwatson.dev"
+    luna-jumphost:
+      ansible_host: "luna-jumphost.hedgehog-skate.ts.net"
+      ansible_user: "root"
+      ansible_ssh_common_args: ""
+    # luna-template-debian-13-vm:
+    #   ansible_host: "template-debian-13-vm.internal.luna.lwatson.dev"
+    # luna-template-debian-13-ct:
+    #   ansible_host: "template-debian-13-ct.internal.luna.lwatson.dev"
   children:
     workstations:
       hosts:
@@ -68,9 +79,11 @@ all:
         pve:
     vms:
       hosts:
+        pve-firewall:
         pve-frigate:
         pve-vaultwarden:
         pve-zigbee2mqtt:
+        pve-jumphost:
         do-ams3-01:
         monitor:
         luna-rehome:
@@ -83,6 +96,7 @@ all:
         luna-gitea-runner-01:
         luna-gitea-runner-02:
         luna-reverse-proxy:
+        luna-jumphost:
     zfs:
       hosts:
         luna:
@@ -95,18 +109,18 @@ all:
         nova:
     debian:
       hosts:
+        pve-firewall:
         pve:
-        pve-router:
         pve-caddy:
         pve-vaultwarden:
         pve-postgresql:
         pve-mqtt:
         pve-zigbee2mqtt:
         pve-frigate:
+        pve-jumphost:
         do-ams3-01:
         monitor:
         luna:
-        luna-jumphost:
         luna-rehome:
         luna-media:
         luna-cappuccino:
@@ -117,31 +131,29 @@ all:
         luna-gitea-runner-01:
         luna-gitea-runner-02:
         luna-reverse-proxy:
+        luna-jumphost:
     lxc:
       hosts:
-        pve-router:
         pve-caddy:
         pve-postgresql:
         pve-mqtt:
-        luna-jumphost:
     pve_lxc:
       hosts:
-        pve-router:
         pve-caddy:
         pve-postgresql:
         pve-mqtt:
     pve_guests:
       hosts:
-        pve-router:
+        pve-firewall:
         pve-caddy:
         pve-postgresql:
         pve-mqtt:
         pve-zigbee2mqtt:
         pve-frigate:
         pve-vaultwarden:
+        pve-jumphost:
     luna_guests:
       hosts:
-        luna-jumphost:
         luna-rehome:
         luna-media:
         luna-cappuccino:
@@ -152,6 +164,13 @@ all:
         luna-gitea-runner-01:
         luna-gitea-runner-02:
         luna-reverse-proxy:
+        luna-jumphost:
+    templates:
+      hosts:
+        # pve-template-debian-13-vm:
+        # pve-template-debian-13-ct:
+        # luna-template-debian-13-vm:
+        # luna-template-debian-13-ct:
     smartmontools:
       hosts:
         serenity:
@@ -164,13 +183,13 @@ all:
         pve-frigate:
         pve-mqtt:
         pve-zigbee2mqtt:
-        pve-router:
         pve-caddy:
+        pve-firewall:
+        pve-jumphost:
         luna:
         pve:
         monitor:
         serenity:
-        luna-jumphost:
         luna-rehome:
         luna-media:
         luna-cappuccino:
@@ -178,10 +197,10 @@ all:
         luna-gitea:
         luna-znc:
         luna-firewall:
+        luna-jumphost:
         luna-reverse-proxy:
     docker:
       hosts:
-        # luna:
         serenity:
         nova:
         monitor:

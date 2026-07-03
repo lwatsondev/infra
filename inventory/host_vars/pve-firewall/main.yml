@@ -1,0 +1,42 @@
+---
+apt_unattended_upgrades_mail_enabled: true
+
+systemd_network_networkd_configure: true
+systemd_network_networkd_sections:
+  - name: "Network"
+    settings:
+      IPv4Forwarding: "yes"
+      IPv6Forwarding: "yes"
+
+systemd_network_files:
+  - filename: "00-ens18.network"
+    sections:
+      - name: "Match"
+        settings:
+          Name: "ens18"
+      - name: "Network"
+        settings:
+          Address: "192.168.68.56/22"
+          Gateway: "192.168.68.1"
+          DNS: "127.0.0.1"
+          IPv6AcceptRA: "no"
+  - filename: "01-ens19.network"
+    sections:
+      - name: "Match"
+        settings:
+          Name: "ens19"
+      - name: "Network"
+        settings:
+          Address: "10.10.10.1/24"
+          IPv6AcceptRA: "no"
+          DNS: "127.0.0.1"
+          Domains: "internal.home.lwatson.dev"
+
+users:
+  - name: "root"
+    ssh_keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINsAsuoVftyoaDix0RovWc4vr7JcC6VBptAcxBj58P8j lwatson@serenity"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHGF/qUoS5O+MqtE+1T0fkjWNHLfBG7MYWTeQPg3G86o lwatson@nova"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGfepV156UKrBujA0FY+8NSVvEYg4N9s+l69Cb43K0Fz lwatson@reaver"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID9+0Z+T9LCRa54gB1oXTIzc82R5J7IS2QLZcy4nIJLI u0_a329@localhost"
+      - "{{ _ansible_public_key }}"
