@@ -7,29 +7,29 @@ all:
       ansible_host: "nova.hedgehog-skate.ts.net"
     monitor:
       ansible_host: "monitor.hedgehog-skate.ts.net"
-    pve:
-      ansible_host: "pve.internal.home.lwatson.dev"
-    pve-firewall:
+    ceres:
+      ansible_host: "ceres.internal.home.lwatson.dev"
+    ceres-firewall:
       ansible_host: "firewall.internal.home.lwatson.dev"
-    # pve-template-debian-13-vm:
+    # ceres-template-debian-13-vm:
     #   ansible_host: "template-debian-13-vm.internal.home.lwatson.dev"
-    # pve-template-debian-13-ct:
+    # ceres-template-debian-13-ct:
     #   ansible_host: "template-debian-13-ct.internal.home.lwatson.dev"
-    pve-caddy:
+    ceres-caddy:
       ansible_host: "caddy.internal.home.lwatson.dev"
-    pve-vaultwarden:
+    ceres-vaultwarden:
       ansible_host: "vaultwarden.internal.home.lwatson.dev"
-    pve-jumphost:
-      ansible_host: "pve-jumphost.hedgehog-skate.ts.net"
+    ceres-jumphost:
+      ansible_host: "ceres-jumphost.hedgehog-skate.ts.net"
       ansible_user: "root"
       ansible_ssh_common_args: ""
-    pve-postgresql:
+    ceres-postgresql:
       ansible_host: "postgresql.internal.home.lwatson.dev"
-    pve-mqtt:
+    ceres-mqtt:
       ansible_host: "mqtt.internal.home.lwatson.dev"
-    pve-zigbee2mqtt:
+    ceres-zigbee2mqtt:
       ansible_host: "zigbee2mqtt.internal.home.lwatson.dev"
-    pve-frigate:
+    ceres-frigate:
       ansible_host: "frigate.internal.home.lwatson.dev"
     do-ams3-01:
       ansible_host: "do-ams3-01.hedgehog-skate.ts.net"
@@ -71,19 +71,19 @@ all:
     servers:
       hosts:
         luna:
-        pve:
+        ceres:
         do-ams3-01:
         monitor:
     hypervisors:
       hosts:
-        pve:
+        ceres:
     vms:
       hosts:
-        pve-firewall:
-        pve-frigate:
-        pve-vaultwarden:
-        pve-zigbee2mqtt:
-        pve-jumphost:
+        ceres-firewall:
+        ceres-frigate:
+        ceres-vaultwarden:
+        ceres-zigbee2mqtt:
+        ceres-jumphost:
         do-ams3-01:
         monitor:
         luna-rehome:
@@ -102,22 +102,22 @@ all:
         luna:
         serenity:
         nova:
-        pve:
+        ceres:
     gentoo:
       hosts:
         serenity:
         nova:
     debian:
       hosts:
-        pve-firewall:
-        pve:
-        pve-caddy:
-        pve-vaultwarden:
-        pve-postgresql:
-        pve-mqtt:
-        pve-zigbee2mqtt:
-        pve-frigate:
-        pve-jumphost:
+        ceres-firewall:
+        ceres:
+        ceres-caddy:
+        ceres-vaultwarden:
+        ceres-postgresql:
+        ceres-mqtt:
+        ceres-zigbee2mqtt:
+        ceres-frigate:
+        ceres-jumphost:
         do-ams3-01:
         monitor:
         luna:
@@ -134,24 +134,24 @@ all:
         luna-jumphost:
     lxc:
       hosts:
-        pve-caddy:
-        pve-postgresql:
-        pve-mqtt:
-    pve_lxc:
+        ceres-caddy:
+        ceres-postgresql:
+        ceres-mqtt:
+    ceres_lxc:
       hosts:
-        pve-caddy:
-        pve-postgresql:
-        pve-mqtt:
-    pve_guests:
+        ceres-caddy:
+        ceres-postgresql:
+        ceres-mqtt:
+    ceres_guests:
       hosts:
-        pve-firewall:
-        pve-caddy:
-        pve-postgresql:
-        pve-mqtt:
-        pve-zigbee2mqtt:
-        pve-frigate:
-        pve-vaultwarden:
-        pve-jumphost:
+        ceres-firewall:
+        ceres-caddy:
+        ceres-postgresql:
+        ceres-mqtt:
+        ceres-zigbee2mqtt:
+        ceres-frigate:
+        ceres-vaultwarden:
+        ceres-jumphost:
     luna_guests:
       hosts:
         luna-rehome:
@@ -167,27 +167,27 @@ all:
         luna-jumphost:
     templates:
       hosts:
-        # pve-template-debian-13-vm:
-        # pve-template-debian-13-ct:
+        # ceres-template-debian-13-vm:
+        # ceres-template-debian-13-ct:
         # luna-template-debian-13-vm:
         # luna-template-debian-13-ct:
     smartmontools:
       hosts:
         serenity:
         luna:
-        pve:
+        ceres:
     borgmatic:
       hosts:
-        pve-postgresql:
-        pve-vaultwarden:
-        pve-frigate:
-        pve-mqtt:
-        pve-zigbee2mqtt:
-        pve-caddy:
-        pve-firewall:
-        pve-jumphost:
+        ceres-postgresql:
+        ceres-vaultwarden:
+        ceres-frigate:
+        ceres-mqtt:
+        ceres-zigbee2mqtt:
+        ceres-caddy:
+        ceres-firewall:
+        ceres-jumphost:
         luna:
-        pve:
+        ceres:
         monitor:
         serenity:
         luna-rehome:
@@ -204,9 +204,9 @@ all:
         serenity:
         nova:
         monitor:
-        pve-vaultwarden:
-        pve-zigbee2mqtt:
-        pve-frigate:
+        ceres-vaultwarden:
+        ceres-zigbee2mqtt:
+        ceres-frigate:
         luna-rehome:
         luna-media:
         luna-cappuccino:

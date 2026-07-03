@@ -1,5 +1,5 @@
 ---
-ansible_ssh_common_args: "-o ProxyJump={{ hostvars['pve-jumphost'].ansible_user }}@{{ hostvars['pve-jumphost'].ansible_host }}"
+ansible_ssh_common_args: "-o ProxyJump={{ hostvars['ceres-jumphost'].ansible_user }}@{{ hostvars['ceres-jumphost'].ansible_host }}"
 ansible_ssh_pass: "{{ _vault_ansible_ssh_pass }}"
 
 systemd_network_resolved_configure: true
@@ -41,7 +41,8 @@ _notifications_apprise_urls_borgmatic:
       - "borgmatic-error-html"
 
 borgmatic_config_repositories:
-  - path: "ssh://zh4596@zh4596.rsync.net/./borg/pve-guests/{{ ansible_facts['hostname'] }}"
+  - path: "ssh://zh4596@zh4596.rsync.net/./borg/ceres-guests/{{ ansible_facts['hostname'] }}"
     label: "rsync.net"
 
 borgmatic_config_keep_monthly: 0
+borgmatic_config_relocated_repo_access_is_ok: true
