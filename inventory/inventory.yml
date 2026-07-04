@@ -3,8 +3,8 @@ all:
   hosts:
     serenity:
       ansible_host: "serenity.hedgehog-skate.ts.net"
-    nova:
-      ansible_host: "nova.hedgehog-skate.ts.net"
+    # nova:
+    #   ansible_host: "nova.hedgehog-skate.ts.net"
     monitor:
       ansible_host: "monitor.hedgehog-skate.ts.net"
     ceres:
@@ -67,7 +67,7 @@ all:
     workstations:
       hosts:
         serenity:
-        nova:
+        # nova:
     servers:
       hosts:
         luna:
@@ -101,12 +101,12 @@ all:
       hosts:
         luna:
         serenity:
-        nova:
+        # nova:
         ceres:
     gentoo:
       hosts:
         serenity:
-        nova:
+        # nova:
     debian:
       hosts:
         ceres-firewall:
@@ -197,7 +197,7 @@ all:
     docker:
       hosts:
         serenity:
-        nova:
+        # nova:
         monitor:
         ceres-vaultwarden:
         ceres-zigbee2mqtt:
