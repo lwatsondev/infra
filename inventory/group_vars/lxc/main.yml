@@ -8,7 +8,6 @@ systemd_network_files:
       - name: "Network"
         settings:
           DHCP: "yes"
-          Domains: "internal.ceres.lwatson.dev"
       - name: "DHCP"
         settings:
           UseDomains: "yes"

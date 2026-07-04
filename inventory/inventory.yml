@@ -137,11 +137,6 @@ all:
         ceres-caddy:
         ceres-postgresql:
         ceres-mqtt:
-    ceres_lxc:
-      hosts:
-        ceres-caddy:
-        ceres-postgresql:
-        ceres-mqtt:
     ceres_guests:
       hosts:
         ceres-firewall:
