@@ -1,4 +1,6 @@
 ---
+apt_unattended_upgrades_mail_enabled: true
+
 systemd_resolved_enabled: false
 
 zfs_monitoring_uptime_kuma_push_url: "{{ _vault_zfs_monitoring_uptime_kuma_push_url }}"
