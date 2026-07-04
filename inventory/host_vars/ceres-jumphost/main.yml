@@ -11,6 +11,20 @@ systemd_network_files:
       - name: "DHCP"
         settings:
           UseDomains: "yes"
+  - filename: "01-ens19.network"
+    sections:
+      - name: "Match"
+        settings:
+          Name: "ens19"
+      - name: "Network"
+        settings:
+          DHCP: "ipv4"
+      - name: "DHCP"
+        settings:
+          UseGateway: "false"
+          UseRoutes: "false"
+          UseDNS: "false"
+          UseDomains: "false"
 
 users:
   - name: "root"
