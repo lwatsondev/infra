@@ -1,21 +1,8 @@
 ---
-- name: "sysctl:config_dir:create"
-  ansible.builtin.file:
-    path: "{{ __sysctl_file | dirname }}"
-    state: "directory"
-    mode: "0755"
-  when:
-    - "ansible_facts['virtualization_type'] != 'lxc'"
-  tags: ["sysctl"]
-
-- name: "sysctl:configure"
-  ansible.posix.sysctl:
-    name: "{{ item.name }}"
-    value: "{{ item.value | default('') }}"
-    state: "{{ item.state | default('present') }}"
-    sysctl_file: "{{ __sysctl_file }}"
-    sysctl_set: true
-  loop: "{{ __sysctl_base_vars | community.general.lists_mergeby(sysctl_vars, 'name') }}"
-  when:
-    - "ansible_facts['virtualization_type'] != 'lxc'"
+- name: "sysctl"
+  ansible.builtin.include_tasks:
+    file: "configure.yml"
+    apply:
+      tags: ["sysctl"]
+  when: "ansible_facts['virtualization_type'] != 'lxc'"
   tags: ["sysctl"]

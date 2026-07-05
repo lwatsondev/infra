@@ -11,7 +11,7 @@
     - "systemd"
 
 - name: "Apply sysctl configuration"
-  hosts: "all,!lxc"
+  hosts: "all"
   roles:
     - "sysctl"
 
@@ -26,7 +26,7 @@
     - "docker"
 
 - name: "Set up zram"
-  hosts: "all,!lxc"
+  hosts: "all"
   roles:
     - "zram"
 
@@ -46,7 +46,7 @@
     - "msmtp"
 
 - name: "Set up S.M.A.R.T. disk monitoring"
-  hosts: "all,!lxc,!vms,!nova"
+  hosts: "all,!nova"
   roles:
     - "smartmontools"
 

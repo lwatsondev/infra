@@ -1,56 +1,8 @@
 ---
-- name: "smartmontools:install:packages"
-  ansible.builtin.package:
-    name: "{{ __smartmontools_packages[ansible_facts['os_family']] }}"
-  when: "ansible_facts['os_family'] in __smartmontools_packages"
-  tags: ["smartmontools"]
-
-- name: "smartmontools:config:directories"
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: "directory"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-  loop:
-    - "/etc/smartmontools/run.d"
-    - "/usr/local/libexec/smartmontools"
-  tags: ["smartmontools"]
-
-- name: "smartmontools:runner:deploy"
-  ansible.builtin.template:
-    src: "smartd-runner.j2"
-    dest: "/usr/local/libexec/smartmontools/smartd-runner"
-    owner: "root"
-    group: "root"
-    mode: "0755"
-  when: "ansible_facts['os_family'] != 'Debian'"
-  notify: "smartd:restart"
-  tags: ["smartmontools"]
-
-- name: "smartmontools:config:symlink"
-  ansible.builtin.file:
-    src: "/etc/smartmontools/smartd.conf"
-    dest: "/etc/smartd.conf"
-    state: "link"
-    force: true
-  notify: "smartd:restart"
-  tags: ["smartmontools"]
-
-- name: "smartmontools:configure:smartd.conf"
-  ansible.builtin.template:
-    src: "smartd.conf.j2"
-    dest: "/etc/smartmontools/smartd.conf"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  notify: "smartd:restart"
-  tags: ["smartmontools"]
-
-- name: "smartmontools:service:enable"
-  ansible.builtin.systemd:
-    name: "smartd"
-    state: "started"
-    enabled: true
-    daemon_reload: true
+- name: "smartmontools"
+  ansible.builtin.include_tasks:
+    file: "setup.yml"
+    apply:
+      tags: ["smartmontools"]
+  when: "ansible_facts['virtualization_role'] != 'guest'"
   tags: ["smartmontools"]
