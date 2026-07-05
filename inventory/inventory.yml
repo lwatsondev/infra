@@ -77,6 +77,7 @@ all:
     hypervisors:
       hosts:
         ceres:
+        luna:
     vms:
       hosts:
         ceres-firewall:
