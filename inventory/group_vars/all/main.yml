@@ -3,8 +3,8 @@ ansible_become: true
 ansible_python_interpreter: "/usr/bin/python3"
 ansible_user: "root"
 
-systemd_journald_retention_sec: "7d"
-systemd_journald_system_max_use: "512M"
+systemd_journald_retention_sec: "30d"
+systemd_journald_system_max_use: "1G"
 
 needrestart_overrides:
   ^systemd-(udevd|networkd|resolved|logind|journald): 0
