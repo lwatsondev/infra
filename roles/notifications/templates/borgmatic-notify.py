@@ -116,7 +116,7 @@ def main() -> None:
     )
 
     if not ok_html and not ok_md:
-        raise RuntimeError(f"Notification failed: {event_name}")
+        log.error(f"Notification failed: {event_name}")
 
 
 if __name__ == "__main__":
