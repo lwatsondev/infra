@@ -15,20 +15,8 @@
   tags: ["common"]
 
 - name: "common:packages:install"
-  ansible.builtin.apt:
-    name: "{{ common_packages }}"
-    state: "present"
-    install_recommends: false
-  when:
-    - "common_packages | length > 0"
-    - "ansible_facts['os_family'] == 'Debian'"
-  tags: ["common"]
-
-- name: "common:packages:install"
   ansible.builtin.package:
     name: "{{ common_packages }}"
     state: "present"
-  when:
-    - "common_packages | length > 0"
-    - "ansible_facts['os_family'] != 'Debian'"
+  when: "common_packages | length > 0"
   tags: ["common"]
