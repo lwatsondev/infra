@@ -2,13 +2,9 @@
 __smartmontools_packages:
   Debian:
     - "smartmontools"
-    - "curl"
-    - "jq"
   Gentoo:
     - "sys-apps/smartmontools"
     - "sys-apps/debianutils"
-    - "net-misc/curl"
-    - "app-misc/jq"
 
 __smartmontools_runner_path:
   Debian: "/usr/share/smartmontools/smartd-runner"

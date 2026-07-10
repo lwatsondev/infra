@@ -51,7 +51,7 @@
     - "smartmontools"
 
 - name: "Set up notifications"
-  hosts: "borgmatic:zfs"
+  hosts: "borgmatic:zfs:smartmontools"
   roles:
     - "notifications"
 
