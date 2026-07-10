@@ -2,20 +2,20 @@
 apt_unattended_upgrades_mail_enabled: true
 
 systemd_network_networkd_configure: true
-systemd_network_networkd_sections:
-  - name: "Network"
-    settings:
+systemd_network_networkd_config:
+  - section: "Network"
+    options:
       IPv4Forwarding: "yes"
       IPv6Forwarding: "yes"
 
 systemd_network_files:
   - filename: "00-ens18.network"
-    sections:
-      - name: "Match"
-        settings:
+    config:
+      - section: "Match"
+        options:
           Name: "ens18"
-      - name: "Network"
-        settings:
+      - section: "Network"
+        options:
           Address:
             - "109.169.11.131/29"
             - "2001:1b40:5000:51::3/64"
@@ -25,12 +25,12 @@ systemd_network_files:
           DNS: "127.0.0.1"
           IPv6AcceptRA: "no"
   - filename: "01-ens19.network"
-    sections:
-      - name: "Match"
-        settings:
+    config:
+      - section: "Match"
+        options:
           Name: "ens19"
-      - name: "Network"
-        settings:
+      - section: "Network"
+        options:
           Address:
             - "10.10.0.1/24"
             - "fd00:10:10::1/64"

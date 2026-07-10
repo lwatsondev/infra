@@ -1,24 +1,24 @@
 ---
 systemd_network_files:
   - filename: "00-ens18.network"
-    sections:
-      - name: "Match"
-        settings:
+    config:
+      - section: "Match"
+        options:
           Name: "ens18"
-      - name: "Network"
-        settings:
+      - section: "Network"
+        options:
           DHCP: "yes"
-      - name: "Route"
-        settings:
+      - section: "Route"
+        options:
           Destination: "100.64.0.0/10"
           Gateway: "10.10.0.1"
   - filename: "01-ens19.network"
-    sections:
-      - name: "Match"
-        settings:
+    config:
+      - section: "Match"
+        options:
           Name: "ens19"
-      - name: "Network"
-        settings:
+      - section: "Network"
+        options:
           DHCP: "no"
           Address:
             - "2001:1b40:5000:51:dead:babe:0:1/64"
@@ -27,8 +27,8 @@ systemd_network_files:
             - "2001:1b40:5000:51:dead:babe:0:4/64"
             - "2001:1b40:5000:51:dead:babe:0:5/64"
             - "2001:1b40:5000:51:dead:babe:0:6/64"
-      - name: "Route"
-        settings:
+      - section: "Route"
+        options:
           Destination: "::/0"
           Gateway: "2001:1b40:5000:51::1"
 

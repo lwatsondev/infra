@@ -1,18 +1,18 @@
 ---
 systemd_network_files:
   - filename: "00-ens18.network"
-    sections:
-      - name: "Match"
-        settings:
+    config:
+      - section: "Match"
+        options:
           Name: "ens18"
-      - name: "Network"
-        settings:
+      - section: "Network"
+        options:
           DHCP: "yes"
-      - name: "DHCP"
-        settings:
+      - section: "DHCP"
+        options:
           UseDomains: "yes"
-      - name: "IPv6AcceptRA"
-        settings:
+      - section: "IPv6AcceptRA"
+        options:
           UseDNS: "no"
 
 users:

@@ -5,4 +5,4 @@ systemd_network_resolved_configure: true
 systemd_network_configure: true
 systemd_network_resolved_options: {}
 systemd_network_networkd_configure: false
-systemd_network_networkd_sections: []
+systemd_network_networkd_config: []

@@ -1,26 +1,26 @@
 ---
 systemd_network_files:
   - filename: "00-ens18.network"
-    sections:
-      - name: "Match"
-        settings:
+    config:
+      - section: "Match"
+        options:
           Name: "ens18"
-      - name: "Network"
-        settings:
+      - section: "Network"
+        options:
           DHCP: "yes"
-      - name: "DHCP"
-        settings:
+      - section: "DHCP"
+        options:
           UseDomains: "yes"
   - filename: "01-ens19.network"
-    sections:
-      - name: "Match"
-        settings:
+    config:
+      - section: "Match"
+        options:
           Name: "ens19"
-      - name: "Network"
-        settings:
+      - section: "Network"
+        options:
           DHCP: "ipv4"
-      - name: "DHCP"
-        settings:
+      - section: "DHCP"
+        options:
           UseGateway: "false"
           UseRoutes: "false"
           UseDNS: "false"

@@ -1,10 +1,10 @@
 #
 # {{ ansible_managed }}
 #
-{% for section in item.sections %}
+{% for entry in item.config %}
 
-[{{ section.name }}]
-{% for key, value in section.settings.items() %}
+[{{ entry.section }}]
+{% for key, value in entry.options.items() %}
 {% if value is iterable and value is not string %}
 {% for v in value %}
 {{ key }}={{ v }}

@@ -1,17 +1,17 @@
 ---
 systemd_network_files:
   - filename: "00-eth0.network"
-    sections:
-      - name: "Match"
-        settings:
+    config:
+      - section: "Match"
+        options:
           Name: "eth0"
-      - name: "Network"
-        settings:
+      - section: "Network"
+        options:
           DHCP: "yes"
-      - name: "DHCP"
-        settings:
+      - section: "DHCP"
+        options:
           UseDomains: "yes"
-      - name: "Route"
-        settings:
+      - section: "Route"
+        options:
           Destination: "100.64.0.0/10"
           Gateway: "10.10.10.1"
