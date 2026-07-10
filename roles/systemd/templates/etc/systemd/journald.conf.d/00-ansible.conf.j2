@@ -1,8 +1,16 @@
 #
 # {{ ansible_managed }}
 #
+{% for entry in systemd_journald_config %}
 
-[Journal]
-Storage=persistent
-MaxRetentionSec={{ systemd_journald_retention_sec }}
-SystemMaxUse={{ systemd_journald_system_max_use }}
+[{{ entry.section }}]
+{% for key, value in entry.options.items() %}
+{% if value is iterable and value is not string %}
+{% for v in value %}
+{{ key }}={{ v }}
+{% endfor %}
+{% else %}
+{{ key }}={{ value }}
+{% endif %}
+{% endfor %}
+{% endfor %}

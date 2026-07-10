@@ -4,6 +4,8 @@
     path: "/etc/systemd/journald.conf.d"
     state: "directory"
     mode: "0755"
+  when:
+    - "systemd_journald_config | default([]) | length > 0"
   tags: ["systemd"]
 
 - name: "systemd:journald:configure"
@@ -12,6 +14,8 @@
     dest: "/etc/systemd/journald.conf.d/00-ansible.conf"
     mode: "0644"
   notify: "systemd:journald|restart"
+  when:
+    - "systemd_journald_config | default([]) | length > 0"
   tags: ["systemd"]
 
 - name: "systemd:config_dir:create"
@@ -19,6 +23,8 @@
     path: "/etc/systemd/system.conf.d"
     state: "directory"
     mode: "0755"
+  when:
+    - "systemd_system_config | default([]) | length > 0"
   tags: ["systemd"]
 
 - name: "systemd:configure"
@@ -27,6 +33,8 @@
     dest: "/etc/systemd/system.conf.d/00-ansible.conf"
     mode: "0644"
   notify: "systemd:systemd|daemon-reexec"
+  when:
+    - "systemd_system_config | default([]) | length > 0"
   tags: ["systemd"]
 
 - name: "systemd:cron:install"

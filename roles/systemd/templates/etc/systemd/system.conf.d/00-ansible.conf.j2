@@ -1,6 +1,16 @@
 #
 # {{ ansible_managed }}
 #
+{% for entry in systemd_system_config %}
 
-[Manager]
-DefaultIPAccounting=yes
+[{{ entry.section }}]
+{% for key, value in entry.options.items() %}
+{% if value is iterable and value is not string %}
+{% for v in value %}
+{{ key }}={{ v }}
+{% endfor %}
+{% else %}
+{{ key }}={{ value }}
+{% endif %}
+{% endfor %}
+{% endfor %}

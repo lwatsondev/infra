@@ -1,5 +1,13 @@
 ---
-systemd_journald_system_max_use: "1G"
-systemd_journald_retention_sec: "7d"
 systemd_cron_enabled: true
 systemd_oomd_enabled: true
+
+# systemd_journald_config:
+#   - section: "Journal"
+#     options:
+#       Storage: "persistent"
+
+# systemd_system_config:
+#   - section: "Manager"
+#     options:
+#       DefaultIPAccounting: "yes"
