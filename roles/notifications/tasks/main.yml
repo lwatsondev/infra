@@ -10,6 +10,10 @@
     url: "https://astral.sh/uv/install.sh"
     dest: "{{ __notifications_uv_installer_dest }}"
     mode: "0755"
+  environment:
+    # some hosts run a custom OpenSSL without a CA store, so point python at
+    # the system bundle explicitly
+    SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
   when: "not __notifications_uv_exists.stat.exists"
   changed_when: false
   tags: ["notifications"]
