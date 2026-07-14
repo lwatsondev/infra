@@ -49,7 +49,9 @@
   ansible.builtin.package:
     name: "systemd-oomd"
   when:
+    # systemd-oomd only exists as a package from Debian 12 onwards
     - "ansible_facts['os_family'] == 'Debian'"
+    - "ansible_facts['distribution_major_version'] | int >= 12"
     - "ansible_facts['virtualization_type'] != 'lxc'"
     - "systemd_oomd_enabled"
   notify: "systemd:oomd|restart"
