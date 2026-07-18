@@ -87,5 +87,3 @@ notifications_apprise_urls: >-
 ssh_sshd_config:
   PasswordAuthentication: "no"
   PermitRootLogin: "prohibit-password"
-
-_ansible_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOWZq+7EW0LI9qBSp3tHsQeOuuzsHJoP++M2eseSe8k ansible@lwatson"
