@@ -49,8 +49,6 @@ all:
       ansible_host: "znc.internal.luna.lwatson.dev"
     luna-gitea-runner-01:
       ansible_host: "gitea-runner-01.internal.luna.lwatson.dev"
-    luna-gitea-runner-02:
-      ansible_host: "gitea-runner-02.internal.luna.lwatson.dev"
     luna-firewall:
       ansible_host: "firewall.internal.luna.lwatson.dev"
     luna-reverse-proxy:
@@ -95,7 +93,6 @@ all:
         luna-znc:
         luna-firewall:
         luna-gitea-runner-01:
-        luna-gitea-runner-02:
         luna-reverse-proxy:
         luna-jumphost:
     zfs:
@@ -158,7 +155,6 @@ all:
         luna-znc:
         luna-firewall:
         luna-gitea-runner-01:
-        luna-gitea-runner-02:
         luna-reverse-proxy:
         luna-jumphost:
     templates:
@@ -210,5 +206,4 @@ all:
         luna-gitea:
         luna-znc:
         luna-gitea-runner-01:
-        luna-gitea-runner-02:
         luna-reverse-proxy:
