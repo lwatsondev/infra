@@ -1,0 +1,4 @@
+---
+_site_jumphost: "ceres-jumphost"
+_site_gateway: "10.10.10.1"
+_site_backup_prefix: "ceres-guests"

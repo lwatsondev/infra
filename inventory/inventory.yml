@@ -106,30 +106,13 @@ all:
         serenity:
         # nova:
     debian:
-      hosts:
-        ceres-firewall:
-        ceres:
-        ceres-caddy:
-        ceres-vaultwarden:
-        ceres-postgresql:
-        ceres-mqtt:
-        ceres-zigbee2mqtt:
-        ceres-frigate:
-        ceres-jumphost:
-        do-ams3-01:
-        monitor:
-        luna:
-        luna-rehome:
-        luna-media:
-        luna-cappuccino:
-        luna-gentoogram:
-        luna-gitea:
-        luna-znc:
-        luna-firewall:
-        luna-gitea-runner-01:
-        luna-gitea-runner-02:
-        luna-reverse-proxy:
-        luna-jumphost:
+      children:
+        servers:
+        guests:
+    guests:
+      children:
+        ceres_guests:
+        luna_guests:
     lxc:
       hosts:
         ceres-caddy:

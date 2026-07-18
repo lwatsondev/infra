@@ -1,0 +1,41 @@
+---
+ansible_ssh_common_args: "-o ProxyJump={{ hostvars[_site_jumphost].ansible_user }}@{{ hostvars[_site_jumphost].ansible_host }}"
+ansible_ssh_pass: "{{ _vault_ansible_ssh_pass }}"
+
+systemd_network_resolved_configure: true
+systemd_network_resolved_options:
+  Cache: "no"
+
+systemd_network_files:
+  - filename: "00-{{ _guest_iface }}.network"
+    config:
+      - section: "Match"
+        options:
+          Name: "{{ _guest_iface }}"
+      - section: "Network"
+        options:
+          DHCP: "yes"
+      - section: "DHCP"
+        options:
+          UseDomains: "yes"
+      - section: "IPv6AcceptRA"
+        options:
+          UseDNS: "no"
+      - section: "Route"
+        options:
+          Destination: "100.64.0.0/10"
+          Gateway: "{{ _site_gateway }}"
+
+users:
+  - name: "root"
+    password: "{{ _vault_ansible_ssh_pass }}"
+    ssh_keys: "{{ _lwatson_ssh_keys + [_ansible_public_key] }}"
+
+borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
+borgmatic_ssh_key_contents: "{{ _vault_borgmatic_ssh_key_contents }}"
+
+borgmatic_config_repositories:
+  - path: "ssh://zh4596@zh4596.rsync.net/./borg/{{ _site_backup_prefix }}/{{ ansible_facts['hostname'] }}"
+    label: "rsync.net"
+
+borgmatic_config_keep_monthly: 0

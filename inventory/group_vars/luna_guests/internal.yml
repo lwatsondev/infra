@@ -1,0 +1,4 @@
+---
+_site_jumphost: "luna-jumphost"
+_site_gateway: "10.10.0.1"
+_site_backup_prefix: "luna-guests"
