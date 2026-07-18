@@ -63,7 +63,6 @@ zram_devices:
 docker_daemon_config:
   log-driver: "journald"
   storage-driver: "overlay2"
-  live-restore: true
   log-opts:
     tag: "{{ '{{.Name}}' }}"
   features:

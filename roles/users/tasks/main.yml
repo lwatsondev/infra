@@ -28,6 +28,7 @@
     exclusive: true
   loop: "{{ users }}"
   when: "item.ssh_keys | default([]) | length > 0"
+  no_log: true
   tags: ["users"]
 
 - name: "users:linger:enable"
@@ -36,6 +37,7 @@
     creates: "/var/lib/systemd/linger/{{ item.name }}"
   loop: "{{ users }}"
   when: "item.linger | default(false)"
+  no_log: true
   tags: ["users"]
 
 - name: "users:linger:disable"
@@ -44,6 +46,7 @@
     removes: "/var/lib/systemd/linger/{{ item.name }}"
   loop: "{{ users }}"
   when: "item.linger is defined and not item.linger"
+  no_log: true
   tags: ["users"]
 
 - name: "users:sudoers:add"
@@ -54,6 +57,7 @@
     validate: "visudo -cf %s"
   loop: "{{ users }}"
   when: "item.sudo | default(false)"
+  no_log: true
   tags: ["users"]
 
 - name: "users:sudoers:remove"
@@ -62,4 +66,5 @@
     state: "absent"
   loop: "{{ users }}"
   when: "not (item.sudo | default(false))"
+  no_log: true
   tags: ["users"]
