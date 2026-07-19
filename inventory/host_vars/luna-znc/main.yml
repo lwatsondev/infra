@@ -33,5 +33,4 @@ systemd_network_files:
           Gateway: "2001:1b40:5000:51::1"
 
 borgmatic_config_source_directories:
-  - "/srv/foxbnc"
   - "/srv/stacks/foxbnc"

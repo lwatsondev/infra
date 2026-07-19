@@ -1,4 +1,3 @@
 ---
 borgmatic_config_source_directories:
-  - "/srv/gentoogram"
   - "/srv/stacks/gentoogram-bot"

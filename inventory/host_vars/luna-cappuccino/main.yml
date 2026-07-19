@@ -1,6 +1,5 @@
 ---
 borgmatic_config_source_directories:
-  - "/srv/cappuccino"
   - "/srv/stacks/cappuccino"
 
 borgmatic_config_postgresql_databases:

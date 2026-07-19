@@ -10,16 +10,16 @@ borgmatic_config_after_everything:
   - "/usr/local/libexec/notifications/borgmatic-notify.py finish"
 
 borgmatic_config_source_directories:
-  - "/srv/caddy"
-  - "/srv/uptimekuma"
+  - "/srv/stacks/caddy"
   - "/srv/stacks/uptimekuma"
+  - "/srv/stacks/diun"
 
 borgmatic_config_repositories:
   - path: "ssh://zh4596@zh4596.rsync.net/./borg/monitor"
     label: "rsync.net"
 
 borgmatic_config_sqlite_databases:
-  - path: "/srv/uptimekuma/data/kuma.db"
+  - path: "/srv/stacks/uptimekuma/data/kuma.db"
     name: "kuma"
 
 _notifications_apprise_urls_uk:

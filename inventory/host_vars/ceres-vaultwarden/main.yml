@@ -2,5 +2,11 @@
 borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
 
 borgmatic_config_source_directories:
-  - "/srv/vaultwarden"
   - "/srv/stacks/vaultwarden"
+
+borgmatic_config_postgresql_databases:
+  - name: "vaultwarden"
+    username: "vaultwarden"
+    pg_dump_command: "docker exec vaultwarden_db_18 pg_dump"
+    pg_restore_command: "docker exec vaultwarden_db_18 pg_restore"
+    psql_command: "docker exec vaultwarden_db_18 psql"

@@ -1,7 +1,7 @@
 ---
 borgmatic_config_source_directories:
-  - "/srv/gitea"
   - "/srv/stacks/gitea"
+  - "/home/git"
   - "/etc/ssh/sshd_config.d/git.conf"
 
 borgmatic_config_postgresql_databases:
