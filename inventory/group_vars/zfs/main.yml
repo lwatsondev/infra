@@ -9,6 +9,7 @@ _notifications_apprise_urls_zfs:
     tags:
       - "zfs-error-html"
       - "zfs-warning-html"
+      - "zfs-ok-html"
 
 borgmatic_service_overrides_extra:
   Service:

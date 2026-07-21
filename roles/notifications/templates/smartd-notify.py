@@ -11,25 +11,25 @@
 # {{ ansible_managed }}
 #
 
-import html
-import logging
-import logging.handlers
 import os
-import socket
 import subprocess
 import sys
 from dataclasses import dataclass
 from enum import Enum, auto
+from html import escape
+from logging import INFO, Formatter, basicConfig, getLogger
+from logging.handlers import SysLogHandler
 from pathlib import Path
+from socket import gethostname
 
-import apprise
+from apprise import Apprise, AppriseConfig, NotifyFormat, NotifyType
 
 APPRISE_CONFIG = "/etc/apprise/apprise.yml"
 
-_syslog_handler = logging.handlers.SysLogHandler(address="/dev/log")
-_syslog_handler.setFormatter(logging.Formatter("%(name)s: %(message)s"))
-logging.basicConfig(handlers=[_syslog_handler], level=logging.INFO)
-log = logging.getLogger("smartd-notify")
+_syslog_handler = SysLogHandler(address="/dev/log")
+_syslog_handler.setFormatter(Formatter("%(name)s: %(message)s"))
+basicConfig(handlers=[_syslog_handler], level=INFO)
+log = getLogger("smartd-notify")
 
 
 class Level(Enum):
@@ -79,17 +79,17 @@ class Event:
 EVENTS: dict[Level, Event] = {
     Level.ERROR: Event(
         tag="smartd-error",
-        notify_type=apprise.NotifyType.FAILURE,
+        notify_type=NotifyType.FAILURE,
         header="🔴 S.M.A.R.T. CRITICAL",
     ),
     Level.WARNING: Event(
         tag="smartd-warning",
-        notify_type=apprise.NotifyType.WARNING,
+        notify_type=NotifyType.WARNING,
         header="🟡 S.M.A.R.T. WARNING",
     ),
     Level.TEST: Event(
         tag="smartd-test",
-        notify_type=apprise.NotifyType.INFO,
+        notify_type=NotifyType.INFO,
         header="🔵 S.M.A.R.T. TEST",
     ),
 }
@@ -129,7 +129,7 @@ def main() -> None:
         return
 
     event = EVENTS[level]
-    hostname = socket.gethostname()
+    hostname = gethostname()
     display_device = resolve_display_device(device)
 
     try:
@@ -143,14 +143,14 @@ def main() -> None:
 
     html_body = (
         f"<b>{event.header}</b>\n \n"
-        f"<b>Host:</b> {html.escape(hostname)}\n"
-        f"<b>Device:</b> {html.escape(display_device)}\n"
-        f"<b>Failure:</b> {html.escape(failtype)}\n"
-        f"<b>Summary:</b> {html.escape(message)}"
+        f"<b>Host:</b> {escape(hostname)}\n"
+        f"<b>Device:</b> {escape(display_device)}\n"
+        f"<b>Failure:</b> {escape(failtype)}\n"
+        f"<b>Summary:</b> {escape(message)}"
     )
 
     if attrs:
-        html_body += f"\n \n<pre>{html.escape(attrs.strip())}</pre>"
+        html_body += f"\n \n<pre>{escape(attrs.strip())}</pre>"
 
     md_body = (
         f"**{event.header}**\n"
@@ -163,22 +163,22 @@ def main() -> None:
     if attrs:
         md_body += f"\n```\n{attrs.strip()}\n```"
 
-    ap = apprise.Apprise()
-    cfg = apprise.AppriseConfig()
+    ap = Apprise()
+    cfg = AppriseConfig()
     cfg.add(APPRISE_CONFIG)
     ap.add(cfg)
 
     ok_html = ap.notify(
         body=html_body,
         notify_type=event.notify_type,
-        body_format=apprise.NotifyFormat.HTML,
+        body_format=NotifyFormat.HTML,
         tag=f"{event.tag}-html",
     )
 
     ok_md = ap.notify(
         body=md_body,
         notify_type=event.notify_type,
-        body_format=apprise.NotifyFormat.TEXT,
+        body_format=NotifyFormat.TEXT,
         tag=f"{event.tag}-md",
     )
 

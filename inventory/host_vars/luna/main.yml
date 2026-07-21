@@ -38,7 +38,7 @@ _notifications_apprise_urls_uk:
       - "borgmatic-error-html"
   - url: "{{ zfs_monitoring_uptime_kuma_push_url }}?-status=up&method=get"
     tags:
-      - "zfs-ok-html"
+      - "zfs-heartbeat-html"
   - url: "{{ zfs_monitoring_uptime_kuma_push_url }}?-status=down&method=get"
     tags:
       - "zfs-error-html"

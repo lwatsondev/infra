@@ -139,3 +139,27 @@ zfs-monitoring -> ssh -> borgmatic). `playbooks/speedtest.yml` is a standalone p
 - dnsmasq on both sites' firewalls is not Ansible-managed. SSH in and edit directly, and always
   `systemctl restart dnsmasq` (reload does not pick up config changes).
 - SSH: always `-o StrictHostKeyChecking=no`, never add `ConnectTimeout`.
+
+## Python conventions
+
+- `from module import Name`, not `import module` + `module.Name` at call
+  sites, including type annotations. Import needed submodules directly with
+  an alias rather than keeping the top-level package import. Exception: keep
+  the `import module` + `module.Name` form when the bare name would shadow a
+  builtin or read ambiguously out of context (e.g. `sys.exit`,
+  `subprocess.run`, `os.environ`).
+- No single-character variable names anywhere, including loop and
+  comprehension variables. Name caught exceptions `exc`, never `e`.
+- f-strings for all interpolation, including logging calls, never %-style.
+- Don't manually sort or group imports: ruff handles it. Ignore IDE
+  import-sort warnings.
+- Don't flag or "fix" unusual-looking syntax that already exists (e.g.
+  `except A, B:`). If it runs, it's valid here.
+- New source files carry the project's license header, matching the exact
+  format used by existing files in the repo (SPDX or otherwise). In shell
+  scripts, separate the header block from the shebang and the following code
+  with a blank line on each side.
+- Install dependencies with `uv sync`, update them with
+  `uv sync --upgrade --all-groups`.
+- Blank lines between logical sections inside function bodies (setup,
+  query, conditional, return). Don't clump everything together.

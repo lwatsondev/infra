@@ -11,21 +11,21 @@
 # {{ ansible_managed }}
 #
 
-import html
-import logging
-import logging.handlers
-import socket
 import sys
 from dataclasses import dataclass
+from html import escape
+from logging import INFO, Formatter, basicConfig, getLogger
+from logging.handlers import SysLogHandler
+from socket import gethostname
 
-import apprise
+from apprise import Apprise, AppriseConfig, NotifyFormat, NotifyType
 
 APPRISE_CONFIG = "/etc/apprise/apprise.yml"
 
-_syslog_handler = logging.handlers.SysLogHandler(address="/dev/log")
-_syslog_handler.setFormatter(logging.Formatter("%(name)s: %(message)s"))
-logging.basicConfig(handlers=[_syslog_handler], level=logging.INFO)
-log = logging.getLogger("borgmatic-notify")
+_syslog_handler = SysLogHandler(address="/dev/log")
+_syslog_handler.setFormatter(Formatter("%(name)s: %(message)s"))
+basicConfig(handlers=[_syslog_handler], level=INFO)
+log = getLogger("borgmatic-notify")
 
 
 @dataclass(frozen=True)
@@ -38,17 +38,17 @@ class Event:
 EVENTS: dict[str, Event] = {
     "start": Event(
         tag="borgmatic-start",
-        notify_type=apprise.NotifyType.INFO,
+        notify_type=NotifyType.INFO,
         header="🔵 <b>borgmatic</b>: backup started",
     ),
     "finish": Event(
         tag="borgmatic-ok",
-        notify_type=apprise.NotifyType.SUCCESS,
+        notify_type=NotifyType.SUCCESS,
         header="🟢 <b>borgmatic</b>: backup finished",
     ),
     "error": Event(
         tag="borgmatic-error",
-        notify_type=apprise.NotifyType.FAILURE,
+        notify_type=NotifyType.FAILURE,
         header="🔴 <b>borgmatic</b>: backup failed",
     ),
 }
@@ -59,7 +59,7 @@ def build_html_body(
 ) -> str:
     match event_name:
         case "error":
-            error_text = html.escape(" ".join(error_args))
+            error_text = escape(" ".join(error_args))
             return f"{header} on <b>{hostname}</b>\n \n<pre>{error_text}</pre>"
         case _:
             return f"{header} on <b>{hostname}</b>"
@@ -80,7 +80,7 @@ def build_md_body(
 def main() -> None:
     event_name = sys.argv[1] if len(sys.argv) > 1 else ""
     event = EVENTS.get(event_name)
-    hostname = socket.gethostname()
+    hostname = gethostname()
 
     if event is None:
         if event_name:
@@ -89,8 +89,8 @@ def main() -> None:
             log.error("No event passed, expected: start, finish, error")
         sys.exit(1)
 
-    ap = apprise.Apprise()
-    cfg = apprise.AppriseConfig()
+    ap = Apprise()
+    cfg = AppriseConfig()
     cfg.add(APPRISE_CONFIG)
     ap.add(cfg)
 
@@ -98,11 +98,11 @@ def main() -> None:
         body=build_html_body(
             event_name,
             header=event.header,
-            hostname=html.escape(hostname),
+            hostname=escape(hostname),
             error_args=sys.argv[2:],
         ),
         notify_type=event.notify_type,
-        body_format=apprise.NotifyFormat.HTML,
+        body_format=NotifyFormat.HTML,
         tag=f"{event.tag}-html",
     )
 
@@ -111,7 +111,7 @@ def main() -> None:
             event_name, header=event.header, hostname=hostname, error_args=sys.argv[2:]
         ),
         notify_type=event.notify_type,
-        body_format=apprise.NotifyFormat.TEXT,
+        body_format=NotifyFormat.TEXT,
         tag=f"{event.tag}-md",
     )
 
