@@ -1,6 +1,7 @@
 .ansible/
 .vscode/
 .idea/
+.claude/
 
 # Environments
 .env
