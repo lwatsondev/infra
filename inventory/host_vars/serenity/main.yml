@@ -52,7 +52,7 @@ borgmatic_service_overrides_extra:
   Service:
     - "ExecStart="
     - >-
-      ExecStart=systemd-inhibit --who="borgmatic" --what="sleep:shutdown"
+      ExecStart=systemd-inhibit --who="borgmatic" --what="sleep"
       --why="Prevent interrupting scheduled backup"
       /usr/bin/borgmatic --verbosity -2 --syslog-verbosity 1 --stats
     - "PrivateDevices=no"
