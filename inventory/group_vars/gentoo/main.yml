@@ -1,9 +1,10 @@
 ---
 common_packages:
   - "app-shells/bash-completion"
-  - "net-dns/bind-tools"
+  - "sys-apps/bat"
   - "app-misc/ca-certificates"
   - "net-misc/curl"
+  - "app-shells/fzf"
   - "dev-vcs/git"
   - "app-crypt/gnupg"
   - "sys-process/htop"

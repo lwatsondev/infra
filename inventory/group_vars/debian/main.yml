@@ -19,10 +19,12 @@ borgmatic_config_on_error:
 
 common_packages:
   - "bash-completion"
+  - "bat"
   - "ca-certificates"
   - "cloud-guest-utils"
   - "curl"
   - "dnsutils"
+  - "fzf"
   - "git"
   - "gpg"
   - "htop"
