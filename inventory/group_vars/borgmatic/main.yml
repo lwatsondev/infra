@@ -12,7 +12,7 @@ borgmatic_config_upload_rate_limit: 10000
 borgmatic_config_keep_hourly: 8
 borgmatic_config_keep_daily: 7
 borgmatic_config_keep_weekly: 4
-borgmatic_config_keep_monthly: 6
+borgmatic_config_keep_monthly: 12
 
 borgmatic_service_overrides:
   Unit:
