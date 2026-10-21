@@ -26,7 +26,7 @@ borgmatic_config_source_directories:
   - "/var/lib/portage"
 
 borgmatic_config_repositories:
-  - path: "ssh://zh4596@zh4596.rsync.net/./borg/serenity"
+  - path: "ssh://fm3226@fm3226.rsync.net/./borg/serenity"
     label: "rsync.net"
 
 borgmatic_config_commands:

@@ -23,7 +23,7 @@ borgmatic_config_after_everything:
   - "/usr/local/libexec/notifications/borgmatic-notify.py finish"
 
 borgmatic_config_repositories:
-  - path: "ssh://zh4596@zh4596.rsync.net/./borg/luna"
+  - path: "ssh://fm3226@fm3226.rsync.net/./borg/luna"
     label: "rsync.net"
 
 borgmatic_config_keep_monthly: 6

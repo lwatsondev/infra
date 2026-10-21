@@ -17,7 +17,7 @@ borgmatic_config_source_directories:
   - "/srv/stacks/diun"
 
 borgmatic_config_repositories:
-  - path: "ssh://zh4596@zh4596.rsync.net/./borg/monitor"
+  - path: "ssh://fm3226@fm3226.rsync.net/./borg/monitor"
     label: "rsync.net"
 
 borgmatic_config_sqlite_databases:

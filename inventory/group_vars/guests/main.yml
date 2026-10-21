@@ -35,7 +35,7 @@ borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_p
 borgmatic_ssh_key_contents: "{{ _vault_borgmatic_ssh_key_contents }}"
 
 borgmatic_config_repositories:
-  - path: "ssh://zh4596@zh4596.rsync.net/./borg/{{ _site_backup_prefix }}/{{ ansible_facts['hostname'] }}"
+  - path: "ssh://fm3226@fm3226.rsync.net/./borg/{{ _site_backup_prefix }}/{{ ansible_facts['hostname'] }}"
     label: "rsync.net"
 
 borgmatic_config_keep_monthly: 0
