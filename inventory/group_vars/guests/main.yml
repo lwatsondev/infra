@@ -2,6 +2,9 @@
 ansible_ssh_common_args: "-o ProxyJump={{ hostvars[_site_jumphost].ansible_user }}@{{ hostvars[_site_jumphost].ansible_host }}"
 ansible_ssh_pass: "{{ _vault_ansible_ssh_pass }}"
 
+apt_unattended_upgrades_mail_enabled: false
+msmtp_enabled: false
+
 systemd_network_resolved_configure: true
 systemd_network_resolved_options:
   Cache: "no"
