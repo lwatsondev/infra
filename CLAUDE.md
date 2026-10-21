@@ -128,6 +128,10 @@ zfs-monitoring -> ssh -> borgmatic). `playbooks/speedtest.yml` is a standalone p
 
 - PVE guests: `pct reboot`/`pct exec` for LXCs, `qm reboot` for VMs. Never mix them up. After
   editing `cluster.fw`, run `pve-firewall restart` to push rules live.
+- Hypervisors (`ceres`, `luna`) reboot via kexec:
+  `kexec -l /boot/pve/vmlinuz --initrd=/boot/pve/initrd.img --reuse-cmdline && systemctl kexec`.
+  Do a full reboot only when a pending update genuinely needs one (e.g. CPU microcode) and the
+  user wants that update applied now. A kexec still restarts every guest on the host.
 - `systemctl reload nftables`, never restart. Restarting `tailscaled` clobbers nftables, so chain
   `&& systemctl reload nftables`. Use `networkctl reconfigure` (not `renew`) for a full DHCP
   cycle, or just reboot the guest.
