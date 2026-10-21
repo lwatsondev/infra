@@ -31,6 +31,8 @@ all:
       ansible_host: "zigbee2mqtt.internal.ceres.lwatson.dev"
     ceres-frigate:
       ansible_host: "frigate.internal.ceres.lwatson.dev"
+    ceres-exit-hpl-01:
+      ansible_host: "exit-hpl-01.internal.ceres.lwatson.dev"
     do-ams3-01:
       ansible_host: "do-ams3-01.hedgehog-skate.ts.net"
     luna:
@@ -95,6 +97,7 @@ all:
         luna-gitea-runner-01:
         luna-reverse-proxy:
         luna-jumphost:
+        ceres-exit-hpl-01:
     zfs:
       hosts:
         luna:
@@ -128,6 +131,7 @@ all:
         ceres-frigate:
         ceres-vaultwarden:
         ceres-jumphost:
+        ceres-exit-hpl-01:
     luna_guests:
       hosts:
         luna-rehome:

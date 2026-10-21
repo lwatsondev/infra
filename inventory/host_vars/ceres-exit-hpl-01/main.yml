@@ -1,0 +1,7 @@
+---
+systemd_network_networkd_configure: true
+systemd_network_networkd_config:
+  - section: "Network"
+    options:
+      IPv4Forwarding: "yes"
+      IPv6Forwarding: "yes"
