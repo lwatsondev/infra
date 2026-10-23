@@ -4,6 +4,9 @@ borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_p
 borgmatic_config_source_directories:
   - "/home/vaultwarden/stacks/vaultwarden"
 
+borgmatic_config_exclude_patterns:
+  - "/home/vaultwarden/stacks/vaultwarden/data/postgres"
+
 borgmatic_config_postgresql_databases:
   - name: "vaultwarden"
     username: "vaultwarden"

@@ -4,6 +4,9 @@ borgmatic_config_source_directories:
   - "/home/git/gitea-shell"
   - "/etc/ssh/sshd_config.d/git.conf"
 
+borgmatic_config_exclude_patterns:
+  - "/home/git/stacks/gitea/data/postgres"
+
 borgmatic_config_postgresql_databases:
   - name: "gitea"
     username: "gitea"

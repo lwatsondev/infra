@@ -2,6 +2,9 @@
 borgmatic_config_source_directories:
   - "/home/cappuccino/stacks/cappuccino"
 
+borgmatic_config_exclude_patterns:
+  - "/home/cappuccino/stacks/cappuccino/data/postgres"
+
 borgmatic_config_postgresql_databases:
   - name: "cappuccino"
     username: "cappuccino"
