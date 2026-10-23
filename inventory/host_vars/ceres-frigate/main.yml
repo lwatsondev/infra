@@ -2,8 +2,8 @@
 borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
 
 borgmatic_config_source_directories:
-  - "/srv/stacks/frigate"
+  - "/home/frigate/stacks/frigate"
 
 borgmatic_config_sqlite_databases:
-  - path: "/srv/stacks/frigate/config/frigate.db"
+  - path: "/home/frigate/stacks/frigate/config/frigate.db"
     name: "frigate"

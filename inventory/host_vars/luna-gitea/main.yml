@@ -1,12 +1,12 @@
 ---
 borgmatic_config_source_directories:
-  - "/srv/stacks/gitea"
-  - "/home/git"
+  - "/home/git/stacks/gitea"
+  - "/home/git/gitea-shell"
   - "/etc/ssh/sshd_config.d/git.conf"
 
 borgmatic_config_postgresql_databases:
   - name: "gitea"
     username: "gitea"
-    pg_dump_command: "docker exec gitea_db_18 pg_dump"
-    pg_restore_command: "docker exec gitea_db_18 pg_restore"
-    psql_command: "docker exec gitea_db_18 psql"
+    pg_dump_command: "run0 --user=git podman exec gitea-postgres pg_dump"
+    pg_restore_command: "run0 --user=git podman exec -i gitea-postgres pg_restore"
+    psql_command: "run0 --user=git podman exec -i gitea-postgres psql"

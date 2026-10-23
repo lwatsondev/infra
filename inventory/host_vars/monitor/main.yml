@@ -1,6 +1,11 @@
 ---
 apt_unattended_upgrades_mail_enabled: true
 
+_sysctl_vars_host:
+  # Lets rootless podman caddy bind ports 80 and 443.
+  - name: "net.ipv4.ip_unprivileged_port_start"
+    value: 80
+
 borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
 borgmatic_uptime_kuma_push_url: "{{ _vault_borgmatic_uptime_kuma_push_url }}"
 borgmatic_ssh_key_contents: "{{ _vault_borgmatic_ssh_key_contents }}"
@@ -12,16 +17,16 @@ borgmatic_config_after_everything:
   - "/usr/local/libexec/notifications/borgmatic-notify.py finish"
 
 borgmatic_config_source_directories:
-  - "/srv/stacks/caddy"
-  - "/srv/stacks/uptimekuma"
-  - "/srv/stacks/diun"
+  - "/home/caddy/stacks/caddy"
+  - "/home/uptimekuma/stacks/uptimekuma"
+  - "/home/diun/stacks/diun"
 
 borgmatic_config_repositories:
   - path: "ssh://fm3226@fm3226.rsync.net/./borg/monitor"
     label: "rsync.net"
 
 borgmatic_config_sqlite_databases:
-  - path: "/srv/stacks/uptimekuma/data/kuma.db"
+  - path: "/home/uptimekuma/stacks/uptimekuma/data/kuma.db"
     name: "kuma"
 
 _notifications_apprise_urls_uk:

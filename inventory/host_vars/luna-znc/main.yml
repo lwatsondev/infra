@@ -1,4 +1,9 @@
 ---
+_sysctl_vars_host:
+  # Lets rootless podman oidentd bind port 113.
+  - name: "net.ipv4.ip_unprivileged_port_start"
+    value: 113
+
 systemd_network_files:
   - filename: "00-ens18.network"
     config:
@@ -33,4 +38,4 @@ systemd_network_files:
           Gateway: "2001:1b40:5000:51::1"
 
 borgmatic_config_source_directories:
-  - "/srv/stacks/znc"
+  - "/home/znc/stacks/znc"

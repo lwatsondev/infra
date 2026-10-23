@@ -1,10 +1,10 @@
 ---
 borgmatic_config_source_directories:
-  - "/srv/stacks/cappuccino"
+  - "/home/cappuccino/stacks/cappuccino"
 
 borgmatic_config_postgresql_databases:
   - name: "cappuccino"
     username: "cappuccino"
-    pg_dump_command: "docker exec cappuccino_db_18 pg_dump"
-    pg_restore_command: "docker exec cappuccino_db_18 pg_restore"
-    psql_command: "docker exec cappuccino_db_18 psql"
+    pg_dump_command: "run0 --user=cappuccino podman exec cappuccino-postgres pg_dump"
+    pg_restore_command: "run0 --user=cappuccino podman exec -i cappuccino-postgres pg_restore"
+    psql_command: "run0 --user=cappuccino podman exec -i cappuccino-postgres psql"

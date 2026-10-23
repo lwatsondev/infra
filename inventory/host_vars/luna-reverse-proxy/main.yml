@@ -1,3 +1,8 @@
 ---
+_sysctl_vars_host:
+  # Lets rootless podman caddy bind ports 80 and 443.
+  - name: "net.ipv4.ip_unprivileged_port_start"
+    value: 80
+
 borgmatic_config_source_directories:
-  - "/srv/stacks/caddy"
+  - "/home/caddy/stacks/caddy"

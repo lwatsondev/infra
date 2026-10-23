@@ -2,8 +2,8 @@
 borgmatic_config_encryption_passphrase: "{{ _vault_borgmatic_config_encryption_passphrase }}"
 
 borgmatic_config_source_directories:
-  - "/srv/stacks/zigbee2mqtt"
+  - "/home/zigbee2mqtt/stacks/zigbee2mqtt"
 
 borgmatic_config_sqlite_databases:
-  - path: "/srv/stacks/zigbee2mqtt/data/database.db"
+  - path: "/home/zigbee2mqtt/stacks/zigbee2mqtt/data/database.db"
     name: "zigbee2mqtt"

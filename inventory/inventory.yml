@@ -182,15 +182,4 @@ all:
       hosts:
         serenity:
         # nova:
-        monitor:
-        ceres-vaultwarden:
-        ceres-zigbee2mqtt:
-        ceres-frigate:
-        luna-rehome:
-        luna-media:
-        luna-cappuccino:
-        luna-gentoogram:
-        luna-gitea:
-        luna-znc:
         luna-gitea-runner-01:
-        luna-reverse-proxy:
